@@ -4,12 +4,17 @@ import CategoriesPage from "../pages/CategoriesPage";
 import CategoryEdit from "../pages/CategoryEdit";
 import Dashboard from "../pages/Dashboard";
 import NoPage from "../pages/NoPage";
+import PostAdd from "../pages/PostAdd";
+import PostEdit from "../pages/PostEdit";
+import PostPage from "../pages/PostPage";
 import ProductAdd from "../pages/ProductAdd";
 import ProductEdit from "../pages/ProductEdit";
 import ProductPage from "../pages/ProductPage";
 import StaffAdd from "../pages/StaffAdd";
 import StaffEdit from "../pages/StaffEdit";
 import StaffsPage from "../pages/StaffsPage";
+import TopicEdit from "../pages/TopicEdit";
+import TopicPage from "../pages/TopicPage";
 
 const routesPage = [
   { path: "/", element: <Dashboard />, exact: true },
@@ -23,6 +28,12 @@ const routesPage = [
   { path: "/staff", element: <StaffsPage /> },
   { path: "/staff/add", element: <StaffAdd /> },
   { path: "/staff/:id", element: <StaffEdit /> },
+  { path: "/post", element: <PostPage /> },
+  { path: "/post/add", element: <PostAdd /> },
+  { path: "/post/:id", element: <PostEdit /> },
+  { path: "/topic", element: <TopicPage /> },
+  { path: "/topic/:id", element: <TopicEdit /> },
+
   { path: "*", element: <NoPage /> },
 ];
 
@@ -122,6 +133,30 @@ const menuItems = [
         <path d="M21 14c0-1.66-1.34-3-3-3s-3 1.34-3 3" />
       </svg>
     ),
+  },
+  {
+    title: "Bài viết",
+    link: "/post",
+    svg: (
+      <svg
+        className="w-5 h-5"
+        aria-hidden="true"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path d="M2 12l10 10L22 12V4H12L2 12z"></path>
+        <circle cx="12" cy="8" r="1.5"></circle>
+      </svg>
+    ),
+    submenu: [
+      { title: "Tất cả bài viết", link: "/post" },
+      { title: "Thêm mới", link: "/post/add" },
+      { title: "Danh mục bài viết", link: "/topic" },
+    ],
   },
   {
     title: "Thành viên",
