@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-function BannerAdv() {
+const BannerAdv = () => {
   return (
     <div id="home-box1" className="col-md-4 col-12">
         <div className="home-box1 boxbanner-12">
@@ -8,7 +8,7 @@ function BannerAdv() {
                 <div className="item banner-item banner-item-1">
                     <a
                     target="_blank"
-                    href="https://mediamart.vn/apple-iphone-16-series"
+                    href="/apple-iphone-16-series"
                     data-id={6585}
                     >
                     <Image
@@ -27,7 +27,7 @@ function BannerAdv() {
                 <div className="item banner-item banner-item-2">
                     <a
                     target="_blank"
-                    href="https://mediamart.vn/laptop-tuu-truong#box-7684"
+                    href="/laptop-tuu-truong#box-7684"
                     data-id={6320}
                     >
                     <Image
@@ -46,7 +46,7 @@ function BannerAdv() {
                 <div className="item banner-item banner-item-3">
                     <a
                     target="_blank"
-                    href="https://mediamart.vn/tivi-sale-than-toc"
+                    href="/tivi-sale-than-toc"
                     data-id={6273}
                     >
                     <Image

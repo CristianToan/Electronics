@@ -3,7 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
-function BannerSlider() {
+const BannerSlider = () => {
   return (
     <div className="col-md-8 col-12">
         <div className="home-slide">

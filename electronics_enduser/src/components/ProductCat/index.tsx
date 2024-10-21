@@ -3,7 +3,7 @@ import ProductBox from '../ProductBox'
 
 const product_cat = Array.from(Array(3).keys()) // Chỉ giả lập, khi gọi API sẽ xóa
 
-function ProductCat() {
+const ProductCat = () => {
   return (
     <div className="row">
         <div className="col-12">

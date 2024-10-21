@@ -10,7 +10,7 @@ const HeaderTop = () => {
                     <div className="owlRespon-2 boxbanner-2">
                         <div className="banner-list">
                             <div className="item banner-item banner-item-1">
-                                <a target="_blank" href="https://mediamart.vn/apple-iphone-16-series" data-id="6590">
+                                <a target="_blank" href="/apple-iphone-16-series" data-id="6590">
                                     <Image 
                                         src={'https://cdn.mediamart.vn/images/banner/top-iphone-16-1_3b07cc49.png' }
                                         alt="Top Iphone 16 1"
@@ -22,7 +22,7 @@ const HeaderTop = () => {
                                 </a>
                             </div>
                             <div className="item banner-item banner-item-2">
-                                <a target="_blank" href="https://mediamart.vn/apple-iphone-16-series" data-id="6591">
+                                <a target="_blank" href="/apple-iphone-16-series" data-id="6591">
                                     <Image
                                         src="https://cdn.mediamart.vn/images/banner/top-iphone-16-2_eb2824f5.png"
                                         alt="Top Iphone 16 2"

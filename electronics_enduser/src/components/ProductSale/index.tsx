@@ -7,7 +7,7 @@ import ProductItem from '../ProductItem';
 
 const product_sale = Array.from(Array(20).keys()) // Chỉ giả lập, khi gọi API sẽ xóa
 
-function ProductSale() {
+const ProductSale = () => {
   return (
     <div className="row">
         
@@ -20,7 +20,7 @@ function ProductSale() {
                             <div className="item banner-item banner-item-1">
                             <a
                                 target="_blank"
-                                href="https://mediamart.vn/20-10-sale"
+                                href="/20-10-sale"
                                 data-id={6659}
                             >
                                 <Image
@@ -44,7 +44,7 @@ function ProductSale() {
                                 <div className="item banner-item banner-item-1">
                                     <a
                                         target="_blank"
-                                        href="https://mediamart.vn/noi-com-dien/noi-com-dien-tu-10l-cuckoo-cr-0661-mau-xanh"
+                                        href="/noi-com-dien/noi-com-dien-tu-10l-cuckoo-cr-0661-mau-xanh"
                                         data-id={6660}
                                     >
                                         <Image
@@ -53,8 +53,7 @@ function ProductSale() {
                                             width={300}
                                             height={230}
                                             priority
-                                        />
-                                        
+                                        />   
                                     </a>
                                 </div>
                                 <div className="item banner-item banner-item-2">
@@ -70,7 +69,6 @@ function ProductSale() {
                                             height={230}
                                             priority
                                         />
-                                        
                                     </a>
                                 </div>
                             </div>
