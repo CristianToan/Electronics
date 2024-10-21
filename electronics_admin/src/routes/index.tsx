@@ -25,7 +25,7 @@ const routesPage = [
   { path: "/category/:id", element: <CategoryEdit /> },
   { path: "/brand", element: <BrandPage /> },
   { path: "/brand/:id", element: <BrandEdit /> },
-  { path: "/staff", element: <StaffsPage /> },
+  { path: "/staffs", element: <StaffsPage /> },
   { path: "/staff/add", element: <StaffAdd /> },
   { path: "/staff/:id", element: <StaffEdit /> },
   { path: "/post", element: <PostPage /> },
@@ -160,7 +160,7 @@ const menuItems = [
   },
   {
     title: "Thành viên",
-    link: "/staff",
+    link: "/staffs",
     svg: (
       <svg
         className="w-5 h-5"

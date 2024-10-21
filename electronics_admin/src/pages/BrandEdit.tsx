@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async"
 
-function BrandEdit() {
+const BrandEdit = () => {
   return (
     <>
         <Helmet>

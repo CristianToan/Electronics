@@ -9,7 +9,7 @@ type FieldType = {
   password: string;
 };
 
-function LoginPage() {
+const LoginPage = () => {
   const { login, isAuthenticated } = useAuth()
   const navigate = useNavigate()
   const [ showAlert, setShowAlert ] = useState<boolean>(true);
