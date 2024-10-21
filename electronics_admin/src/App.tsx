@@ -14,7 +14,7 @@ function App() {
     <>
 		<QueryClientProvider client={queryClient}>
 			<HelmetProvider>
-				<BrowserRouter>
+			<BrowserRouter>
 				<Routes>
 					<Route path='/' element= { <DefaultLayouts />}>
 						{routesPage.map((route, index) => (

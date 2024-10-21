@@ -74,16 +74,15 @@ const customerSchema = new Schema<TCustomer>({
     })
 // Virtual for this genre instance fullName.
 customerSchema.virtual('fullName').get(function () {
-    return this.first_name + ' ' + this.last_name;
+    return this.last_name + ' ' + this.first_name;
 });
 
 customerSchema.pre('save', async function (next) {
     const customer = this;
-
-    const hash = bcrypt.hashSync(customer.password, saltRounds);
-
-    customer.password = hash;
-
+    if(customer.password){
+        const hash = bcrypt.hashSync(customer.password, saltRounds);
+        customer.password = hash;
+    }
     next();
 });
 // Export một model

@@ -42,7 +42,7 @@ export type TStaff = {
   avatar?: string;
   first_name: string;
   last_name: string;
-  phone: string;
+  phone: string;        
   email: string;
   password: string;
   active?: boolean,

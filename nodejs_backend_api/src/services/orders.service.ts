@@ -69,6 +69,7 @@ const findAllOrder = async (query: any) => {
     .select('-__v -id')
     .populate({
       path: 'customer',
+      select: '-password',  // Loại bỏ trường password
       /**
        * Với match, nếu ko khớp thì customer là null
        */
