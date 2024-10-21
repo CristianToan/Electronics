@@ -1,28 +1,20 @@
 import slugify from "slugify";
 
 function removeVietnameseAccents(str: string): string {
-  const vietnameseChars: { [key: string]: string } = {
-    a: "àáảãạâầấẩẫậăằắẳẵặ",
-    e: "èéẻẽẹêềếểễệ",
-    i: "ìíỉĩị",
-    o: "òóỏõọôồốổỗộơờớởỡợ",
-    u: "ùúủũụưừứửữự",
-    y: "ỳýỷỹỵ",
-    d: "đ",
-    A: "ÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶ",
-    E: "ÈÉẺẼẸÊỀẾỂỄỆ",
-    I: "ÌÍỈĨỊ",
-    O: "ÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢ",
-    U: "ÙÚỦŨỤƯỪỨỬỮỰ",
-    Y: "ỲÝỶỸỴ",
-    D: "Đ",
-  };
+  const vietnameseAccents = [
+    { base: "a", letters: "áàảãạăắằẳẵặâấầẩẫậ" },
+    { base: "e", letters: "éèẻẽẹêếềểễệ" },
+    { base: "i", letters: "íìỉĩị" },
+    { base: "o", letters: "óòỏõọôốồổỗộơớờởỡợ" },
+    { base: "u", letters: "úùủũụưứừửữự" },
+    { base: "y", letters: "ýỳỷỹỵ" },
+    { base: "d", letters: "đ" },
+  ];
 
-  // Duyệt qua từng cặp ký tự có dấu và thay thế
-  Object.keys(vietnameseChars).forEach((nonAccentedChar) => {
-    const accentedChars = vietnameseChars[nonAccentedChar];
-    const regex = new RegExp("[" + accentedChars + "]", "g");
-    str = str.replace(regex, nonAccentedChar);
+  // Duyệt qua từng nhóm ký tự có dấu và thay thế chúng bằng ký tự không dấu
+  vietnameseAccents.forEach((group) => {
+    const regex = new RegExp(`[${group.letters}]`, "g");
+    str = str.replace(regex, group.base);
   });
 
   return str;
