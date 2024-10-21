@@ -36,7 +36,7 @@ function CategoryEdit() {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { id } = useParams();
   const fetchCategoryById = async (id: string) => {
-    const url = `${SETTINGS.URL_API}/v1/Categories/${id}`;
+    const url = `${SETTINGS.URL_API}/v1/categories/${id}`;
     const res = await axiosClient.get(url);
     return res.data.data;
   };
