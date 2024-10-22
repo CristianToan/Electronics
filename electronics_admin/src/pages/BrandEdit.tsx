@@ -30,7 +30,7 @@ interface TBrand {
   isActive?: boolean;
 }
 
-function BrandEdit() {
+const BrandEdit = () => {
   const [formUpdate] = Form.useForm();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { id } = useParams();
@@ -306,6 +306,6 @@ function BrandEdit() {
       </main>
     </>
   );
-}
+};
 
 export default BrandEdit;

@@ -28,7 +28,7 @@ interface IBrand {
   logo_url?: string;
 }
 
-function BrandAdd() {
+const BrandAdd = () => {
   const [formCreate] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
@@ -243,6 +243,6 @@ function BrandAdd() {
       </div>
     </>
   );
-}
+};
 
 export default BrandAdd;

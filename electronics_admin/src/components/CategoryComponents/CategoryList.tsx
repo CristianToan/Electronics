@@ -1,6 +1,6 @@
 import { SETTINGS } from "../../constants/settings";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { axiosClient } from "../../lib/axiosClient";
 import { Helmet } from "react-helmet-async";
@@ -18,19 +18,13 @@ interface TCategory {
   isActive: boolean;
 }
 
-interface CategoriesResponse {
-  data: {
-    categories_list: TCategory[];
-  };
-}
-
 interface TFilter {
   keyword: string;
   name: string;
   slug: string;
 }
 
-function CategoryList() {
+const CategoryList = () => {
   const location = useLocation();
   const [messageApi, contextHolder] = message.useMessage();
   const [params] = useSearchParams();
@@ -40,18 +34,12 @@ function CategoryList() {
   const limit = 10;
   const keyword = params.get("keyword");
   const name = keyword ? keyword : null;
-  const slug_category = params.get("slug");
-  const slug = slug_category ? slug_category : null;
   const navigate = useNavigate();
-  const [categories, setCategories] = useState<CategoriesResponse | null>(null);
 
   const onFinishSearch = async (values: TFilter) => {
-    const { keyword, slug } = values;
+    const { keyword } = values;
 
-    const queryString = [
-      keyword ? `keyword=${keyword.trim()}` : "",
-      slug ? `slug=${slug.trim()}` : "",
-    ]
+    const queryString = [keyword ? `keyword=${keyword.trim()}` : ""]
       .filter(Boolean)
       .join("&");
 
@@ -65,14 +53,12 @@ function CategoryList() {
     if (name) {
       url += `keyword=${name}&`;
     }
-    if (slug) {
-      url += `slug=${slug}&`;
-    }
+
     url += `page=${page}&limit=${limit}`;
     const response = await axiosClient.get(url);
-    setCategories(response.data);
+
     return response.data.data;
-  }, [name, page, slug]);
+  }, [name, page]);
 
   useEffect(() => {
     // If state is passed, reload the list
@@ -83,11 +69,9 @@ function CategoryList() {
   }, [location.state, fetchCategories]);
 
   const getAllCategory = useQuery({
-    queryKey: ["categories", page, name, slug],
+    queryKey: ["categories", page, name],
     queryFn: fetchCategories,
   });
-
-  const { isLoading } = getAllCategory;
 
   useEffect(() => {
     if (
@@ -102,13 +86,13 @@ function CategoryList() {
   }, [page, navigate, params]);
 
   const queryClient = useQueryClient();
-  const fetchDeleleCategory = async (id: string) => {
+  const fetchDeleteCategory = async (id: string) => {
     const url = `${SETTINGS.URL_API}/v1/categories/${id}`;
     const res = await axiosClient.delete(url);
     return res.data.data;
   };
   const deleteCategory = useMutation({
-    mutationFn: fetchDeleleCategory,
+    mutationFn: fetchDeleteCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["categories"],
@@ -171,7 +155,7 @@ function CategoryList() {
             </Form>
 
             <Spin
-              spinning={isLoading}
+              spinning={getAllCategory.isLoading}
               indicator={<LoadingOutlined style={{ fontSize: 48 }} />}
             >
               <table className='w-full whitespace-no-wrap'>
@@ -188,9 +172,9 @@ function CategoryList() {
                 </thead>
 
                 <tbody className='bg-white divide-y dark:divide-gray-700 dark:bg-gray-800'>
-                  {categories &&
-                  categories?.data?.categories_list.length > 0 ? (
-                    categories?.data?.categories_list.map(
+                  {getAllCategory?.data &&
+                  getAllCategory.data?.categories_list.length > 0 ? (
+                    getAllCategory?.data?.categories_list.map(
                       (item: TCategory, i: number) => {
                         return (
                           <tr
@@ -282,7 +266,7 @@ function CategoryList() {
                   ) : (
                     <tr className='text-gray-700 dark:text-gray-400'>
                       <td colSpan={7} className='text-center py-3'>
-                        {keyword != null || name != null || slug != null
+                        {keyword != null || name != null
                           ? "Không tìm thấy"
                           : "Dữ liệu đang được cập nhật"}
                       </td>
@@ -314,6 +298,6 @@ function CategoryList() {
       </div>
     </>
   );
-}
+};
 
 export default CategoryList;

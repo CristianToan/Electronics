@@ -28,7 +28,7 @@ interface ICategory {
   isActive?: boolean;
 }
 
-function CategoryAdd() {
+const CategoryAdd = () => {
   const [formCreate] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
@@ -240,6 +240,6 @@ function CategoryAdd() {
       </div>
     </>
   );
-}
+};
 
 export default CategoryAdd;

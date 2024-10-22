@@ -31,7 +31,7 @@ interface ICategory {
   isActive?: boolean;
 }
 
-function CategoryEdit() {
+const CategoryEdit = () => {
   const [formUpdate] = Form.useForm();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { id } = useParams();
@@ -301,6 +301,6 @@ function CategoryEdit() {
       </main>
     </>
   );
-}
+};
 
 export default CategoryEdit;
