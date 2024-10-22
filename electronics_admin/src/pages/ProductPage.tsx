@@ -411,7 +411,7 @@ const ProductPage = () => {
                       )
                     ) : (
                       <tr className="text-gray-700 dark:text-gray-400">
-                        <td colSpan={6} className="text-center py-3">
+                        <td colSpan={7} className="text-center py-3">
                           {keyword != null ||
                           category_id != null ||
                           brand_id != null

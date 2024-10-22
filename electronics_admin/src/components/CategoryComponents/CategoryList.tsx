@@ -216,7 +216,7 @@ const CategoryList = () => {
                                 />
                               )}
                             </td>
-                            <td className='px-4 py-3 text-xs'>{item.order}</td>
+                            <td className='px-4 py-3 text-xs text-center md:w-[100px]'>{item.order}</td>
                             <td className='px-4 py-3'>
                               <div className='flex items-center space-x-4 text-sm'>
                                 <button

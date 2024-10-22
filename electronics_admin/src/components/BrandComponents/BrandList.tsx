@@ -203,7 +203,7 @@ const BrandList = () => {
                             {item.slug}
                           </td>
 
-                          <td className='px-4 py-3 text-sm md:w-[70px] flex justify-start mt-4 '>
+                          <td className='px-4 py-3 text-sm md:w-[100px] flex justify-start mt-4 '>
                             {item.isActive ? (
                               <FaEarthAmericas
                                 className='text-green-500 cursor-pointer m-auto'
@@ -216,7 +216,7 @@ const BrandList = () => {
                               />
                             )}
                           </td>
-                          <td className='px-4 py-3 text-xs truncate'>
+                          <td className='px-4 py-3 text-xs truncate text-center md:w-[100px]'>
                             {item.order}
                           </td>
                           <td className='px-4 py-3'>
