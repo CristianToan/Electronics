@@ -1,4 +1,3 @@
-
 import { Helmet } from "react-helmet-async";
 import { axiosClient } from "../lib/axiosClient";
 import { SETTINGS } from "../constants/settings";
@@ -190,7 +189,7 @@ const ProductEdit = () => {
     queryKey: ["categories"],
     queryFn: fetchCategories,
   });
-  console.log(queryCategories.data?.categories_list);
+  //console.log(queryCategories.data?.categories_list);
   // Get brands
   const fetchBrands = async () => {
     const url = `${SETTINGS.URL_API}/v1/brands`;
@@ -202,7 +201,7 @@ const ProductEdit = () => {
     queryKey: ["brands"],
     queryFn: fetchBrands,
   });
-  console.log(queryBrands.data?.brands_list);
+  //console.log(queryBrands.data?.brands_list);
 
   return (
     <>

@@ -5,7 +5,7 @@ import { TPayloadBrand } from "../types/modes";
 // 1.Get all Brands
 const allBrands = async (query: any) => {
     let objSort: any = {};
-    const sortBy  = query.sort || 'updatedAt'; // Mặc dịnh sắp xếp thep ngày giảm dần
+    const sortBy  = query.sort || 'createdAt'; // Mặc dịnh sắp xếp thep ngày giảm dần
     const orderBy = query.order && query.order == 'ASC' ? 1 : -1
     objSort = { ...objSort,[sortBy]: orderBy }
 

@@ -213,10 +213,10 @@ const ProductPage = () => {
   return (
     <>
       <Helmet>
-        <meta charSet="utf-8" />
+        <meta charSet='utf-8' />
         <title>Electronics - Sản phẩm </title>
-        <link rel="canonical" href={window.location.href} />
-        <meta name="description" content="Sản phẩm" />
+        <link rel='canonical' href={window.location.href} />
+        <meta name='description' content='Sản phẩm' />
       </Helmet>
       <main className="h-full overflow-y-auto">
         <div className="container px-6 mx-auto grid">
