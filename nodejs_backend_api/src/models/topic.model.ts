@@ -34,7 +34,7 @@ const topicSchema = new Schema({
 
 topicSchema.pre("save", function (next) {
   const topic = this;
-  if (topic.topic_name) {
+  if (topic.topic_name && topic.slug == null) {
     topic.slug = buildSlug(topic.topic_name);
   }
   next();

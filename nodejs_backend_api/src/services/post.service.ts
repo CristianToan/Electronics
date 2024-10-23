@@ -14,8 +14,11 @@ const findAll = async (query: any) => {
   if (query.keyword && query.keyword != "") {
     objectFilters = {
       ...objectFilters,
-      topic_name: new RegExp(query.keyword, "i"),
+      post_name: new RegExp(query.keyword, "i"),
     };
+  }
+  if (query.topic_name && query.topic_name != "") {
+    objectFilters = { ...objectFilters, topic_name: query.topic_name };
   }
 
   /* Sắp xếp */
@@ -56,8 +59,8 @@ const findAll = async (query: any) => {
 };
 
 const findById = async (id: string) => {
-  const post = await Post.findById(id, "-__v -id") // có thể liệt kê select vào tham số thứ 2 của hàm
-   
+  const post = await Post.findById(id, "-__v -id"); // có thể liệt kê select vào tham số thứ 2 của hàm
+
   //Check sự tồn tại
   if (!post) {
     throw createError(400, "Product not found");

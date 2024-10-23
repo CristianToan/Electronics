@@ -28,7 +28,7 @@ const postSchema = new mongoose.Schema(
     },
     comments: [
       {
-        user: { type: mongoose.Schema.Types.ObjectId, ref: "Staff" },
+        user: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" },
         comment: { type: String, required: true },
         createdAt: { type: Date, default: Date.now },
       },
@@ -53,11 +53,9 @@ const postSchema = new mongoose.Schema(
   }
 );
 
-
-
 postSchema.pre("save", function (next) {
   const post = this;
-  if (post.post_name) {
+  if (post.post_name && post.slug == null) {
     post.slug = buildSlug(post.post_name);
   }
   next();
