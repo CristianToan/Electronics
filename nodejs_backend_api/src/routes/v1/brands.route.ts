@@ -23,6 +23,4 @@ router.put("/:id", brandsController.updateBrandById);
 
 // 5.delete Brand
 router.delete("/:id", brandsController.deleteBrand);
-
-router.post("/upload", brandsController.uploadBrandImage);
 export default router;

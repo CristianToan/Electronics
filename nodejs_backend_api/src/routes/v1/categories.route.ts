@@ -19,5 +19,4 @@ router.put("/:id", categoriesController.updateCategoryById);
 // // 5.delete Category
 router.delete("/:id", categoriesController.deleteCategory);
 
-router.post("/upload", categoriesController.uploadCategoryImage);
 export default router;

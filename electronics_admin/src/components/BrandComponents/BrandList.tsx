@@ -69,7 +69,7 @@ const BrandList = () => {
   }, [location.state, fetchBrands]);
 
   const getAllBrand = useQuery({
-    queryKey: ["Brands", page, name],
+    queryKey: ["brands", page, name],
     queryFn: fetchBrands,
   });
 
@@ -93,7 +93,7 @@ const BrandList = () => {
     mutationFn: fetchDeleteBrand,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["Brands"],
+        queryKey: ["brands"],
       });
 
       messageApi.open({
