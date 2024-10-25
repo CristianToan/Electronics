@@ -41,8 +41,8 @@ export default function Home() {
               </div>
             </div> */}
             
-            <ProductBlock />
-            <PostBlock />
+            {/* <ProductBlock />
+            <PostBlock /> */}
             
         
             

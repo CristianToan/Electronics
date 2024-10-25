@@ -2,7 +2,7 @@
 const nextConfig = {
     reactStrictMode: true,
     images: {
-      domains: ['cdn.mediamart.vn'],
+      domains: ['cdn.mediamart.vn','localhost'], 
     },
 };
 
