@@ -5,8 +5,11 @@ import DefaultLayouts from "./layouts/DefaultLayouts";
 import { routesPage } from "./routes";
 import LoginPage from "./pages/LoginPage";
 import { HelmetProvider } from "react-helmet-async";
+import { buildSlug } from "./helpers/buildSlug";
 
 const queryClient = new QueryClient();
+
+console.log(buildSlug("Điện thoại 1000"))
 
 function App() {
   return (

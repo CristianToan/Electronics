@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import categoriesService from "../services/categories.service";
 import { sendJsonSuccess } from "../helpers/responseHandler";
-import multer from "multer";
-import path from "path";
 
 // 1.Get all Categories
 const findAllCategory = async (
@@ -71,36 +69,7 @@ const deleteCategory = async (
   sendJsonSuccess(res, "success")(category);
 };
 
-const storage = multer.diskStorage({
-  destination: "src/uploads/",
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
-  },
-});
 
-const upload = multer({ storage });
-
-const uploadCategoryImage = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    upload.single("file")(req, res, async (err) => {
-      const file = req.file as Express.Multer.File;
-      if (!file) {
-        res.status(400).send("No file uploaded");
-      }
-    });
-
-    sendJsonSuccess(res, "success");
-  } catch (error) {
-    next(error);
-  }
-};
 
 export default {
   findAllCategory,
@@ -108,5 +77,4 @@ export default {
   createCategory,
   updateCategoryById,
   deleteCategory,
-  uploadCategoryImage,
 };

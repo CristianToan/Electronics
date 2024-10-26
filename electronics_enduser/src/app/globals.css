@@ -100,6 +100,10 @@ body #wpwidget img.chat-button--img {
   width: auto;
   max-width: 100% !important;
 }
+.brand-slider__item a img{
+  height: 80px;
+  object-fit: contain;
+}
 @media (min-width: 992px) {
   .navbar-expand-lg .navbar-collapse {
     display: -ms-flexbox !important;

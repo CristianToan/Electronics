@@ -11,7 +11,11 @@ const vietnameseCharMap: { [key: string]: string } = {
 }
 
 const removeVietnameseChars = (str: string): string => {
-  return str.replace(/[^\u0020-\u007E]/g, char => vietnameseCharMap[char] || char)
+  return str
+    .toLowerCase()
+    .split('')
+    .map(char => vietnameseCharMap[char] || char)
+    .join('');
 }
 
 export const buildSlug = (str: string): string => {

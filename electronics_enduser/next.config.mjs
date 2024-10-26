@@ -2,7 +2,18 @@
 const nextConfig = {
     reactStrictMode: true,
     images: {
-      domains: ['cdn.mediamart.vn'],
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'cdn.mediamart.vn',
+          pathname: '**',
+        },
+        {
+          protocol: 'http',
+          hostname: 'localhost',
+          pathname: '**',
+        }
+      ],
     },
 };
 

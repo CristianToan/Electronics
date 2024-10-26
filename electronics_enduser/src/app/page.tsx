@@ -1,6 +1,8 @@
 import BannerHome from "@/components/BannerHome";
+import BrandHome from "@/components/BrandHome";
 import PostBlock from "@/components/PostBlock";
 import ProductBlock from "@/components/ProductBlock";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
@@ -8,10 +10,12 @@ export default function Home() {
       <div className="body-content bg-page">
         <div className="container">
           <div className="page-home">
-            <BannerHome />
+            <Suspense fallback={<p>Loading feed...</p>}>
+              <BannerHome />
+              </Suspense>
             {/* <div className="row">
               <div className="col-12">
-                <div className="boxbanner-64" />
+                <div className="boxbanner-64" />  
               </div>
             </div>
             <div className="row">
@@ -40,7 +44,7 @@ export default function Home() {
                 </div>
               </div>
             </div> */}
-            
+            <BrandHome />
             <ProductBlock />
             <PostBlock />
             

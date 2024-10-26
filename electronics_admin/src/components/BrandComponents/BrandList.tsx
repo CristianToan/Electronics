@@ -186,7 +186,7 @@ const BrandList = () => {
                             ) : (
                               <img
                                 className='w-[40px] h-[40px] object-cover'
-                                src='/images/noImage.jpg'
+                                src='/images/noimage.jpg'
                                 alt={item.logo_url}
                               />
                             )}
