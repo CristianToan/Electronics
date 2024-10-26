@@ -78,7 +78,7 @@ const BrandHome =  () => {
                                     <div className="brand-slider__item">
                                         <Link href= {`/${brand.slug}`} >
                                             <Image
-                                                src = {brand.logo_url && brand.logo_url !== 'undefind' ? `${SETTINGS.URL_IMAGE}/${brand.logo_url}` : noImage }
+                                                src = {brand.logo_url && brand.logo_url !== 'undefined' ? `${SETTINGS.URL_IMAGE}/${brand.logo_url}` : noImage }
                                                 alt = { brand.brand_name }
                                                 width={560}
                                                 height={160}
