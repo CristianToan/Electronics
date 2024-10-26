@@ -2,7 +2,6 @@ import BannerHome from "@/components/BannerHome";
 import BrandHome from "@/components/BrandHome";
 import PostBlock from "@/components/PostBlock";
 import ProductBlock from "@/components/ProductBlock";
-import { Suspense } from "react";
 
 export default function Home() {
   return (
@@ -10,9 +9,7 @@ export default function Home() {
       <div className="body-content bg-page">
         <div className="container">
           <div className="page-home">
-            <Suspense fallback={<p>Loading feed...</p>}>
-              <BannerHome />
-              </Suspense>
+            <BannerHome />
             {/* <div className="row">
               <div className="col-12">
                 <div className="boxbanner-64" />  
