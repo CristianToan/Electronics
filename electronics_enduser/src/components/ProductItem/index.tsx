@@ -1,22 +1,18 @@
+"use client";
+import { formatToVND } from "@/helpers/numbersToCurrency";
 import Image from "next/image";
 import React from "react";
 
 const ProductItem = ({
+  thumbnail,
   discount,
   product_name,
   price,
-  product_attributes = {
-    phan_giai: "4K",
-    man_hinh: "55inch",
-  },
 }: {
+  thumbnail: string;
   discount?: number;
   product_name?: string;
   price?: number;
-  product_attributes?: {
-    phan_giai: string;
-    man_hinh: string;
-  };
 }) => {
   return (
     <div className='card item mb-4'>
@@ -44,7 +40,7 @@ const ProductItem = ({
           </span>
 
           <Image
-            src='https://cdn.mediamart.vn/thumb/images/product/smart-tivi-samsung-4k-55-inch-55au7700-uhd_81068dbe.jpg'
+            src={`http://localhost:8080/${thumbnail}`}
             width={300}
             height={300}
             alt='Smart Tivi Samsung 4K 55 inch 55AU7700 UHD'
@@ -54,21 +50,18 @@ const ProductItem = ({
         <div className='card-body flex flex-col'>
           <p className='product-specialtype-box'>
             <Image
-              src='https://cdn.mediamart.vn/images/catalog/2010_d503c72b.png'
-              width={100}
+              src='https://cf.shopee.vn/file/5c61cd4e3877f2b709295cd2ba6800d7'
+              width={200}
               height={100}
               alt='Khuyến mại'
               priority
             />
-            <span>{discount}%</span>
+            <span className=''>{discount}%</span>
           </p>
           <p className='card-title product-name'>{product_name}</p>
-          <ul className='list-inline product-attributes'>
-            <li>{product_attributes.phan_giai}</li>
-            <li>{product_attributes.man_hinh}</li>
-          </ul>
+          <ul className='list-inline product-attributes'></ul>
           <p className='product-price-regular'>
-            <span>{price} ₫</span>
+            <span>{price && formatToVND(price)}</span>
           </p>
           <p className='card-text product-price'>9.990.000 ₫</p>
         </div>

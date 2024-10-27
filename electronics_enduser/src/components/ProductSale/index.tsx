@@ -61,15 +61,11 @@ const ProductSale = () => {
       const res = await fetch(`${SETTINGS.URL_API}/v1/products`);
       const data = await res.json();
 
-      console.log(data.data);
-
       setProducts(data.data);
     };
 
     fetchData();
   }, []);
-
-  console.log(products);
   return (
     <div className='row'>
       <div className='col-12'>
@@ -160,6 +156,7 @@ const ProductSale = () => {
                 return (
                   <SwiperSlide key={i}>
                     <ProductItem
+                      thumbnail={item.thumbnail}
                       discount={item.discount}
                       product_name={item.product_name}
                       price={item.price}
