@@ -2,19 +2,12 @@
 import React, { useEffect, useState } from "react";
 import ProductBox from "../ProductBox";
 import { SETTINGS } from "@/constants/settings";
+import { TProductsCat } from "@/types/TProductsCat";
 
 interface TData {
   categories_list: TProductsCat[];
 }
 
-interface TProductsCat {
-  _id?: string;
-  category_name: string;
-  description: string;
-  slug: string;
-  order: number;
-  isActive: boolean;
-}
 const ProductCat = () => {
   const [productsCat, setProductsCat] = useState<TData | null>(null);
   useEffect(() => {
