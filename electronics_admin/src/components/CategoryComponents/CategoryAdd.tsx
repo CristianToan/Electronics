@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { SETTINGS } from "../../constants/settings";
 import axios from "axios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Form,
@@ -33,7 +33,7 @@ const CategoryAdd = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-
+  const queryClient = useQueryClient();
   const fetchAddCategory = async (payload: ICategory) => {
     const url = `${SETTINGS.URL_API}/v1/categories`;
     const res = await axiosClient.post(url, payload);
@@ -85,9 +85,13 @@ const CategoryAdd = () => {
     mutationFn: fetchAddCategory,
     onSuccess: () => {
       //Clear data form
+
       formCreate.resetFields();
       setFileList([]);
-      navigate("/category", { state: { reload: true } });
+      navigate("/category?msg=success", { state: { reload: true } });
+      queryClient.invalidateQueries({
+        queryKey: ["categories"],
+      });
       messageApi.open({
         type: "success",
         content: "Thêm danh mục thành công!",

@@ -7,6 +7,8 @@ const router = express.Router();
 // 1.Get all Brands
 router.get("", brandsController.allBrands);
 
+router.get("/slug/:slug", brandsController.findBrandBySlug);
+
 router.use(authenticateToken)
 
 // 2.Find Brand By Id

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SETTINGS } from "../../constants/settings";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Form,
@@ -33,7 +33,7 @@ const BrandAdd = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-
+  const queryClient = useQueryClient();
   const fetchAddBrand = async (payload: IBrand) => {
     const url = `${SETTINGS.URL_API}/v1/brands`;
     const res = await axiosClient.post(url, payload);
@@ -87,7 +87,10 @@ const BrandAdd = () => {
       // Clear form
       formCreate.resetFields();
       setFileList([]);
-      navigate("/brand", { state: { reload: true } });
+      navigate("/brand?msg=success", { state: { reload: true } });
+      queryClient.invalidateQueries({
+        queryKey: ["brands"],
+      });
       messageApi.open({
         type: "success",
         content: "Thêm thương hiệu thành công",

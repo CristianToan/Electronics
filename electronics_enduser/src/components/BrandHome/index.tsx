@@ -76,7 +76,7 @@ const BrandHome =  () => {
                             return(
                                 <SwiperSlide key= {`sl_brand_${index}`} >
                                     <div className="brand-slider__item">
-                                        <Link href= {`/${brand.slug}`} >
+                                        <Link href= {`/brands/${brand.slug}`} >
                                             <Image
                                                 src = {brand.logo_url && brand.logo_url !== 'undefined' ? `${SETTINGS.URL_IMAGE}/${brand.logo_url}` : noImage }
                                                 alt = { brand.brand_name }

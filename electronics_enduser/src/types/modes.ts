@@ -5,3 +5,8 @@ export type TBrand = {
     logo_url: string;
     isActive: boolean;
 }
+
+export type TProduct = {
+    _id: string;
+    product_name: string;
+}

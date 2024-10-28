@@ -29,6 +29,19 @@ const findCategoryById = async (
     next(error);
   }
 };
+
+// Find Category By Slug
+
+const findCategoryBySlug = async (req: Request,res: Response,next: NextFunction) => {
+  try {
+    const { slug } = req.params;
+    const brand = await categoriesService.findCategoryBySlug(slug);
+    return sendJsonSuccess(res, "success")(brand);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // 3. Create Category
 const createCategory = async (
   req: Request,
@@ -74,6 +87,7 @@ const deleteCategory = async (
 export default {
   findAllCategory,
   findCategoryById,
+  findCategoryBySlug,
   createCategory,
   updateCategoryById,
   deleteCategory,

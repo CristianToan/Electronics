@@ -4,6 +4,8 @@ import { authenticateToken } from "../../middlewares/auth.middleware";
 
 const router = express.Router();
 
+router.get("/slug/:slug", categoriesController.findCategoryBySlug);
+
 router.use(authenticateToken)
 
 //1. Get All Categories

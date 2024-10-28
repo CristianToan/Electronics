@@ -5,7 +5,6 @@ const brandSchema = new Schema({
     brand_name : {
         type: String,
         require: true, //mặc định là true, nếu ko liệt kê vào
-        minLength: [4, "Tên danh mục tối thiểu phải 4 ký tự"],
         maxLength: 50, // tối đa 50 ký tự
         unique: true, // chống trùng lặp tên danh mục
         trim: true, // tự động cắt ký tự trắng trước/sau

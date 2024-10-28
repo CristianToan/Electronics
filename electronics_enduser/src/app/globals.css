@@ -12,6 +12,7 @@
 @import "@/styles/m_news_fcp.css";
 @import "@/styles/m_report.css";
 @import "@/styles/p_home.css";
+@import "@/styles/p_product.css";
 
 /*Default Row Col*/
 .container-df {
@@ -111,7 +112,7 @@ body #wpwidget img.chat-button--img {
     -ms-flex-preferred-size: auto;
     flex-basis: auto;
   }
-  .collapse {
+  .collapse.show {
     visibility: visible;
   }
 }

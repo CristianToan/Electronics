@@ -16,20 +16,20 @@ function App() {
     <>
 		<QueryClientProvider client={queryClient}>
 			<HelmetProvider>
-			<BrowserRouter>
-				<Routes>
-					<Route path='/' element= { <DefaultLayouts />}>
-						{routesPage.map((route, index) => (
-							<Route 
-							key={index}
-							path={route.path}
-							element={route.element} 
-							index={route.exact ? true : undefined}
-							/>
-						))}
-					</Route>
-					<Route path='/login' element= { <LoginPage />} />
-				</Routes>
+				<BrowserRouter>
+					<Routes>
+						<Route path='/' element= { <DefaultLayouts />}>
+							{routesPage.map((route, index) => (
+								<Route 
+								key={index}
+								path={route.path}
+								element={route.element} 
+								index={route.exact ? true : undefined}
+								/>
+							))}
+						</Route>
+						<Route path='/login' element= { <LoginPage />} />
+					</Routes>
 				</BrowserRouter>
 			</HelmetProvider>
 		</QueryClientProvider>

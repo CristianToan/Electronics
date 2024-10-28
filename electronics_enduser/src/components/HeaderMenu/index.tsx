@@ -1,12 +1,25 @@
 'use client'
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 const HeaderMenu = () => {
+    const pathname = usePathname();
+    const [isNavbarVisible, setIsNavbarVisible] = useState(false);
     const [ isShowCat, setIsShowCat] = useState(false)
     const toggleShowCat = () => {
         setIsShowCat(!isShowCat)
     }
+
+    useEffect(() => {
+        if (pathname === '/') {
+          setIsNavbarVisible(true);
+        } else {
+          setIsNavbarVisible(false);
+        }
+    }, [pathname]);
+    
 
     return (
         <div className="bgheader-menu">
@@ -29,7 +42,7 @@ const HeaderMenu = () => {
                                     <b>Danh Mục<span> Sản Phẩm</span></b>
                                     <i></i>
                                 </button>
-                                <div className={`navbar-collapse navbar-lg collapse ${isShowCat ? ('show') : '' }`} id="navbarMain">
+                                <div className={`navbar-collapse navbar-lg collapse ${isShowCat || isNavbarVisible ? ('show') : '' }`} id="navbarMain">
                                     <ul className="navbar-nav">
                                         <li className="nav-item dropdown">
                                             <span className="nav-link dropdown-toggle" data-toggle="dropdown">
@@ -3672,10 +3685,10 @@ const HeaderMenu = () => {
                         <div className="box-nav-promotion">
                             <ul className="list-unstyled">
                                 <li className="v-menu-item">
-                                    <a data-id={779} href="/tivi" title="Tivi">
-                                        <span>Tivi</span>
+                                    <Link href="/products" title="Tivi">
+                                        <span>Sản phẩm</span>
                                         <span className="menu-item-view menu-item-view-779" style={{ display: 'none' }}></span>
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="v-menu-item">
                                     <a data-id={780} href="/tu-lanh" title="Tủ lạnh">
