@@ -18,26 +18,17 @@ export interface TProducts {
   order: number;
   isBest: {
     type: boolean;
-    require: false;
-    default: false;
   };
   isRecentlyAdded: {
     type: boolean;
-    require: false;
-    default: false;
   };
   isShowHome: {
     type: boolean;
-    require: false;
-    default: false;
   };
   isDelete: {
     type: boolean;
-    require: false;
-    default: false;
   };
   specifications: {
     type: string;
-    require: false;
   };
 }

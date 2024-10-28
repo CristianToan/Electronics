@@ -66,25 +66,28 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
               navigation
             >
               {/* Giả lập có dữ liệ khi map, gọi API thì xóa  */}
-              {products?.products_list.map((item) => {
-                if (dataCategory?._id === item.category?._id)
-                  return (
-                    <SwiperSlide key={item._id}>
-                      <ProductItem
-                        thumbnail={item.thumbnail}
-                        discount={item.discount}
-                        product_name={item.product_name}
-                        price={item.price}
-                      />
-                    </SwiperSlide>
-                  );
-              })}
+              {products?.products_list
+                .sort((a, b) => a.order - b.order)
+                .map((item) => {
+                  if (
+                    dataCategory?._id === item.category?._id &&
+                    item.isShowHome
+                  ) {
+                    return (
+                      <SwiperSlide key={item._id}>
+                        <ProductItem
+                          thumbnail={item.thumbnail}
+                          discount={item.discount}
+                          product_name={item.product_name}
+                          price={item.price}
+                        />
+                      </SwiperSlide>
+                    );
+                  }
+                })}
             </Swiper>
 
-            <a
-              className='viewmore viewmorecate'
-              href={SETTINGS.URL_enduser + `/${dataCategory.slug}`}
-            >
+            <a className='viewmore viewmorecate' href={`/${dataCategory.slug}`}>
               <span>Xem tất cả {dataCategory?.category_name}</span>
             </a>
           </div>

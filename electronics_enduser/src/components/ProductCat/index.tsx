@@ -13,7 +13,7 @@ const ProductCat = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`${SETTINGS.URL_API}/v1/categories`);
+        const res = await fetch(`${SETTINGS.URL_API}/v1/categories?limit=4`);
         const data = await res.json();
 
         setProductsCat(data.data);
@@ -28,18 +28,13 @@ const ProductCat = () => {
     <div className='row'>
       <div className='col-12'>
         {/* Giả lập dũ liệu, khi gọi API thì xóa */}
-        {productsCat?.categories_list
-          .map((item) => {
-            return (
-              item.isActive == true && (
-                <ProductBox
-                  key={`product_cat_${item._id}`}
-                  dataCategory={item}
-                />
-              )
-            );
-          })
-          .slice(0, 4)}
+        {productsCat?.categories_list.map((item) => {
+          return (
+            item.isActive == true && (
+              <ProductBox key={`product_cat_${item._id}`} dataCategory={item} />
+            )
+          );
+        })}
       </div>
     </div>
   );

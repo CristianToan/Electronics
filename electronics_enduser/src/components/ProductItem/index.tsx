@@ -1,4 +1,5 @@
 "use client";
+import { SETTINGS } from "@/constants/settings";
 import { formatToVND } from "@/helpers/numbersToCurrency";
 import Image from "next/image";
 import React from "react";
@@ -8,42 +9,23 @@ const ProductItem = ({
   discount = 0,
   product_name,
   price,
+  slug,
 }: {
   thumbnail: string;
   discount?: number;
   product_name?: string;
   price?: number;
+  slug?: string;
 }) => {
   return (
     <div className='card item mb-4'>
-      <a
-        href='/tivi/smart-tivi-samsung-4k-55-inch-55au7700-uhd'
-        className='product-item'
-      >
+      <a href={`products/${slug}`} className='product-item'>
         <div className='card-img-top'>
-          <span
-            className='product-type product-type-11'
-            style={{
-              display: "block",
-              position: "absolute",
-              right: 6,
-              top: 8,
-              fontSize: 11,
-              zIndex: 3,
-              backgroundColor: "#f1f1f1",
-              color: "#333",
-              padding: "2px 5px",
-              borderRadius: 3,
-            }}
-          >
-            Trả góp 0%
-          </span>
-
           <Image
-            src={`http://localhost:8080/${thumbnail}`}
+            src={SETTINGS.URL_IMAGE + "/" + thumbnail}
             width={300}
             height={300}
-            alt='Smart Tivi Samsung 4K 55 inch 55AU7700 UHD'
+            alt={String(product_name)}
             priority
           />
         </div>
