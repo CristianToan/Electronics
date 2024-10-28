@@ -5,7 +5,7 @@ import React from "react";
 
 const ProductItem = ({
   thumbnail,
-  discount,
+  discount = 0,
   product_name,
   price,
 }: {
@@ -63,7 +63,9 @@ const ProductItem = ({
           <p className='product-price-regular'>
             <span>{price && formatToVND(price)}</span>
           </p>
-          <p className='card-text product-price'>9.990.000 ₫</p>
+          <p className='card-text product-price'>
+            {price && formatToVND((price / 100) * (100 - discount))}
+          </p>
         </div>
       </a>
     </div>

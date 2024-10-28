@@ -15,10 +15,14 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
   const [products, setProducts] = useState<TData | null>(null);
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`${SETTINGS.URL_API}/v1/products`);
-      const data = await res.json();
+      try {
+        const res = await fetch(`${SETTINGS.URL_API}/v1/products`);
+        const data = await res.json();
 
-      setProducts(data.data);
+        setProducts(data.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     fetchData();
@@ -77,8 +81,11 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
               })}
             </Swiper>
 
-            <a className='viewmore viewmorecate' href='/dien-lanh'>
-              <span>Xem tất cả Điện lạnh</span>
+            <a
+              className='viewmore viewmorecate'
+              href={SETTINGS.URL_enduser + `/${dataCategory.slug}`}
+            >
+              <span>Xem tất cả {dataCategory?.category_name}</span>
             </a>
           </div>
         </div>

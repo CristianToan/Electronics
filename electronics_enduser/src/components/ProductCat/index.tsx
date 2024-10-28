@@ -24,9 +24,18 @@ const ProductCat = () => {
     <div className='row'>
       <div className='col-12'>
         {/* Giả lập dũ liệu, khi gọi API thì xóa */}
-        {productsCat?.categories_list.map((item) => {
-          return <ProductBox key={item._id} dataCategory={item} />;
-        })}
+        {productsCat?.categories_list
+          .map((item) => {
+            return (
+              item.isActive == true && (
+                <ProductBox
+                  key={`product_cat_${item._id}`}
+                  dataCategory={item}
+                />
+              )
+            );
+          })
+          .slice(0, 4)}
       </div>
     </div>
   );

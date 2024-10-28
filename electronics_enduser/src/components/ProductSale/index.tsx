@@ -16,10 +16,14 @@ const ProductSale = () => {
   //Sau 60 giây thì API sẽ đc gọi lại để làm tươi dữ liệu
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`${SETTINGS.URL_API}/v1/products`);
-      const data = await res.json();
+      try {
+        const res = await fetch(`${SETTINGS.URL_API}/v1/products`);
+        const data = await res.json();
 
-      setProducts(data.data);
+        setProducts(data.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     fetchData();
