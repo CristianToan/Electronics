@@ -13,7 +13,9 @@ const ProductCat = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`${SETTINGS.URL_API}/v1/categories?limit=4`);
+        const res = await fetch(
+          `${SETTINGS.URL_API}/v1/categories?limit=4&sort=order&order=ASC`
+        );
         const data = await res.json();
 
         setProductsCat(data.data);

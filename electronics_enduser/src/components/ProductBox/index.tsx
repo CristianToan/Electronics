@@ -7,19 +7,24 @@ import ProductItem from "../ProductItem";
 import { SETTINGS } from "@/constants/settings";
 import { TProducts } from "@/types/TProducts";
 import { TProductsCat } from "@/types/TProductsCat";
-interface TData {
-  products_list: TProducts[];
-}
-
+import Skeleton from "react-loading-skeleton";
 const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
-  const [products, setProducts] = useState<TData | null>(null);
+  const [products, setProducts] = useState<TProducts[] | []>([]);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
-        const res = await fetch(`${SETTINGS.URL_API}/v1/products`);
+        const res = await fetch(
+          `${SETTINGS.URL_API}/v1/products?sort=order&order=ASC`
+        );
         const data = await res.json();
-
-        setProducts(data.data);
+        const productsPublic = data.data.products_list.filter(
+          (item: { isShowHome: boolean }) => item.isShowHome == true
+        );
+        setProducts(productsPublic);
+        setIsLoading(false);
+        console.log(products);
       } catch (error) {
         console.log(error);
       }
@@ -65,30 +70,36 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
               }}
               navigation
             >
-              {/* Giả lập có dữ liệ khi map, gọi API thì xóa  */}
-              {products?.products_list
-                .sort((a, b) => a.order - b.order)
-                .map((item) => {
-                  if (
-                    dataCategory?._id === item.category?._id &&
-                    item.isShowHome
-                  ) {
-                    return (
-                      <SwiperSlide key={item._id}>
-                        <ProductItem
-                          thumbnail={item.thumbnail}
-                          discount={item.discount}
-                          product_name={item.product_name}
-                          price={item.price}
-                        />
-                      </SwiperSlide>
-                    );
-                  }
-                })}
+              {isLoading
+                ? Array.from({ length: 20 }).map((_, index) => (
+                    <SwiperSlide key={`sl_brand_${index}`}>
+                      <div className='brand-slider__item'>
+                        <Skeleton height={160} width={560} />
+                      </div>
+                    </SwiperSlide>
+                  ))
+                : products && products.length > 0
+                ? products?.map((item) => {
+                    if (dataCategory?._id === item.category?._id)
+                      return (
+                        <SwiperSlide key={item._id}>
+                          <ProductItem
+                            thumbnail={item.thumbnail}
+                            discount={item.discount}
+                            product_name={item.product_name}
+                            price={item.price}
+                          />
+                        </SwiperSlide>
+                      );
+                  })
+                : null}
             </Swiper>
 
-            <a className='viewmore viewmorecate' href={`/${dataCategory.slug}`}>
-              <span>Xem tất cả {dataCategory?.category_name}</span>
+            <a
+              className='viewmore viewmorecate'
+              href={`/${dataCategory?.slug}`}
+            >
+              <span>Xem tất cả {dataCategory?.slug}</span>
             </a>
           </div>
         </div>

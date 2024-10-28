@@ -17,7 +17,9 @@ const ProductSale = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`${SETTINGS.URL_API}/v1/products`);
+        const res = await fetch(
+          `${SETTINGS.URL_API}/v1/products?sort=order&order=ASC`
+        );
         const data = await res.json();
 
         setProducts(data.data);
@@ -114,21 +116,19 @@ const ProductSale = () => {
           >
             {products &&
               products.products_list.length > 0 &&
-              products.products_list
-                .sort((a, b) => a.order - b.order)
-                .map((item: TProducts, i: number) => {
-                  if (item.isShowHome)
-                    return (
-                      <SwiperSlide key={i}>
-                        <ProductItem
-                          thumbnail={item.thumbnail}
-                          discount={item.discount}
-                          product_name={item.product_name}
-                          price={item.price}
-                        />
-                      </SwiperSlide>
-                    );
-                })}
+              products.products_list.map((item: TProducts, i: number) => {
+                if (item.isShowHome)
+                  return (
+                    <SwiperSlide key={i}>
+                      <ProductItem
+                        thumbnail={item.thumbnail}
+                        discount={item.discount}
+                        product_name={item.product_name}
+                        price={item.price}
+                      />
+                    </SwiperSlide>
+                  );
+              })}
           </Swiper>
         </div>
       </div>
