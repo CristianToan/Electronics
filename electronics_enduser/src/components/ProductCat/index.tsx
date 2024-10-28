@@ -12,10 +12,14 @@ const ProductCat = () => {
   const [productsCat, setProductsCat] = useState<TData | null>(null);
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`${SETTINGS.URL_API}/v1/categories`);
-      const data = await res.json();
+      try {
+        const res = await fetch(`${SETTINGS.URL_API}/v1/categories`);
+        const data = await res.json();
 
-      setProductsCat(data.data);
+        setProductsCat(data.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     fetchData();
