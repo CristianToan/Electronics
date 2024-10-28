@@ -274,7 +274,7 @@ const BrandEdit = () => {
                       getBrandById.data?.logo_url &&
                       getBrandById.data?.logo_url !== null
                         ? `${SETTINGS.URL_IMAGE}/${getBrandById.data?.logo_url}`
-                        : `/images/noImage.jpg`
+                        : `/images/noimage.jpg`
                     }
                     alt={getBrandById.data?.logo_url}
                   />

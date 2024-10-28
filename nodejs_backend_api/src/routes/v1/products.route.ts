@@ -1,7 +1,15 @@
 import express from 'express'
 import productsController from '../../controllers/products.controller';
+import { authenticateToken } from '../../middlewares/auth.middleware';
 
 const router = express.Router();
+
+//========== API PUBLIC ======//
+
+router.get('/brand/:slug',productsController.getAllByBrandSlug)
+router.get('/category/:slug',productsController.getAllByCategorySlug)
+
+router.use(authenticateToken)
 /**
  * Get ALl Products
  * GET /api/v1/products

@@ -1,6 +1,102 @@
 import Product from '../models/products.model'
 import createError from 'http-errors'
 
+
+// Lấy sản phẩm theo thương hiệu
+const getAllByBrandSlug = async (slug: string, query: any) =>{
+    /* Phân trang */
+    const page_str = query.page;
+    const limit_str = query.limit;
+
+    const page = page_str ? parseInt(page_str as string) : 1;
+    const limit = limit_str ? parseInt(limit_str as string) : 10;
+
+    /* Sắp xếp */
+    let objSort: any = {};
+    const sortBy = query.sort || 'createdAt'; // Mặc định sắp xếp theo ngày tạo giảm dần
+    const orderBy = query.order && query.order == 'ASC' ? 1 : -1
+    objSort = { ...objSort, [sortBy]: orderBy } // Thêm phần tử sắp xếp động vào object {}
+
+    const offset = (page - 1) * limit;
+
+    const productsAll = await Product
+    .find()
+    .populate({
+        path: 'brand',
+        select: 'brand_name',
+        match: {
+            slug: slug
+        }
+    })
+    .populate('category', 'category_name')
+    .sort(objSort)
+
+    const products = productsAll.filter(b => b.brand);
+
+    const paginatedProducts = products.slice(offset, offset + limit);
+
+    const totalRecords = products.length;
+    
+    return {
+        products_list: paginatedProducts,
+        sorts: objSort,
+        pagination: {
+            page,
+            limit,
+            totalPages: Math.ceil(products.length / limit), //tổng số trang
+            totalRecords
+        }
+    }
+}
+
+// Lấy sản phẩm theo danh mục
+const getAllByCategorySlug = async (slug: string, query: any) =>{
+    /* Phân trang */
+    const page_str = query.page;
+    const limit_str = query.limit;
+
+    const page = page_str ? parseInt(page_str as string) : 1;
+    const limit = limit_str ? parseInt(limit_str as string) : 10;
+
+    /* Sắp xếp */
+    let objSort: any = {};
+    const sortBy = query.sort || 'createdAt'; // Mặc định sắp xếp theo ngày tạo giảm dần
+    const orderBy = query.order && query.order == 'ASC' ? 1 : -1
+    objSort = { ...objSort, [sortBy]: orderBy } // Thêm phần tử sắp xếp động vào object {}
+
+    const offset = (page - 1) * limit;
+
+    const productsAll = await Product
+    .find()
+    .populate({
+        path: 'category',
+        select: 'category_name',
+        match: {
+            slug: slug
+        }
+    })
+    .populate('brand', 'brand_name')
+    .sort(objSort)
+
+    const products = productsAll.filter(c => c.category);
+
+    const paginatedProducts = products.slice(offset, offset + limit);
+
+    const totalRecords = products.length;
+    
+    return {
+        products_list: paginatedProducts,
+        sorts: objSort,
+        pagination: {
+            page,
+            limit,
+            totalPages: Math.ceil(products.length / limit), //tổng số trang
+            totalRecords
+        }
+    }
+}
+
+
 /* get All Products */
 const findAllProduct = async (query: any) => {
     /* Phân trang */
@@ -52,8 +148,7 @@ const findAllProduct = async (query: any) => {
         .sort(objSort)
         .skip(offset)
         .limit(limit)
-        .lean({ virtuals: true })
-        ;
+        .lean({ virtuals: true });
 
     return {
         products_list: products,
@@ -125,6 +220,8 @@ const deleteProductById = async (id: string) => {
     return product
 }
 export default {
+    getAllByBrandSlug,
+    getAllByCategorySlug,
     findAllProduct,
     findOneProductId,
     createNewProduct,

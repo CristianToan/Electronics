@@ -54,6 +54,17 @@ const findBrandById = async(id: string)=>{
     return brand
 }
 
+//  Find Brand by slug
+const findBrandBySlug = async(slug: string)=>{
+    const brand = await Brand.findOne({
+        slug: slug
+    })
+    if(!brand){
+        throw createError(400, 'Brand Not Found')
+    }
+    return brand
+}
+
 // 3. Create new brand
 const createBrandRecord = async(payload: TPayloadBrand) =>{
     const brand = await Brand.create(payload)
@@ -78,6 +89,7 @@ const deleteBrand = async(id: string) =>{
 export default {
     allBrands,
     findBrandById,
+    findBrandBySlug,
     createBrandRecord,
     updateBrand,
     deleteBrand

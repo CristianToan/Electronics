@@ -61,6 +61,19 @@ const findCategoryById = async (id: string) => {
   }
   return category;
 };
+
+//  Find Category by slug
+const findCategoryBySlug = async(slug: string)=>{
+  const category = await Category.findOne({
+      slug: slug
+  })
+  if(!category){
+      throw createError(400, 'Category Not Found')
+  }
+  return category
+}
+
+
 // 3. Create new category
 const createRecord = async (payload: TPayloadCategory) => {
   const category = await Category.create(payload);
@@ -88,6 +101,7 @@ const deleteCategory = async (id: string) => {
 export default {
   findAllCategory,
   findCategoryById,
+  findCategoryBySlug,
   createRecord,
   updateCategory,
   deleteCategory,

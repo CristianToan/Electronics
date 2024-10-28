@@ -69,7 +69,7 @@ const BrandList = () => {
   }, [location.state, fetchBrands]);
 
   const getAllBrand = useQuery({
-    queryKey: ["Brands", page, name],
+    queryKey: ["brands", page, name],
     queryFn: fetchBrands,
   });
 
@@ -93,7 +93,7 @@ const BrandList = () => {
     mutationFn: fetchDeleteBrand,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["Brands"],
+        queryKey: ["brands"],
       });
 
       messageApi.open({
@@ -186,7 +186,7 @@ const BrandList = () => {
                             ) : (
                               <img
                                 className='w-[40px] h-[40px] object-cover'
-                                src='/images/noImage.jpg'
+                                src='/images/noimage.jpg'
                                 alt={item.logo_url}
                               />
                             )}
