@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Autoplay, Navigation } from "swiper/modules";
 import ProductBanner from "../ProductBanner";
 import ProductItem from "../ProductItem";
 import { SETTINGS } from "@/constants/settings";
@@ -24,7 +24,6 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
         );
         setProducts(productsPublic);
         setIsLoading(false);
-        console.log(products);
       } catch (error) {
         console.log(error);
       }
@@ -49,11 +48,15 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
             <ProductBanner />
 
             <Swiper
-              className='product-list pList-olw'
-              modules={[Navigation]}
-              spaceBetween={0}
-              slidesPerView={5}
-              loop={true}
+              className='product-slider my-4'
+              modules={[Navigation, Autoplay]}
+              spaceBetween={3}
+              slidesPerView={4}
+              loop={false}
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+              }}
               breakpoints={{
                 1200: {
                   slidesPerView: 5,
@@ -61,14 +64,16 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
                 1024: {
                   slidesPerView: 4,
                 },
-                768: {
+                992: {
                   slidesPerView: 3,
                 },
-                0: {
+                768: {
                   slidesPerView: 2,
                 },
+                0: {
+                  slidesPerView: 1,
+                },
               }}
-              navigation
             >
               {isLoading
                 ? Array.from({ length: 20 }).map((_, index) => (

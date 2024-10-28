@@ -2,27 +2,29 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Autoplay, Navigation } from "swiper/modules";
 import ProductItem from "../ProductItem";
 import { SETTINGS } from "@/constants/settings";
 import { TProducts } from "@/types/TProducts";
-
-interface TData {
-  products_list: TProducts[];
-}
+import Skeleton from "react-loading-skeleton";
 
 const ProductSale = () => {
-  const [products, setProducts] = useState<TData | null>(null);
+  const [products, setProducts] = useState<TProducts[] | []>([]);
+  const [isLoading, setIsLoading] = useState(false);
   //Sau 60 giây thì API sẽ đc gọi lại để làm tươi dữ liệu
   useEffect(() => {
+    setIsLoading(true);
     const fetchData = async () => {
       try {
         const res = await fetch(
           `${SETTINGS.URL_API}/v1/products?sort=order&order=ASC`
         );
         const data = await res.json();
-
-        setProducts(data.data);
+        const productsPublic = data.data.products_list.filter(
+          (item: { isShowHome: boolean }) => item.isShowHome == true
+        );
+        setProducts(productsPublic);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -93,11 +95,15 @@ const ProductSale = () => {
           </div>
 
           <Swiper
-            className='product-list'
-            modules={[Navigation]}
+            className='product-slider my-4'
+            modules={[Navigation, Autoplay]}
             spaceBetween={3}
-            slidesPerView={5}
-            loop={true}
+            slidesPerView={4}
+            loop={false}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
             breakpoints={{
               1200: {
                 slidesPerView: 5,
@@ -105,21 +111,29 @@ const ProductSale = () => {
               1024: {
                 slidesPerView: 4,
               },
-              768: {
+              992: {
                 slidesPerView: 3,
               },
-              0: {
+              768: {
                 slidesPerView: 2,
               },
+              0: {
+                slidesPerView: 1,
+              },
             }}
-            navigation
           >
-            {products &&
-              products.products_list.length > 0 &&
-              products.products_list.map((item: TProducts, i: number) => {
-                if (item.isShowHome)
+            {isLoading
+              ? Array.from({ length: 20 }).map((_, index) => (
+                  <SwiperSlide key={`sl_product_${index}`}>
+                    <div className='product-slider__item'>
+                      <Skeleton height={160} width={560} />
+                    </div>
+                  </SwiperSlide>
+                ))
+              : products && products.length > 0
+              ? products.map((item: TProducts, index: number) => {
                   return (
-                    <SwiperSlide key={i}>
+                    <SwiperSlide key={index}>
                       <ProductItem
                         thumbnail={item.thumbnail}
                         discount={item.discount}
@@ -128,7 +142,8 @@ const ProductSale = () => {
                       />
                     </SwiperSlide>
                   );
-              })}
+                })
+              : null}
           </Swiper>
         </div>
       </div>

@@ -38,14 +38,14 @@ const ProductItem = ({
               alt='Khuyến mại'
               priority
             />
-            <span className=''>{discount}%</span>
+            <span className='text-red-700 font-bold'>{discount}%</span>
           </p>
           <p className='card-title product-name'>{product_name}</p>
           <ul className='list-inline product-attributes'></ul>
           <p className='product-price-regular'>
             <span>{price && formatToVND(price)}</span>
           </p>
-          <p className='card-text product-price'>
+          <p className='card-text product-price text-red-700'>
             {price && formatToVND((price / 100) * (100 - discount))}
           </p>
         </div>
