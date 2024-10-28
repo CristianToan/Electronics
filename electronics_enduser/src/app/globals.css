@@ -107,9 +107,9 @@ body #wpwidget img.chat-button--img {
     -ms-flex-preferred-size: auto;
     flex-basis: auto;
   }
-  .collapse {
+  .collapse.show {
     visibility: visible;
-  }
+} 
 }
 
 @media (max-width: 768px) {

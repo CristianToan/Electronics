@@ -19,8 +19,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { buildSlug } from "../helpers/buildSlug";
 import axios from "axios";
-import { useState } from "react";
-
+import {useState } from "react";
 interface TCategory {
   _id?: string;
   category_name: string;
@@ -388,7 +387,7 @@ const ProductAdd = () => {
                           padding: 0,
                         }}
                       />
-                    </Form.Item>
+                    </Form.Item> 
                   </label>
                 </div>
                 <Row gutter={[16, 16]}>

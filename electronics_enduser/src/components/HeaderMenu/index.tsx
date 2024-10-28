@@ -6,9 +6,13 @@ import { SETTINGS } from "../../constants/settings";
 import { TCategory } from "@/types/modes";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { usePathname } from "next/navigation";
 const HeaderMenu = () => {
+  const pathname = usePathname();
+  const [isNavbarVisible, setIsNavbarVisible] = useState(false);
   const [isShowCat, setIsShowCat] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   const toggleShowCat = () => {
     setIsShowCat(!isShowCat);
   };
@@ -36,7 +40,13 @@ const HeaderMenu = () => {
     // Mảng phụ thuộc rỗng có nghĩa là hàm này chỉ chạy một lần khi component được mount
     fetchCategories();
   }, []);
-
+  useEffect(() => {
+    if (pathname === "/") {
+      setIsNavbarVisible(true);
+    } else {
+      setIsNavbarVisible(false);
+    }
+  }, [pathname]);
   return (
     <div className="bgheader-menu">
       <div className="container">
@@ -62,20 +72,23 @@ const HeaderMenu = () => {
                 </button>
                 <div
                   className={`navbar-collapse navbar-lg collapse ${
-                    isShowCat ? "show" : ""
+                    isShowCat || isNavbarVisible ? "show" : ""
                   }`}
                   id="navbarMain"
                 >
                   <ul className="navbar-nav">
                     {isLoading
                       ? Array.from({ length: 20 }).map((_, index) => (
-                          <li key={index}  className="nav-item dropdown">
+                          <li key={index} className="nav-item dropdown">
                             <Skeleton className="w-100" height={30} />
                           </li>
                         ))
                       : categories && categories.length > 0
                       ? categories.map((category: TCategory) => (
-                          <li key={`menu_${category._id}`} className="nav-item dropdown">
+                          <li
+                            key={`menu_${category._id}`}
+                            className="nav-item dropdown"
+                          >
                             <span
                               className="nav-link dropdown-toggle"
                               data-toggle="dropdown"
