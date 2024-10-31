@@ -21,7 +21,8 @@ const ProductSale = () => {
         );
         const data = await res.json();
         const productsPublic = data.data.products_list.filter(
-          (item: { isShowHome: boolean }) => item.isShowHome == true
+          (item: { isShowHome: boolean; isBest: boolean }) =>
+            item.isShowHome == true && item.isBest == true
         );
         setProducts(productsPublic);
         setIsLoading(false);
