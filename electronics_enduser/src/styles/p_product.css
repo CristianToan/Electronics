@@ -972,29 +972,29 @@
     background-color: #fff;
 }
 
-.pa-filter[data-exist="1"] .checkbox input[type=checkbox]::before {
+.pa-filter .checkbox input[type=checkbox]:checked:before {
     background-color: #4a90e2;
     border: none;
 }
 
-.pa-filter[data-exist="1"] .checkbox::before,
-.pa-filter[data-exist="1"] .checkbox::after {
+.pa-filter .checkbox:before,
+.pa-filter .checkbox:after {
     background-color: #fff;
     border-radius: 18px;
     content: '';
     position: absolute;
     z-index: 2;
-    bottom: 4px;
+    bottom: 5px;
     width: 2px;
 }
 
-.pa-filter[data-exist="1"] .checkbox::before {
+.pa-filter .checkbox:before {
     height: 6px;
     left: 4px;
     transform: rotate(-35deg);
 }
 
-.pa-filter[data-exist="1"] .checkbox::after {
+.pa-filter .checkbox:after {
     height: 10px;
     left: 8px;
     transform: rotate(35deg);
@@ -1019,7 +1019,8 @@
 .pl-filters .pl-filterBox .checkbox img {
     float: left;
     max-width: 75%;
-    max-height: 24px;
+    height: 24px;
+    width: auto;
     vertical-align: middle;
 }
 

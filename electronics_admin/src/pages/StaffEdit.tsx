@@ -10,7 +10,7 @@ import {
   UploadProps,
 } from "antd";
 import { Helmet } from "react-helmet-async";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { SETTINGS } from "../constants/settings";
 import { axiosClient } from "../lib/axiosClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -31,6 +31,7 @@ interface TStaff {
 }
 const { Option } = Select;
 const StaffEdit = () => {
+  const navigate = useNavigate();
   const [formUpdate] = Form.useForm();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { id } = useParams();
@@ -55,6 +56,12 @@ const StaffEdit = () => {
       });
     }
   }, [getStaffById.data, formUpdate]);
+
+  useEffect(() => {
+		if (user?.role !== 1 && user?._id !== getStaffById.data?._id) {
+		  navigate("/");
+		}
+	}, [navigate, user, getStaffById]);
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -157,6 +164,7 @@ const StaffEdit = () => {
     },
     fileList,
   };
+  
 
   return (
     <>
@@ -344,5 +352,6 @@ const StaffEdit = () => {
     </>
   );
 };
+
 
 export default StaffEdit;
