@@ -87,12 +87,7 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
                 ? products?.map((item) => {
                     return (
                       <SwiperSlide key={item._id}>
-                        <ProductItem
-                          thumbnail={item.thumbnail}
-                          discount={item.discount}
-                          product_name={item.product_name}
-                          price={item.price}
-                        />
+                        <ProductItem data={item} />
                       </SwiperSlide>
                     );
                   })
@@ -103,7 +98,7 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
               className='viewmore viewmorecate'
               href={`/${dataCategory?.slug}`}
             >
-              <span>Xem tất cả {dataCategory?.slug}</span>
+              <span>Xem tất cả {dataCategory?.category_name}</span>
             </a>
           </div>
         </div>

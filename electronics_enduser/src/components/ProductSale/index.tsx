@@ -134,12 +134,7 @@ const ProductSale = () => {
               ? products.map((item: TProducts, index: number) => {
                   return (
                     <SwiperSlide key={index}>
-                      <ProductItem
-                        thumbnail={item.thumbnail}
-                        discount={item.discount}
-                        product_name={item.product_name}
-                        price={item.price}
-                      />
+                      <ProductItem data={item} />
                     </SwiperSlide>
                   );
                 })

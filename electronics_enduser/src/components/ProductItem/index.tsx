@@ -1,31 +1,20 @@
 "use client";
 import { SETTINGS } from "@/constants/settings";
 import { formatToVND } from "@/helpers/numbersToCurrency";
+import { TProducts } from "@/types/modes";
 import Image from "next/image";
 import React from "react";
 
-const ProductItem = ({
-  thumbnail,
-  discount = 0,
-  product_name,
-  price,
-  slug,
-}: {
-  thumbnail: string;
-  discount?: number;
-  product_name?: string;
-  price?: number;
-  slug?: string;
-}) => {
+const ProductItem = ({ data }: { data: TProducts }) => {
   return (
     <div className='card item mb-4'>
-      <a href={`products/${slug}`} className='product-item'>
+      <a href={`products/${data.slug}`} className='product-item'>
         <div className='card-img-top'>
           <Image
-            src={SETTINGS.URL_IMAGE + "/" + thumbnail}
+            src={SETTINGS.URL_IMAGE + "/" + data.thumbnail}
             width={300}
             height={300}
-            alt={String(product_name)}
+            alt={String(data.product_name)}
             priority
           />
         </div>
@@ -38,15 +27,21 @@ const ProductItem = ({
               alt='Khuyến mại'
               priority
             />
-            <span className='text-red-700 font-bold'>{discount}%</span>
+            <span className='text-red-700 font-bold'>{data.discount}%</span>
           </p>
-          <p className='card-title product-name'>{product_name}</p>
+          <p className='card-title product-name'>{data.product_name}</p>
           <ul className='list-inline product-attributes'></ul>
           <p className='product-price-regular'>
-            <span>{price && formatToVND(price)}</span>
+            <span className='line-through'>
+              {data.price && formatToVND(data.price)}
+            </span>
           </p>
           <p className='card-text product-price text-red-700'>
-            {price && formatToVND((price / 100) * (100 - discount))}
+            <span>
+              {data.price &&
+                formatToVND((data.price / 100) * (100 - data.discount))}
+            </span>
+            <span className='text-red-700 ml-2'>{-(100 - data.discount)}%</span>
           </p>
         </div>
       </a>
