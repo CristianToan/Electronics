@@ -1,8 +1,12 @@
 import express from "express";
 import categoriesController from "../../controllers/categories.controller";
-import validateSchema from "../../middlewares/validateSchema.middleware";
+import { authenticateToken } from "../../middlewares/auth.middleware";
 
 const router = express.Router();
+
+router.get("/slug/:slug", categoriesController.findCategoryBySlug);
+
+router.use(authenticateToken)
 
 //1. Get All Categories
 router.get("", categoriesController.findAllCategory);

@@ -2,6 +2,29 @@ import { Response, Request, NextFunction } from 'express';
 import { sendJsonSuccess } from '../helpers/responseHandler';
 import productsService from '../services/products.service';
 
+
+// Lấy sản phẩm theo thương hiệu
+const getAllByBrandSlug = async(req:Request ,res: Response,next: NextFunction) =>{
+    try {
+      const {slug } = req.params
+      const products = await productsService.getAllByBrandSlug(slug, req.query)
+      sendJsonSuccess(res)(products)
+    } catch (error) {
+      next(error)
+    }
+}
+
+// Lấy sản phẩm theo danh mục
+const getAllByCategorySlug = async(req:Request ,res: Response,next: NextFunction) =>{
+  try {
+    const {slug } = req.params
+    const products = await productsService.getAllByCategorySlug(slug, req.query)
+    sendJsonSuccess(res)(products)
+  } catch (error) {
+    next(error)
+  }
+}
+
 /* get All Product Controller */
 const findAllProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -56,6 +79,8 @@ const deleteById = async (req: Request, res: Response, next: NextFunction)=>{
   
 }
 export default {
+  getAllByBrandSlug,
+  getAllByCategorySlug,
   findAllProduct,
   findOneProductId,
   createDocument,

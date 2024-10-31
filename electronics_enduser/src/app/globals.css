@@ -12,6 +12,7 @@
 @import "@/styles/m_news_fcp.css";
 @import "@/styles/m_report.css";
 @import "@/styles/p_home.css";
+@import "@/styles/p_product.css";
 
 /*Default Row Col*/
 .container-df {
@@ -100,6 +101,10 @@ body #wpwidget img.chat-button--img {
   width: auto;
   max-width: 100% !important;
 }
+.brand-slider__item a img{
+  height: 80px;
+  object-fit: contain;
+}
 @media (min-width: 992px) {
   .navbar-expand-lg .navbar-collapse {
     display: -ms-flexbox !important;
@@ -107,7 +112,7 @@ body #wpwidget img.chat-button--img {
     -ms-flex-preferred-size: auto;
     flex-basis: auto;
   }
-  .collapse {
+  .collapse.show {
     visibility: visible;
   }
 }

@@ -1,4 +1,5 @@
 import BannerHome from "@/components/BannerHome";
+import BrandHome from "@/components/BrandHome";
 import PostBlock from "@/components/PostBlock";
 import ProductBlock from "@/components/ProductBlock";
 
@@ -11,7 +12,7 @@ export default function Home() {
             <BannerHome />
             {/* <div className="row">
               <div className="col-12">
-                <div className="boxbanner-64" />
+                <div className="boxbanner-64" />  
               </div>
             </div>
             <div className="row">
@@ -40,7 +41,7 @@ export default function Home() {
                 </div>
               </div>
             </div> */}
-            
+            <BrandHome />
             <ProductBlock />
             <PostBlock />
             
