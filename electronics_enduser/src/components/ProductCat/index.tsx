@@ -2,14 +2,10 @@
 import React, { useEffect, useState } from "react";
 import ProductBox from "../ProductBox";
 import { SETTINGS } from "@/constants/settings";
-import { TProductsCat } from "@/types/TProductsCat";
-
-interface TData {
-  categories_list: TProductsCat[];
-}
+import { TProductsCat } from "@/types/modes";
 
 const ProductCat = () => {
-  const [productsCat, setProductsCat] = useState<TData | null>(null);
+  const [productsCat, setProductsCat] = useState<TProductsCat[] | []>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -18,7 +14,7 @@ const ProductCat = () => {
         );
         const data = await res.json();
 
-        setProductsCat(data.data);
+        setProductsCat(data.data.categories_list);
       } catch (error) {
         console.log(error);
       }
@@ -30,7 +26,7 @@ const ProductCat = () => {
     <div className='row'>
       <div className='col-12'>
         {/* Giả lập dũ liệu, khi gọi API thì xóa */}
-        {productsCat?.categories_list.map((item) => {
+        {productsCat?.map((item) => {
           return (
             item.isActive == true && (
               <ProductBox key={`product_cat_${item._id}`} dataCategory={item} />

@@ -5,8 +5,8 @@ import { Autoplay, Navigation } from "swiper/modules";
 import ProductBanner from "../ProductBanner";
 import ProductItem from "../ProductItem";
 import { SETTINGS } from "@/constants/settings";
-import { TProducts } from "@/types/TProducts";
-import { TProductsCat } from "@/types/TProductsCat";
+import { TProducts, TProductsCat } from "@/types/modes";
+import {} from "@/types/modes";
 import Skeleton from "react-loading-skeleton";
 const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
   const [products, setProducts] = useState<TProducts[] | []>([]);
@@ -16,7 +16,7 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
       setIsLoading(true);
       try {
         const res = await fetch(
-          `${SETTINGS.URL_API}/v1/products?sort=order&order=ASC`
+          `${SETTINGS.URL_API}/v1/products/category/${dataCategory.slug}?sort=order&order=ASC`
         );
         const data = await res.json();
         const productsPublic = data.data.products_list.filter(
@@ -30,7 +30,7 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
     };
 
     fetchData();
-  }, []);
+  }, [dataCategory.slug]);
 
   return (
     <>
@@ -85,17 +85,16 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
                   ))
                 : products && products.length > 0
                 ? products?.map((item) => {
-                    if (dataCategory?._id === item.category?._id)
-                      return (
-                        <SwiperSlide key={item._id}>
-                          <ProductItem
-                            thumbnail={item.thumbnail}
-                            discount={item.discount}
-                            product_name={item.product_name}
-                            price={item.price}
-                          />
-                        </SwiperSlide>
-                      );
+                    return (
+                      <SwiperSlide key={item._id}>
+                        <ProductItem
+                          thumbnail={item.thumbnail}
+                          discount={item.discount}
+                          product_name={item.product_name}
+                          price={item.price}
+                        />
+                      </SwiperSlide>
+                    );
                   })
                 : null}
             </Swiper>

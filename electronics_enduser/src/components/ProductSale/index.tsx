@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 import ProductItem from "../ProductItem";
 import { SETTINGS } from "@/constants/settings";
-import { TProducts } from "@/types/TProducts";
+import { TProducts } from "@/types/modes";
 import Skeleton from "react-loading-skeleton";
 
 const ProductSale = () => {

@@ -5,11 +5,11 @@ import { authenticateToken } from "../../middlewares/auth.middleware";
 const router = express.Router();
 
 router.get("/slug/:slug", categoriesController.findCategoryBySlug);
+router.get("", categoriesController.findAllCategory);
 
-router.use(authenticateToken)
+router.use(authenticateToken);
 
 //1. Get All Categories
-router.get("", categoriesController.findAllCategory);
 
 // 2.Find Category By Id
 router.get("/:id", categoriesController.findCategoryById);
