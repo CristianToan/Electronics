@@ -17,3 +17,11 @@ export type TProduct = {
     _id: string;
     product_name: string;
 }
+
+export type TFilterPrice = {
+    id: number,
+    title: string,
+    href: string,
+    min: number,
+    max: number,
+}

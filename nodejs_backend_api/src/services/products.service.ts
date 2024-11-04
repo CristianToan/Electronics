@@ -1,3 +1,5 @@
+import Brand from '../models/brands.model';
+import Category from '../models/categories.models';
 import Product from '../models/products.model'
 import createError from 'http-errors'
 
@@ -19,8 +21,34 @@ const getAllByBrandSlug = async (slug: string, query: any) =>{
 
     const offset = (page - 1) * limit;
 
+    /* Lọc theo từng điều kiện */
+    
+    let objectFilters : any = {};
+    //Lọc sản phẩm theo categories
+    if(query.categories && query.categories != ''){
+        const categorySlugs = query.categories.split(',')
+        const categories = await Category.find({ slug: { $in: categorySlugs } }).select('_id');
+        if (categories.length > 0){
+            const categoryIds = categories.map(category => category._id);
+            objectFilters = {...objectFilters, category: { $in: categoryIds }}
+        }
+    }
+
+    if(query.max_price && query.max_price != ''){
+        const max_price = query.max_price
+        objectFilters = {...objectFilters, price: { $lte : max_price}}
+    }
+    if(query.min_price && query.min_price != ''){
+        const min_price = query.min_price
+        objectFilters = {...objectFilters, price: { $gte : min_price}}
+    }
+    if(query.price && query.price != ''){
+        const price = query.price.split('-')
+        objectFilters = {...objectFilters, price: { $gte: price[0], $lte: price[1] }}
+    }
+
     const productsAll = await Product
-    .find()
+    .find({...objectFilters})
     .populate({
         path: 'brand',
         select: 'brand_name',
@@ -66,8 +94,36 @@ const getAllByCategorySlug = async (slug: string, query: any) =>{
 
     const offset = (page - 1) * limit;
 
+    /* Lọc theo từng điều kiện */
+    
+    let objectFilters : any = {};
+    // Lọc sản phẩm theo thương hiệu
+    if(query.brands && query.brands != ''){
+        const brandSlugs = query.brands.split(',')
+        const brands = await Brand.find({ slug: { $in: brandSlugs } }).select('_id');
+        if (brands.length > 0){
+            const brandIds = brands.map(brand => brand._id);
+            objectFilters = {...objectFilters, brand: { $in: brandIds }}
+        }
+        
+    }
+
+    // Lọc sản phẩm theo giá
+    if(query.max_price && query.max_price != ''){
+        const max_price = query.max_price
+        objectFilters = {...objectFilters, price: { $lte : max_price}}
+    }
+    if(query.min_price && query.min_price != ''){
+        const min_price = query.min_price
+        objectFilters = {...objectFilters, price: { $gte : min_price}}
+    }
+    if(query.price && query.price != ''){
+        const price = query.price.split('-')
+        objectFilters = {...objectFilters, price: { $gte: price[0], $lte: price[1] }}
+    }
+
     const productsAll = await Product
-    .find()
+    .find({...objectFilters})
     .populate({
         path: 'category',
         select: 'category_name',
@@ -119,6 +175,40 @@ const findAllProduct = async (query: any) => {
     // Lọc theo danh tên sản phẩm
     if(query.keyword && query.keyword != ''){
         objectFilters = {...objectFilters, product_name: new RegExp(query.keyword, 'i')}
+    }
+
+    // Lọc sản phẩm theo thương hiệu
+    if(query.brands && query.brands != ''){
+        const brandSlugs = query.brands.split(',')
+        const brands = await Brand.find({ slug: { $in: brandSlugs } }).select('_id');
+        if (brands.length > 0){
+            const brandIds = brands.map(brand => brand._id);
+            objectFilters = {...objectFilters, brand: { $in: brandIds }}
+        }
+    }
+    
+    //Lọc sản phẩm theo categories
+    if(query.categories && query.categories != ''){
+        const categorySlugs = query.categories.split(',')
+        const categories = await Category.find({ slug: { $in: categorySlugs } }).select('_id');
+        if (categories.length > 0){
+            const categoryIds = categories.map(category => category._id);
+            objectFilters = {...objectFilters, category: { $in: categoryIds }}
+        }
+    }
+
+    // Lọc sản phẩm theo giá
+    if(query.max_price && query.max_price != ''){
+        const max_price = query.max_price
+        objectFilters = {...objectFilters, price: { $lte : max_price}}
+    }
+    if(query.min_price && query.min_price != ''){
+        const min_price = query.min_price
+        objectFilters = {...objectFilters, price: { $gte : min_price}}
+    }
+    if(query.price && query.price != ''){
+        const price = query.price.split('-')
+        objectFilters = {...objectFilters, price: { $gte: price[0], $lte: price[1] }}
     }
 
 

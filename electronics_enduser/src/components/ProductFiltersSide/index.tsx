@@ -2,14 +2,17 @@
 import { SETTINGS } from '@/constants/setting'
 import useBrands from '@/stores/useBrands'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import noImage from '@/images/no-image.jpg';
 import Skeleton from 'react-loading-skeleton'
 import useCategories from '@/stores/useCategories'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { dataPrices } from '@/constants/seed'
+import { TFilterPrice } from '@/types/modes'
 
 const ProductFiltersSide = () => {
     const pathname = usePathname();
+    const router = useRouter()
 
     const [ isShowBrands, setIshowBrands ] = useState(true)
     const [ isShowCategories, setIshowCategories ] = useState(true)
@@ -24,22 +27,110 @@ const ProductFiltersSide = () => {
     useEffect(() => {
         fetchBrands();
         fetchCategories();
+    }, [fetchBrands, fetchCategories]);
+
+    useEffect(() => {
         if(pathname.includes("brands")){
             setIsPageBrands(true)
         }else if(pathname.includes("categories")){
             setIsPageCategories(true)
         }
-    }, [fetchBrands, fetchCategories, pathname]);
+    }, [pathname]);
 
-    const toogleShowBrands  = () => {
+    const toggleShowBrands  = useCallback(() => {
         setIshowBrands(!isShowBrands)
-    }
-    const toogleShowCategories = () => {
+    },[isShowBrands])
+
+    const toggleShowCategories = useCallback(() => {
         setIshowCategories(!isShowCategories)
-    }
-    const toogleShowPrice = () => {
+    },[isShowCategories])
+
+    const toggleShowPrice = useCallback(() => {
         setIshowPrice(!isShowPrice)
-    }
+    },[isShowPrice])
+
+    const searchParams = useSearchParams();
+    const [brandSlugs, setBrandSlugs] = useState<string[]>([]);
+    const [categoriesSlugs, setCategoriesSlugs] = useState<string[]>([]);
+    const [filterPrice, setFilterPrice] = useState<string>();
+
+    useEffect(() => {
+        const brands = searchParams.get('brands') || '';
+        const initialBrandSlugs = brands.split(',').filter(Boolean);
+        setBrandSlugs(initialBrandSlugs); 
+
+        const categories = searchParams.get('categories') || '';
+        const initialCategoriesSlugs = categories.split(',').filter(Boolean);
+        setCategoriesSlugs(initialCategoriesSlugs); 
+
+        const initialFilterPrice = searchParams.get('p') || '';
+        setFilterPrice(initialFilterPrice); 
+    }, [searchParams]);
+    
+    const handleCheckboxChange = useCallback((slug: string) => {
+        setBrandSlugs((prevSlugs) => {
+            const updatedSlugs = prevSlugs.includes(slug)
+                ? prevSlugs.filter((s) => s !== slug)
+                : [...prevSlugs, slug];
+            return updatedSlugs; 
+        });
+    },[]);
+
+    const handleCheckboxChangeCat = useCallback((slug: string) => {
+        setCategoriesSlugs((prevSlugs) => {
+            const updatedCategoriesSlugs = prevSlugs.includes(slug)
+                ? prevSlugs.filter((s) => s !== slug)
+                : [...prevSlugs, slug];
+            return updatedCategoriesSlugs; 
+        });
+    },[]);
+    const handleCheckboxChangePrice = useCallback((slug: string) => {
+        setFilterPrice((prevSlugs) => {
+            const updatedFilterPrice = prevSlugs === slug
+                ? prevSlugs = ''
+                : slug;
+            return updatedFilterPrice; 
+        });
+    },[]);
+
+
+    useEffect(() => {
+        const currentParams = new URLSearchParams(window.location.search);
+        const queries = [];
+    
+        // Thêm các tham số brands
+        if (brandSlugs.length > 0) {
+            queries.push(`brands=${brandSlugs.join(",")}`);
+        }
+    
+        // Thêm các tham số categories
+        if (categoriesSlugs.length > 0) {
+            const categoriesQuery = categoriesSlugs.join(",");
+            queries.push(`categories=${categoriesQuery}`);
+        }
+
+        // Thêm các tham số Price
+        if (filterPrice) {
+            queries.push(`p=${filterPrice}`);
+        }
+    
+        // Thêm các tham số sort và order vào cuối
+        if (currentParams.has('sort')) {
+            queries.push(`sort=${currentParams.get('sort')}`);
+        }
+        if (currentParams.has('order')) {
+            queries.push(`order=${currentParams.get('order')}`);
+        }
+    
+        // Chuyển hướng nếu có tham số mới
+        if (queries.length > 0) {
+            const queryString = `${pathname}?${queries.join("&")}`;
+            router.push(queryString);
+        } else {
+            // Nếu không có tham số nào, chỉ cần chuyển hướng đến pathname
+            router.push(pathname);
+        }
+    }, [brandSlugs, categoriesSlugs, router, pathname, filterPrice]);
  
   return (
     <div className="pl-filters pl-filters-deD sticky-top">
@@ -51,7 +142,7 @@ const ProductFiltersSide = () => {
                         <h5>
                             <a
                                 className="collapsed"
-                                onClick={toogleShowBrands}
+                                onClick={toggleShowBrands}
                             >
                             
                             Hãng <i className="fa fa-angle-down" />
@@ -63,58 +154,44 @@ const ProductFiltersSide = () => {
                         id="collapseBrand"
                         aria-labelledby="cardHeaderBrand"
                         >
-                        <div className="card-body">
-                            <ul className="list-unstyled">
-                                {error && <li className="alert alert-danger m-0 w-100"> Error: {error}</li>}
-                                {   
-                                    isLoading ? Array.from({ length: 10 }).map((_, index) => (
-                                        <li key = {`filter_sd_br_${index}`}>
-                                            <Skeleton height={38} width={160} />
-                                        </li>
-                                    ))
-                                    : brands && brands.length > 0 && (
-                                        brands.map((brand, index) => {
-                                            return(
-                                                <li key = {`filter_sd_br_${index}`}>
-                                                    <a
-                                                    className="pa-filter pa-filter-fast pa-filter-brand pa-filter-brand-782"
-                                                    >
-                                                        <label className="checkbox">
-                                                            <input type="checkbox" />
-                                                            <Image
-                                                                src = {brand.logo_url ? `${SETTINGS.URL_IMAGE}/${brand.logo_url}` : noImage }
-                                                                alt = { brand.brand_name}
-                                                                width={160}
-                                                                height={38}
-                                                                priority
-                                                            />                                    
-                                                        </label>
-                                                    </a>
-                                                </li>
-                                            )
-                                        })
-                                    )
-                                }
-                            </ul>
-                        </div>
-                        <div
-                            className="card-footer pfooter-filter"
-                            style={{ display: "none" }}
-                        >
-                            <a
-                            href=""
-                            className="pfooter-filter-close brand"
-                            >
-                            Bỏ chọn
-                            </a>
-                            <a
-                            href=""
-                            className="pfooter-filter-countproducts brand"
-                            >
-                            Xem
-                            <b /> kết quả
-                            </a>
-                        </div>
+                            <div className="card-body">
+                                <ul className="list-unstyled">
+                                    {error && <li className="alert alert-danger m-0 w-100"> Error: {error}</li>}
+                                    {   
+                                        isLoading ? Array.from({ length: 10 }).map((_, index) => (
+                                            <li key = {`filter_sd_br_${index}`}>
+                                                <Skeleton height={38} width={160} />
+                                            </li>
+                                        ))
+                                        : brands && brands.length > 0 && (
+                                            brands.map((brand, index) => {
+                                                return(
+                                                    <li key = {`filter_sd_br_${index}`}>
+                                                        <a
+                                                        className="pa-filter pa-filter-fast pa-filter-brand pa-filter-brand-782"
+                                                        >
+                                                            <label className="checkbox">
+                                                                <input 
+                                                                    type="checkbox" 
+                                                                    checked={brandSlugs.includes(brand.slug)}
+                                                                    onChange={() => handleCheckboxChange(brand.slug)}
+                                                                />
+                                                                <Image
+                                                                    src = {brand.logo_url ? `${SETTINGS.URL_IMAGE}/${brand.logo_url}` : noImage }
+                                                                    alt = { brand.brand_name}
+                                                                    width={160}
+                                                                    height={38}
+                                                                    priority
+                                                                />                                    
+                                                            </label>
+                                                        </a>
+                                                    </li>
+                                                )
+                                            })
+                                        )
+                                    }
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -127,7 +204,7 @@ const ProductFiltersSide = () => {
                         <div className="card-header" id="cardHeaderType">
                         <h5 className="mb-0">
                             <a
-                            onClick={toogleShowCategories}
+                            onClick={toggleShowCategories}
                             className="collapsed"
                             >
                             
@@ -140,49 +217,43 @@ const ProductFiltersSide = () => {
                         id="collapseType"
                         aria-labelledby="cardHeaderType"
                         >
-                        <div className="card-body">
-                            <ul className="list-unstyled">
-                                {isStatus.error && <li className="alert alert-danger m-0 w-100"> Error: {isStatus.error}</li>}
-                                {
-                                    isStatus.isLoading ? Array.from({ length: 10 }).map((_, index) => (
-                                        <li key = {`filter_sd_br_${index}`}>
-                                            <Skeleton height={38} width={160} />
-                                        </li>
-                                    ))
-                                    : categories && categories.length > 0 && (
-                                        categories.map((category, index) => {
-                                            return(
-                                                <li key= {`filter_sd_cat_${index}`}>
-                                                    <a
-                                                    className="pa-filter pa-filter-count pa-filter-type pa-filter-type-11"
-                                                    >
-                                                    
-                                                    <label className="checkbox">
+                            <div className="card-body">
+                                <ul className="list-unstyled">
+                                    {isStatus.error && <li className="alert alert-danger m-0 w-100"> Error: {isStatus.error}</li>}
+                                    {
+                                        isStatus.isLoading ? Array.from({ length: 10 }).map((_, index) => (
+                                            <li key = {`filter_sd_br_${index}`}>
+                                                <Skeleton height={38} width={160} />
+                                            </li>
+                                        ))
+                                        : categories && categories.length > 0 && (
+                                            categories.map((category, index) => {
+                                                return(
+                                                    <li key= {`filter_sd_cat_${index}`}>
+                                                        <a
+                                                        className="pa-filter pa-filter-count pa-filter-type pa-filter-type-11"
+                                                        >
                                                         
-                                                        <input type="checkbox" />
-                                                        <span>
-                                                            { category.category_name}
-                                                        </span>
-                                                    </label>
-                                                    </a>
-                                                </li>
-                                            )
-                                        })
-                                    )
-                                }
-                            </ul>
-                        </div>
-                        <div className="card-footer" style={{ display: "none" }}>
-                            <a href="" className="pfooter-filter-close type">
-                            Bỏ chọn
-                            </a>
-                            <a
-                            href=""
-                            className="pfooter-filter-countproducts type"
-                            >
-                            Xem <b /> kết quả
-                            </a>
-                        </div>
+                                                        <label className="checkbox">
+                                                            
+                                                            <input
+                                                                type="checkbox" 
+                                                                checked={categoriesSlugs.includes(category.slug)}
+                                                                onChange={() => handleCheckboxChangeCat(category.slug)}
+                                                            />
+                                                            <span>
+                                                                { category.category_name}
+                                                            </span>
+                                                        </label>
+                                                        </a>
+                                                    </li>
+                                                )
+                                            })
+                                        )
+                                    }
+                                </ul>
+                            </div>
+                        
                         </div>
                     </div>
                 </div>
@@ -193,7 +264,7 @@ const ProductFiltersSide = () => {
             <div className="card-header" id="cardHeaderPriceRange">
             <h5>
                 <a
-                onClick={toogleShowPrice}
+                onClick={toggleShowPrice}
                 className="collapsed"
                 >
                 
@@ -206,155 +277,35 @@ const ProductFiltersSide = () => {
             id="collapsePricerange"
             aria-labelledby="cardHeaderPriceRange"
             >
-            <div className="card-body">
-                <ul className="list-unstyled">
-                <li>
-                    <a
-                    className="pa-filter pa-filter-fast pa-filter-pricerange pa-filter-pricerange-0"
-                    href="tivi?p=duoi-5-trieu"
-                    data-href="duoi-5-trieu"
-                    data-id={0}
-                    data-exist={0}
-                    data-min=""
-                    data-max={5000000}
-                    >
-                    
-                    <label className="checkbox">
+                <div className="card-body">
+                    <ul className="list-unstyled">
+                        {
+                            dataPrices && dataPrices.length > 0 && dataPrices.map((price:TFilterPrice) => {
+                                return(
+                                    <li key = { price.id}>
+                                        <span
+                                        className="pa-filter pa-filter-fast pa-filter-pricerange pa-filter-pricerange-0"
+                                        >
+                                        
+                                        <label className="checkbox">
+                                            
+                                            <input 
+                                                type="checkbox" 
+                                                checked={filterPrice === price.href}
+                                                onChange={() => handleCheckboxChangePrice(price.href)}
+                                            />
+                                            <span> {price.title} </span>
+                                        </label>
+                                        </span>
+                                    </li>
+                                )
+                            })
+                        }
                         
-                        <input type="checkbox" />
-                        <span> Dưới 5 triệu</span>
-                    </label>
-                    </a>
-                </li>
-                <li>
-                    <a
-                    className="pa-filter pa-filter-fast pa-filter-pricerange pa-filter-pricerange-1"
-                    href="tivi?p=tu-5-7-trieu"
-                    data-id={1}
-                    data-href="tu-5-7-trieu"
-                    data-exist={0}
-                    data-min={5000000}
-                    data-max={7000000}
-                    >
-                    
-                    <label className="checkbox">
-                        
-                        <input type="checkbox" />
-                        <span> Từ 5 - 7 triệu</span>
-                    </label>
-                    </a>
-                </li>
-                <li>
-                    <a
-                    className="pa-filter pa-filter-fast pa-filter-pricerange pa-filter-pricerange-2"
-                    href="tivi?p=tu-7-10-trieu"
-                    data-id={2}
-                    data-href="tu-7-10-trieu"
-                    data-exist={0}
-                    data-min={7000000}
-                    data-max={10000000}
-                    >
-                    
-                    <label className="checkbox">
-                        
-                        <input type="checkbox" />
-                        <span> Từ 7 - 10 triệu</span>
-                    </label>
-                    </a>
-                </li>
-                <li>
-                    <a
-                    className="pa-filter pa-filter-fast pa-filter-pricerange pa-filter-pricerange-3"
-                    href="tivi?p=tu-10-15-trieu"
-                    data-id={3}
-                    data-href="tu-10-15-trieu"
-                    data-exist={0}
-                    data-min={10000000}
-                    data-max={15000000}
-                    >
-                    
-                    <label className="checkbox">
-                        
-                        <input type="checkbox" />
-                        <span> Từ 10 - 15 triệu </span>
-                    </label>
-                    </a>
-                </li>
-                <li>
-                    <a
-                    className="pa-filter pa-filter-fast pa-filter-pricerange pa-filter-pricerange-4"
-                    href="tivi?p=tu-15-20-trieu"
-                    data-id={4}
-                    data-href="tu-15-20-trieu"
-                    data-exist={0}
-                    data-min={15000000}
-                    data-max={20000000}
-                    >
-                    
-                    <label className="checkbox">
-                        
-                        <input type="checkbox" />
-                        <span> Từ 15 - 20 triệu </span>
-                    </label>
-                    </a>
-                </li>
-                <li>
-                    <a
-                    className="pa-filter pa-filter-fast pa-filter-pricerange pa-filter-pricerange-4"
-                    href="tivi?p=tren-20-trieu"
-                    data-href="tren-20-trieu"
-                    data-exist={0}
-                    data-min={20000000}
-                    data-max=""
-                    >
-                    
-                    <label className="checkbox">
-                        
-                        <input type="checkbox" />
-                        <span> Trên 20 triệu </span>
-                    </label>
-                    </a>
-                </li>
-                </ul>
-                <div>
-                <div>
-                    <div className="priceSlider pa-filter pa-filter-priceslider pa-filter-priceslider-99"></div>
-                    <div className="pa-filter-minPrice-maxPrice">
-                    <input
-                        type="range"
-                        className="originMinPrice"
-                        defaultValue={2890000}
-                    />
-                    <input
-                        type="text"
-                        className="originMaxPrice"
-                        defaultValue={136400000}
-                    />
-                    <span className="minPrice" />
-                    <span className="maxPrice" />
-                    <span className="minPriceFormat" />
-                    <span className="maxPriceFormat" />
-                    </div>
+                    </ul>
+               
                 </div>
-                </div>
-            </div>
-            <div
-                className="card-footer"
-                style={{ display: "none" }}
-            >
-                <a
-                href=""
-                className="pfooter-filter-close pricerange"
-                >
-                Bỏ chọn
-                </a>
-                <a
-                href=""
-                className="pfooter-filter-countproducts pricerange"
-                >
-                Xem <b /> kết quả
-                </a>
-            </div>
+            
             </div>
         </div>
         </div>
@@ -362,5 +313,6 @@ const ProductFiltersSide = () => {
     </div>
   )
 }
+
 
 export default ProductFiltersSide

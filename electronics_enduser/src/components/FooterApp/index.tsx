@@ -15,11 +15,11 @@ const FooterApp = () => {
                 <a
                   data-id={498}
                   href="/he-thong-sieu-thi"
-                  title="THÔNG TIN MEDIAMART"
+                  title="THÔNG TIN "
                 >
                   
                   <span>
-                    <b>THÔNG TIN MEDIAMART</b>
+                    <b>THÔNG TIN</b>
                   </span>
                   <span
                     className="menu-item-view menu-item-view-498"
@@ -274,7 +274,7 @@ const FooterApp = () => {
                 <li className="v-menu-item">
                   <a data-id={745} href="#" title="Theo dõi MediaMart trên">
                     
-                    <span> Theo dõi MediaMart trên </span>
+                    <span> Theo dõi trên </span>
                     <span
                       className="menu-item-view menu-item-view-745"
                       style={{ display: "none" }}
@@ -288,7 +288,7 @@ const FooterApp = () => {
                     title="MediaMart Facebook Fanpage"
                   >
                     
-                    <span> MediaMart Facebook Fanpage </span>
+                    <span> Facebook Fanpage </span>
                     <Image
                       src="https://cdn.mediamart.vn/images/menu/mediamart-facebook-fanpage_7b8f3ccc.png"
                       alt="MediaMart Facebook Fanpage"
@@ -309,7 +309,7 @@ const FooterApp = () => {
                     title="MediaMart Youtube Channel"
                   >
                     
-                    <span> MediaMart Youtube Channel </span>
+                    <span> Youtube Channel </span>
                     <Image
                       src="https://cdn.mediamart.vn/images/menu/mediamart-youtube-channel_53501d19.png"
                       alt="MediaMart Youtube Channel"
@@ -330,7 +330,7 @@ const FooterApp = () => {
                     title="MediaMart Zalo OA"
                   >
                     
-                    <span> MediaMart Zalo OA </span>
+                    <span> Zalo OA </span>
                     <Image
                       src="https://cdn.mediamart.vn/images/menu/mediamart-zalo-oa_fd895723.png"
                       alt="MediaMart Zalo OA"
@@ -351,7 +351,7 @@ const FooterApp = () => {
                     title="MediaMart Tiktok Channel"
                   >
                     
-                    <span> MediaMart Tiktok Channel </span>
+                    <span>  Tiktok Channel </span>
                     <Image
                       src="https://cdn.mediamart.vn/images/menu/mediamart-tiktok-channel_52e656aa.png"
                       alt="MediaMart Tiktok Channel"

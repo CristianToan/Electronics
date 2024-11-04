@@ -269,7 +269,7 @@ const CategoryEdit = () => {
                       getCategoryById.data?.imageUrl &&
                       getCategoryById.data?.imageUrl !== null
                         ? `${SETTINGS.URL_IMAGE}/${getCategoryById.data?.imageUrl}`
-                        : `/images/noImage.jpg`
+                        : `/images/noimage.jpg`
                     }
                     alt={getCategoryById.data?.imageUrl}
                   />
