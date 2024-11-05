@@ -16,7 +16,7 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
       setIsLoading(true);
       try {
         const res = await fetch(
-          `${SETTINGS.URL_API}/v1/products/category/${dataCategory.slug}?sort=order&order=ASC`
+          `${SETTINGS.URL_API}/v1/products/category/${dataCategory.slug}?sort=order&order=ASC&limit=12`
         );
         const data = await res.json();
         const productsPublic = data.data.products_list.filter(
@@ -77,8 +77,8 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
             >
               {isLoading
                 ? Array.from({ length: 20 }).map((_, index) => (
-                    <SwiperSlide key={`sl_brand_${index}`}>
-                      <div className='brand-slider__item'>
+                    <SwiperSlide key={`sl_product_${index}`}>
+                      <div className='product-slider__item'>
                         <Skeleton height={160} width={560} />
                       </div>
                     </SwiperSlide>
@@ -86,7 +86,7 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
                 : products && products.length > 0
                 ? products?.map((item) => {
                     return (
-                      <SwiperSlide key={item._id}>
+                      <SwiperSlide key={`product_box_${item._id}`}>
                         <ProductItem data={item} />
                       </SwiperSlide>
                     );

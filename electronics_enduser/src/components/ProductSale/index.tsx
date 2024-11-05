@@ -134,7 +134,7 @@ const ProductSale = () => {
               : products && products.length > 0
               ? products.map((item: TProducts, index: number) => {
                   return (
-                    <SwiperSlide key={index}>
+                    <SwiperSlide key={`product_sale_${index}`}>
                       <ProductItem data={item} />
                     </SwiperSlide>
                   );
