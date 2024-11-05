@@ -96,7 +96,7 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
 
             <a
               className='viewmore viewmorecate'
-              href={`/${dataCategory?.slug}`}
+              href={`/categories/${dataCategory?.slug}`}
             >
               <span>Xem tất cả {dataCategory?.category_name}</span>
             </a>

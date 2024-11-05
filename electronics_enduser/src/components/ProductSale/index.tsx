@@ -11,7 +11,7 @@ import Skeleton from "react-loading-skeleton";
 const ProductSale = () => {
   const [products, setProducts] = useState<TProducts[] | []>([]);
   const [isLoading, setIsLoading] = useState(false);
-  //Sau 60 giây thì API sẽ đc gọi lại để làm tươi dữ liệu
+
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {

@@ -25,7 +25,6 @@ const ProductCat = () => {
   return (
     <div className='row'>
       <div className='col-12'>
-        {/* Giả lập dũ liệu, khi gọi API thì xóa */}
         {productsCat?.map((item) => {
           return (
             item.isActive == true && (

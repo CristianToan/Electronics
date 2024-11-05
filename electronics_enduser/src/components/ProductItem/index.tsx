@@ -8,7 +8,7 @@ import React from "react";
 const ProductItem = ({ data }: { data: TProducts }) => {
   return (
     <div className='card item mb-4 '>
-      <a href={`products/${data.slug}`} className='product-item'>
+      <a href={`/products/${data.slug}`} className='product-item'>
         <div className='card-img-top'>
           <Image
             src={SETTINGS.URL_IMAGE + "/" + data.thumbnail}
