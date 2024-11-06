@@ -14,6 +14,16 @@ export type TBrand = {
 }
 
 export type TProduct = {
-    _id: string;
+    _id?: string;
     product_name: string;
+    price: number;
+    discount: number;
+    category: string;
+    brand: string;
+    description: string;
+    thumbnail: string;
+    stock: number;
+    slug: string;
+    order: number;
+    specifications: string;
 }

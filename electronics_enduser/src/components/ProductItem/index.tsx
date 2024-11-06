@@ -1,67 +1,79 @@
-import Image from 'next/image'
-import React from 'react'
+import React from "react";
+import { TProduct } from "@/types/modes";
+import { SETTINGS } from "@/constants/setting";
+import Image from "next/image";
+import Link from "next/link";
+import { formatToVND } from "@/helpers/numbersToCurrency";
 
-const ProductItem = () => {
+const ProductItem = ({ product }: { product: TProduct }) => {
+  let arr_specifi: any = [];
+  if (product?.specifications) {
+    arr_specifi = product.specifications.split("\n");
+  }
+
   return (
     <div className="card item mb-4">
-        <a
-        href="/tivi/smart-tivi-samsung-4k-55-inch-55au7700-uhd"
-        data-id={131}
+      <Link
+        href={product ? `/products/${product.slug}` : "#"}
         className="product-item"
-        >
+      >
         <div className="card-img-top">
-            <span
-            className="product-type product-type-11"
-            style={{
-                display: "block",
-                position: "absolute",
-                right: 6,
-                top: 8,
-                fontSize: 11,
-                zIndex: 3,
-                backgroundColor: "#f1f1f1",
-                color: "#333",
-                padding: "2px 5px",
-                borderRadius: 3,
-            }}
-            >
-            Trả góp 0%
-            </span>
-            
+          {product && product.thumbnail ? (
             <Image
-                src="https://cdn.mediamart.vn/thumb/images/product/smart-tivi-samsung-4k-55-inch-55au7700-uhd_81068dbe.jpg"
-                width={300}
-                height={300}
-                alt="Smart Tivi Samsung 4K 55 inch 55AU7700 UHD"
-                priority
+              src={`${SETTINGS.URL_IMAGE}/${product.thumbnail}`}
+              alt={product.product_name}
+              width={300}
+              height={300}
+              priority
             />
+          ) : null}
         </div>
         <div className="card-body">
-            <p className="product-specialtype-box">
-            <Image
-                src="https://cdn.mediamart.vn/images/catalog/2010_d503c72b.png"
-                width={300}
-                height={300}
-                alt="Khuyến mại"
-                priority
-            />
-            <span>-50%</span>
-            </p>
-            <p className="card-title product-name">
-            Samsung Smart TV UA55AU7700
-            </p>
-            <ul className="list-inline product-attributes">
-            <li>4K</li>
-            <li>55 inch</li>
-            </ul>
-            <p className="product-price-regular">
-            <span>19.990.000 ₫</span>
-            </p>
-            <p className="card-text product-price">9.990.000 ₫</p>
+          <p className="card-title product-name">{product?.product_name}</p>
+          <ul className="list-inline product-attributes">
+            {arr_specifi.slice(0, 3).map((spec: string, index: number) => (
+              <li key={index}>
+                {spec.split(":").length == 2
+                  ? spec.split(":")[1]
+                  : spec.split(":")[0]}
+              </li>
+            ))}
+          </ul>
+          <div className="card-text product-price">
+            {product && product.price ? (
+              product.discount ? (
+                <>
+                  <div>
+                    {formatToVND(product.price * (1 - product.discount / 100))}
+                  </div>
+                  <div>
+                    <span
+                      className="text-muted "
+                      style={{ textDecoration: "line-through" }}
+                    >
+                      {formatToVND(product.price)}
+                    </span>
+                    <span style={{ paddingLeft: "5px" }}>
+                      {typeof product?.discount === "number" &&
+                        product.discount > 0 && (
+                          <span className="product-specialtype-box">
+                            {product.discount}%
+                          </span>
+                        )}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <span>{formatToVND(product.price)}</span>
+              )
+            ) : (
+              "Liên Hệ"
+            )}
+          </div>
         </div>
-        </a>
+      </Link>
     </div>
-  )
-}
+  );
+};
 
-export default ProductItem
+export default ProductItem;

@@ -33,23 +33,18 @@ interface TProducts {
   product_name: string;
   price: number;
   discount: number;
-  category: {
-    _id?: string;
-    category_name: string;
-  };
-  brand: {
-    _id?: string;
-    brand_name: string;
-  };
+  category: string;
+  brand: string;
   description: string;
   thumbnail: string;
   stock: number;
   slug: string;
   order: number;
-  specifications: {
-    type: string;
-    require: false;
-  };
+  isBest: boolean;
+  isRecentlyAdded: boolean;
+  isShowHome: boolean;
+  isDelete: boolean;
+  specifications: string;
 }
 const ProductEdit = () => {
   const navigate = useNavigate();
@@ -181,7 +176,7 @@ const ProductEdit = () => {
   };
   /* ============= GET CATEGORIES, BRANDS ================ */
   const fetchCategories = async () => {
-    const url = `${SETTINGS.URL_API}/v1/categories`;
+    const url = `${SETTINGS.URL_API}/v1/categories?page=1&limit=200`;
     const res = await axiosClient.get(url);
     return res.data.data;
   };
@@ -192,7 +187,7 @@ const ProductEdit = () => {
   //console.log(queryCategories.data?.categories_list);
   // Get brands
   const fetchBrands = async () => {
-    const url = `${SETTINGS.URL_API}/v1/brands`;
+    const url = `${SETTINGS.URL_API}/v1/brands?page=1&limit=200`;
     const res = await axiosClient.get(url);
     return res.data.data;
   };
@@ -276,7 +271,7 @@ const ProductEdit = () => {
                     <div className="form-group w-1/2 pl-2">
                       <label className="block mt-4 text-sm">
                         <span className="text-gray-700 dark:text-gray-400">
-                          Khuyến mãi
+                          Discount
                         </span>
                         <Form.Item name="discount">
                           <Input
@@ -355,7 +350,7 @@ const ProductEdit = () => {
                         <Input
                           type="number"
                           min=""
-                          placeholder = "1"
+                          placeholder="1"
                           className="pl-3 block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
                         />
                       </Form.Item>
@@ -425,7 +420,7 @@ const ProductEdit = () => {
                   <Col span={3}>
                     <Form.Item name="isBest" valuePropName="checked">
                       <Checkbox name="isBest" className="text-white">
-                        Tốt
+                        Khuyến mãi
                       </Checkbox>
                     </Form.Item>
                   </Col>

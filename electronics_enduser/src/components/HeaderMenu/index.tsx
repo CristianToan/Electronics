@@ -25,6 +25,7 @@ const HeaderMenu = () => {
           `${SETTINGS.URL_API}/v1/categories/?page=1&limit=20&sort=order&order=ASC`
         );
         if (!res.ok) {
+
           throw new Error(`Failed fetching Categories`);
         }
         const getCategory = await res.json();
@@ -104,8 +105,9 @@ const HeaderMenu = () => {
                               ) : null}
                               <span className="nav-link-text">
                                 <span>
-                                  <Link href={category.slug}>
+                                  <Link href={`/categories/${category.slug}`}>
                                     {category.category_name}
+                                    
                                   </Link>
                                 </span>
                               </span>
@@ -116,6 +118,113 @@ const HeaderMenu = () => {
                   </ul>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className="col-md-9 col-0">
+            <div className="box-nav-promotion">
+              <ul className="list-unstyled">
+                <li className="v-menu-item">
+                  <Link href="/products" title="Tivi">
+                    <span>Sản phẩm</span>
+                    <span
+                      className="menu-item-view menu-item-view-779"
+                      style={{ display: "none" }}
+                    ></span>
+                  </Link>
+                </li>
+                <li className="v-menu-item">
+                  <a data-id={780} href="/tu-lanh" title="Tủ lạnh">
+                    <span>Tủ lạnh</span>
+                    <span
+                      className="menu-item-view menu-item-view-780"
+                      style={{ display: "none" }}
+                    ></span>
+                  </a>
+                </li>
+                <li className="v-menu-item">
+                  <a data-id={783} href="/may-giat" title="Máy giặt">
+                    <span>
+                      <span style={{ color: "#ff0000" }}>Máy giặt</span>
+                    </span>
+                    <span
+                      className="menu-item-view menu-item-view-783"
+                      style={{ display: "none" }}
+                    ></span>
+                  </a>
+                </li>
+                <li className="v-menu-item">
+                  <a
+                    data-id={899}
+                    href="https://mediamart.vn/binh-tam-nong-lanh"
+                    title="Bình nóng lạnh"
+                  >
+                    <span>Bình nóng lạnh</span>
+                    <span
+                      className="menu-item-view menu-item-view-899"
+                      style={{ display: "none" }}
+                    ></span>
+                  </a>
+                </li>
+                <li className="v-menu-item">
+                  <a
+                    data-id={787}
+                    href="https://mediamart.vn/apple-iphone-16-series"
+                    title="Apple iPhone 16 Series"
+                  >
+                    <span>
+                      <span style={{ color: "#ff0000" }}>iPhone 16 Series</span>
+                    </span>
+                    <span
+                      className="menu-item-view menu-item-view-787"
+                      style={{ display: "none" }}
+                    ></span>
+                  </a>
+                </li>
+                <li className="v-menu-item">
+                  <a data-id={784} href="/laptop" title="Laptop">
+                    <span>Laptop</span>
+                    <span
+                      className="menu-item-view menu-item-view-784"
+                      style={{ display: "none" }}
+                    ></span>
+                  </a>
+                </li>
+                <li className="v-menu-item">
+                  <a data-id={791} href="/tin-khuyen-mai" title="Tin tức">
+                    <span>
+                      <span style={{ color: "#ff0000" }}>Tin tức</span>
+                    </span>
+                    <span
+                      className="menu-item-view menu-item-view-791"
+                      style={{ display: "none" }}
+                    ></span>
+                  </a>
+                </li>
+                <li className="v-menu-item">
+                  <a data-id={788} href="/20-10-sale" title="Siêu Sale từ 100K">
+                    <span>
+                      <span style={{ color: "#ff0000" }}>
+                        ⚡️20.10 Deal Hời từ 99K
+                      </span>
+                    </span>
+                    <span
+                      className="menu-item-view menu-item-view-788"
+                      style={{ display: "none" }}
+                    ></span>
+                  </a>
+                </li>
+                <li className="v-menu-item">
+                  <a data-id={790} href="/quat-dieu-hoa" title="Quạt Điều hòa">
+                    <span>
+                      <span style={{ color: "#ff0000" }}>Quạt Điều hòa</span>
+                    </span>
+                    <span
+                      className="menu-item-view menu-item-view-790"
+                      style={{ display: "none" }}
+                    ></span>
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
