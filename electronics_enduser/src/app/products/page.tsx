@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumb";
 import ProductFilters from "@/components/ProductFilters";
 import ProductFiltersSide from "@/components/ProductFiltersSide";
 import ProductItem from "@/components/ProductItem";
@@ -5,7 +6,6 @@ import ProductSort from "@/components/ProductSort";
 import { SETTINGS } from "@/constants/settings";
 import { Metadata, NextPage } from "next";
 import { TProduct } from "@/types/modes";
-import Breadcrumb from "@/components/Breadcrumb";
 import PaginationComponent from "@/components/PaginationComponent";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;

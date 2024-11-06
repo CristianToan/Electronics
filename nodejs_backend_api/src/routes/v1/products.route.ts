@@ -14,7 +14,6 @@ router.get('/category/:slug',productsController.getAllByCategorySlug)
  */
 router.get('', productsController.findAllProduct)
 router.use(authenticateToken)
-
 /**
  * Get Single Product
  * GET /api/v1/products/:id

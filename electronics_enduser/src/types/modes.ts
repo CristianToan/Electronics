@@ -27,3 +27,11 @@ export type TProduct = {
     order: number;
     specifications: string;
 }
+
+export type TFilterPrice = {
+    id: number,
+    title: string,
+    href: string,
+    min: number,
+    max: number,
+}

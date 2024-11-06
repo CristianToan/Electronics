@@ -137,17 +137,11 @@ const StaffsPage = () => {
     console.log("ErrorInfo", errorInfo);
   };
 
-  useEffect(() => {
-    if (user?.role != 1) {
-      navigate("/");
-    }
-  }, [navigate, user]);
-
-  useEffect(() => {
-    if (user?.role != 1) {
-      navigate("/");
-    }
-  }, [navigate, user]);
+ 	useEffect(() => {
+		if (user?.role != 1) {
+		navigate("/");
+		}
+	}, [navigate, user]);
 
   const [currentPage, setCurrentPage] = useState(page);
   useEffect(() => {

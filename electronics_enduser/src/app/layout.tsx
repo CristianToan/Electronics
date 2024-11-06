@@ -6,6 +6,7 @@ import "./globals.css";
 import HeaderApp from "@/components/HeaderApp";
 import FooterApp from '@/components/FooterApp';
 import React from "react";
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export const metadata: Metadata = {
   title: "Electronics",

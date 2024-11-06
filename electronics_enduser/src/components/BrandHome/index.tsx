@@ -8,7 +8,6 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import noImage from '@/images/no-image.jpg';
 import { TBrand } from '@/types/modes'
 import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
 
 const BrandHome =  () => {
     const [brands, setBrands] = useState<TBrand[] | []>([])
