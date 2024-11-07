@@ -18,6 +18,7 @@ const HeaderMenu = () => {
         } else {
           setIsNavbarVisible(false);
         }
+        setIsShowCat(false);
     }, [pathname]);
     
 

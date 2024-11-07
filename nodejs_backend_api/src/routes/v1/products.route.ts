@@ -5,16 +5,16 @@ import { authenticateToken } from "../../middlewares/auth.middleware";
 const router = express.Router();
 
 //========== API PUBLIC ======//
-router.get("", productsController.findAllProduct);
+
 router.get("/brand/:slug", productsController.getAllByBrandSlug);
 router.get("/category/:slug", productsController.getAllByCategorySlug);
 
-router.use(authenticateToken);
 /**
  * Get ALl Products
  * GET /api/v1/products
  */
-
+router.get("", productsController.findAllProduct);
+router.use(authenticateToken);
 /**
  * Get Single Product
  * GET /api/v1/products/:id

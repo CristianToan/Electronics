@@ -1,9 +1,9 @@
+import Breadcrumb from "@/components/Breadcrumb";
 import ProductFilters from "@/components/ProductFilters";
 import ProductFiltersSide from "@/components/ProductFiltersSide";
 import ProductItem from "@/components/ProductItem";
 import ProductSort from "@/components/ProductSort";
 import { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Sản phẩm - Electronics",
@@ -18,35 +18,8 @@ export default async function Page() {
       <div className="body-content bg-page">
         <div className="container">
           <div className="wrap-product">
-            <div className="row">
-              <div className="col-12">
-                <h1 className="breadcrumb-highlight">
-                  Sản phẩm
-                </h1>
-                <nav>
-                  <ol
-                    className="breadcrumb"
-                    itemType="https://schema.org/BreadcrumbList"
-                  >
-                    <li
-                      className="breadcrumb-item"
-                      itemProp="itemListElement"
-                      itemType="https://schema.org/ListItem"
-                    >
-                      <Link href="/" itemProp="item">
-                       
-                        <span itemProp="name">Electronics</span>
-                        <meta itemProp="position" />
-                      </Link>
-                    </li>
-                    <li className="breadcrumb-item active">
-                      <span>Sản phẩm</span>
-                    </li>
-                  </ol>
-                </nav>
-              </div>
-            </div>
-            <div className="clearfix pt-3"> </div>
+
+            <Breadcrumb pageName = {"Sản phẩm"} />
             
             <ProductFilters />
             
@@ -59,15 +32,13 @@ export default async function Page() {
                     <div className="row product-list product-list-bycate">
                       {
                         products?.map( (index) => {
-                          return(
-                            <div key = {index} className="col-6 col-md-3 col-lg-3">
-                              <ProductItem />
-                            </div>
-                          )
-                      } )
+                            return(
+                              <div key = {index} className="col-6 col-md-3 col-lg-3">
+                                <ProductItem />
+                              </div>
+                            )
+                        } )
                       }
-                     
-                      
                       <a
                         className="row seemoreproducts"
                         href=""
