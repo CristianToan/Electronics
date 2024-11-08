@@ -14,43 +14,18 @@ interface TProducts {
   product_name: string;
   price: number;
   discount: number;
-  category: {
-    _id?: string;
-    category_name: string;
-  };
-  brand: {
-    _id?: string;
-    brand_name: string;
-  };
+  category: string;
+  brand: string;
   description: string;
   thumbnail: string;
   stock: number;
   slug: string;
   order: number;
-  isBest: {
-    type: boolean;
-    require: false;
-    default: false;
-  };
-  isRecentlyAdded: {
-    type: boolean;
-    require: false;
-    default: false;
-  };
-  isShowHome: {
-    type: boolean;
-    require: false;
-    default: false;
-  };
-  isDelete: {
-    type: boolean;
-    require: false;
-    default: false;
-  };
-  specifications: {
-    type: string;
-    require: false;
-  };
+  isBest: boolean;
+  isRecentlyAdded: boolean;
+  isShowHome: boolean;
+  isDelete: boolean;
+  specifications: string;
 }
 interface TCategory {
   _id?: string;
@@ -167,7 +142,7 @@ const ProductPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axiosClient.get(`${SETTINGS.URL_API}/v1/categories`);
+        const res = await axiosClient.get(`${SETTINGS.URL_API}/v1/categories?page=1&limit=200`);
         // console.log("Dữ liệu danh mục:", res.data);
         setCategories(res.data.data.categories_list || []);
       } catch (error) {
@@ -178,7 +153,7 @@ const ProductPage = () => {
 
     const fetchBrands = async () => {
       try {
-        const res = await axiosClient.get(`${SETTINGS.URL_API}/v1/brands`);
+        const res = await axiosClient.get(`${SETTINGS.URL_API}/v1/brands?page=1&limit=200`);
         // console.log("Dữ liệu thương hiệu:", res.data);
         setBrands(res.data.data.brands_list || []);
       } catch (error) {

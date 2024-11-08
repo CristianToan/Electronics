@@ -20,7 +20,6 @@ import { useNavigate } from "react-router-dom";
 import { buildSlug } from "../helpers/buildSlug";
 import axios from "axios";
 import { useState } from "react";
-
 interface TCategory {
   _id?: string;
   category_name: string;
@@ -34,23 +33,18 @@ interface TProducts {
   product_name: string;
   price: number;
   discount: number;
-  category: {
-    _id?: string;
-    category_name: string;
-  };
-  brand: {
-    _id?: string;
-    brand_name: string;
-  };
+  category: string;
+  brand: string;
   description: string;
   thumbnail: string;
   stock: number;
   slug: string;
   order: number;
-  specifications: {
-    type: string;
-    require: false;
-  };
+  isBest: boolean;
+  isRecentlyAdded: boolean;
+  isShowHome: boolean;
+  isDelete: boolean;
+  specifications: string;
 }
 const ProductAdd = () => {
   const navigate = useNavigate();
@@ -113,7 +107,7 @@ const ProductAdd = () => {
 
   /* ============= GET CATEGORIES, BRANDS ================ */
   const fetchCategories = async () => {
-    const url = `${SETTINGS.URL_API}/v1/categories`;
+    const url = `${SETTINGS.URL_API}/v1/categories?page=1&limit=200`;
     const res = await axiosClient.get(url);
     return res.data.data;
   };
@@ -124,7 +118,7 @@ const ProductAdd = () => {
 
   // Get brands
   const fetchBrands = async () => {
-    const url = `${SETTINGS.URL_API}/v1/brands`;
+    const url = `${SETTINGS.URL_API}/v1/brands?page=1&limit=200`;
     const res = await axiosClient.get(url);
     return res.data.data;
   };
@@ -245,7 +239,7 @@ const ProductAdd = () => {
                     <div className="form-group w-1/2 pl-2">
                       <label className="block mt-4 text-sm">
                         <span className="text-gray-700 dark:text-gray-400">
-                          Khuyến mãi
+                          Discount
                         </span>
                         <Form.Item name="discount">
                           <Input
@@ -395,7 +389,7 @@ const ProductAdd = () => {
                   <Col span={3}>
                     <Form.Item name="isBest" valuePropName="checked">
                       <Checkbox name="isBest" className="text-white">
-                        Tốt
+                        Khuyến Mãi
                       </Checkbox>
                     </Form.Item>
                   </Col>
