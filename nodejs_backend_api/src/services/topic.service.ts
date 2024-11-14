@@ -1,5 +1,5 @@
 import Topic from "../models/topic.model";
-import createError from "http-errors"
+import createError from "http-errors";
 import { ITopic } from "../types/modes";
 const createDocument = async (payload: ITopic) => {
   const topic = await Topic.create(payload);
@@ -7,10 +7,10 @@ const createDocument = async (payload: ITopic) => {
 };
 
 const findAll = async (query: any) => {
-  let objSort: any = {};
-  const sortBy = query.sort || "updatedAt";
-  const orderBy = query.order && query.order == "ASC" ? 1 : -1;
-  objSort = { ...objSort, [sortBy]: orderBy };
+  const page_str = query.page;
+  const limit_str = query.limit;
+  const page = page_str ? parseInt(page_str as string) : 1;
+  const limit = limit_str ? parseInt(limit_str as string) : 10;
 
   let objectFilters: any = {};
   if (query.keyword && query.keyword != "") {
@@ -20,15 +20,15 @@ const findAll = async (query: any) => {
     };
   }
 
-  const page_str = query.page;
-  const limit_str = query.limit;
-  const page = page_str ? parseInt(page_str as string) : 1;
-  const limit = limit_str ? parseInt(limit_str as string) : 10;
+  let objSort: any = {};
+  const sortBy = query.sort || "createdAt";
+  const orderBy = query.order && query.order == "ASC" ? 1 : -1;
+  objSort = { ...objSort, [sortBy]: orderBy };
 
-  const totalRecords = await Topic.countDocuments(objectFilters);
   const offset = (page - 1) * limit;
+  const totalRecords = await Topic.countDocuments(objectFilters);
 
-  const topic = await Topic.find({
+  const topics = await Topic.find({
     ...objectFilters,
   })
     .select("-__v -id")
@@ -36,7 +36,7 @@ const findAll = async (query: any) => {
     .skip(offset)
     .limit(limit);
   return {
-    topic_list: topic,
+    topic_list: topics,
     sort: objSort,
     filters: {
       topic_name: query.keyword || null,

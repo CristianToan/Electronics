@@ -39,7 +39,6 @@ const findAll = async (query: any) => {
     ...objectFilters,
   })
     .select("-__v -id")
-
     .sort(objSort)
     .skip(offset)
     .limit(limit);
@@ -47,7 +46,7 @@ const findAll = async (query: any) => {
     posts_list: posts,
     sorts: objSort,
     filters: {
-      topic_name: query.keyword || null,
+      post_name: query.keyword || null,
     },
     pagination: {
       page,

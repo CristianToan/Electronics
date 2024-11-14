@@ -10,7 +10,7 @@ const createDocument = async (
 ) => {
   try {
     const topic = await topicService.createDocument(req.body);
-    sendJsonSuccess(res)(topic);
+    sendJsonSuccess(res, "success", 201)(topic);
   } catch (error) {
     next(sendJsonErrors(res, error));
   }
@@ -18,7 +18,7 @@ const createDocument = async (
 
 const findAll = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const topics = await topicService.findAll(req.body);
+    const topics = await topicService.findAll(req.query);
     sendJsonSuccess(res)(topics);
   } catch (error) {
     next(sendJsonErrors(res, error));

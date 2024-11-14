@@ -1,5 +1,5 @@
 import express from "express";
-import orderController from "../../controllers/orders.controllers";
+import orderController from "../../controllers/orders.controller";
 const router = express.Router();
 
 //1. Get All orders

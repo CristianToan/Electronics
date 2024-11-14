@@ -16,10 +16,10 @@ const postSchema = new mongoose.Schema(
       type: String,
       require: false,
     },
-    category: [
+    topic: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
+        ref: "Topic",
       },
     ],
     isShowHome: {
