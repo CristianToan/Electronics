@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { axiosClient } from "../lib/axiosClient";
 import { SETTINGS } from "../constants/settings";
+
 import {
   Button,
   Checkbox,
@@ -21,6 +22,7 @@ import { buildSlug } from "../helpers/buildSlug";
 import axios from "axios";
 import { useState } from "react";
 
+
 interface TCategory {
   _id?: string;
   category_name: string;
@@ -34,23 +36,14 @@ interface TProducts {
   product_name: string;
   price: number;
   discount: number;
-  category: {
-    _id?: string;
-    category_name: string;
-  };
-  brand: {
-    _id?: string;
-    brand_name: string;
-  };
+  category: string;
+  brand: string;
   description: string;
   thumbnail: string;
   stock: number;
   slug: string;
   order: number;
-  specifications: {
-    type: string;
-    require: false;
-  };
+  specifications: string;
 }
 const ProductAdd = () => {
   const navigate = useNavigate();
@@ -175,6 +168,8 @@ const ProductAdd = () => {
       }
     }
   };
+
+  // const [editorData, setEditorData] = useState("");
 
   return (
     <>

@@ -9,6 +9,14 @@ const orderItemsSchema = new Schema<TOrderItems>({
     ref: "Product",
     require: true
   },
+  product_name: {
+    type: String,
+    require: false
+  },
+  thumbnail: {
+    type: String,
+    require: false,
+  },
   quantity: {
     type: Number,
     min: 1
@@ -20,7 +28,11 @@ const orderItemsSchema = new Schema<TOrderItems>({
   discount: {
     type: Number,
     min: 0
-  }
+  },
+  price_end: {
+    type: Number,
+    min: 0
+  },
 })
 
 const ordersSchema = new Schema<IOrder, OrderModelType>({
@@ -93,7 +105,7 @@ const ordersSchema = new Schema<IOrder, OrderModelType>({
   },
   state: {
     type: String,
-    required: true,
+    required: false,
     maxLength: 50
   },
   order_items: [orderItemsSchema], //mảng sản phẩm

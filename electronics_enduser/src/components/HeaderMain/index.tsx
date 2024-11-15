@@ -1,7 +1,16 @@
+'use client'
+import { useCart } from '@/stores/useCart';
 import Link from 'next/link';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const HeaderMain = () => {
+    const { getTotalNumber } = useCart()
+    const [isClient, setIsClient] = useState(false);
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+
     return (
         <div className="bgcolor-main">
             <div className="container">
@@ -27,11 +36,16 @@ const HeaderMain = () => {
                             </div>
                             <div className="box-cart">
                                 <div className="cart-badge badge-icons pull-right">
-                                    <a href="/cart">
+                                    <Link href="/cart">
                                         <i className="fa fa-shopping-cart"></i>
                                         <span>Giỏ hàng</span>
-                                    </a>
-                                    <span className="badge badge-sea rounded-x">0</span>
+                                    </Link>
+                                    {
+                                        isClient && getTotalNumber() > 0 && (
+                                            <span className="badge badge-sea rounded-x">{ getTotalNumber() }</span>
+                                        )
+                                    }
+                                    
                                     <div className="badge-open"></div>
                                 </div>
                             </div>

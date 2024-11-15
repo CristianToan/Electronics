@@ -4,6 +4,9 @@ import ProductFiltersSide from "@/components/ProductFiltersSide";
 import ProductItem from "@/components/ProductItem";
 import ProductSort from "@/components/ProductSort";
 import { Metadata } from "next";
+// import { redirect } from 'next/navigation';
+
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 export const metadata: Metadata = {
   title: "Sản phẩm - Electronics",
@@ -12,7 +15,18 @@ export const metadata: Metadata = {
 
 const products = Array.from(Array(20).keys()) // Chỉ giả lập, khi gọi API sẽ xóa
 
-export default async function Page() {
+export default async function Page(props: {
+  searchParams: SearchParams;
+}) {
+  const searchParams = await props.searchParams;
+  console.log("🚀 ~ searchParams:", searchParams)
+  // if (searchParams.page === '1') {
+  //   const params = new URLSearchParams(searchParams as Record<string, string>);
+  //   params.delete('page');
+  //   console.log("🚀 ~ searchParams:", params)
+  //   redirect(`/products?${params.toString()}`);
+    
+  // }
   return (
     <>
       <div className="body-content bg-page">

@@ -63,16 +63,14 @@ export type TCustomer = {
   active?: boolean;
   isDelete?: boolean;
 }
-
-
-
-
 export type TOrderItems = {
   product: ObjectId;
+  product_name: string;
   quantity: number;
   price: number;
   discount: number;
-  thumb?: string;
+  price_end: number;
+  thumbnail?: string;
   name: string;
 }
 

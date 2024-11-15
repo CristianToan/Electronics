@@ -1,9 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import authServices from '../services/auth.service'
 import { sendJsonSuccess } from "../helpers/responseHandler";
-import { ObjectId } from "mongoose";
-import jwt from 'jsonwebtoken'
-import { globalConfig } from "../constants/configs";
 
 const login = async (req: Request, res: Response, next: NextFunction)=>{
     try {

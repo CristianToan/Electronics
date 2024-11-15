@@ -3,7 +3,16 @@ import Category from '../models/categories.models';
 import Product from '../models/products.model'
 import createError from 'http-errors'
 
-
+//  Find Product by slug
+const findProductBySlug = async(slug: string)=>{
+    const product = await Product.findOne({
+        slug: slug
+    })
+    if(!product){
+        throw createError(400, 'Product Not Found')
+    }
+    return product
+}
 // Lấy sản phẩm theo thương hiệu
 const getAllByBrandSlug = async (slug: string, query: any) =>{
     /* Phân trang */
@@ -36,15 +45,15 @@ const getAllByBrandSlug = async (slug: string, query: any) =>{
 
     if(query.max_price && query.max_price != ''){
         const max_price = query.max_price
-        objectFilters = {...objectFilters, price: { $lte : max_price}}
+        objectFilters = {...objectFilters, price_end: { $lte : max_price}}
     }
     if(query.min_price && query.min_price != ''){
         const min_price = query.min_price
-        objectFilters = {...objectFilters, price: { $gte : min_price}}
+        objectFilters = {...objectFilters, price_end: { $gte : min_price}}
     }
     if(query.price && query.price != ''){
         const price = query.price.split('-')
-        objectFilters = {...objectFilters, price: { $gte: price[0], $lte: price[1] }}
+        objectFilters = {...objectFilters, price_end: { $gte: price[0], $lte: price[1] }}
     }
 
     const productsAll = await Product
@@ -111,15 +120,15 @@ const getAllByCategorySlug = async (slug: string, query: any) =>{
     // Lọc sản phẩm theo giá
     if(query.max_price && query.max_price != ''){
         const max_price = query.max_price
-        objectFilters = {...objectFilters, price: { $lte : max_price}}
+        objectFilters = {...objectFilters, price_end: { $lte : max_price}}
     }
     if(query.min_price && query.min_price != ''){
         const min_price = query.min_price
-        objectFilters = {...objectFilters, price: { $gte : min_price}}
+        objectFilters = {...objectFilters, price_end: { $gte : min_price}}
     }
     if(query.price && query.price != ''){
         const price = query.price.split('-')
-        objectFilters = {...objectFilters, price: { $gte: price[0], $lte: price[1] }}
+        objectFilters = {...objectFilters, price_end: { $gte: price[0], $lte: price[1] }}
     }
 
     const productsAll = await Product
@@ -200,15 +209,15 @@ const findAllProduct = async (query: any) => {
     // Lọc sản phẩm theo giá
     if(query.max_price && query.max_price != ''){
         const max_price = query.max_price
-        objectFilters = {...objectFilters, price: { $lte : max_price}}
+        objectFilters = {...objectFilters, price_end: { $lte : max_price}}
     }
     if(query.min_price && query.min_price != ''){
         const min_price = query.min_price
-        objectFilters = {...objectFilters, price: { $gte : min_price}}
+        objectFilters = {...objectFilters, price_end: { $gte : min_price}}
     }
     if(query.price && query.price != ''){
         const price = query.price.split('-')
-        objectFilters = {...objectFilters, price: { $gte: price[0], $lte: price[1] }}
+        objectFilters = {...objectFilters, price_end: { $gte: price[0], $lte: price[1] }}
     }
 
 
@@ -310,6 +319,7 @@ const deleteProductById = async (id: string) => {
     return product
 }
 export default {
+    findProductBySlug,
     getAllByBrandSlug,
     getAllByCategorySlug,
     findAllProduct,

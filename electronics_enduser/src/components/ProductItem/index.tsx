@@ -1,7 +1,11 @@
+"use client"
+import useCheckPageDefault from '@/helpers/checkPageDeffault'
 import Image from 'next/image'
 import React from 'react'
 
 const ProductItem = () => {
+    
+    useCheckPageDefault('products')
   return (
     <div className="card item mb-4">
         <a
