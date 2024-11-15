@@ -5,7 +5,6 @@ import React, { useState, useEffect } from "react";
 import { SETTINGS } from "../../constants/settings";
 import { TCategory } from "@/types/modes";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 import { usePathname } from "next/navigation";
 const HeaderMenu = () => {
   const pathname = usePathname();

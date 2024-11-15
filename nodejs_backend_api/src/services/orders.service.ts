@@ -173,16 +173,30 @@ const createRecordOrder = async (payload: any, customerLogined: any) => {
   if (!payload.customer) {
     throw createError(400, 'Thông tin khách hàng không hợp lệ')
   }
-  //Đi tạo tạo khách hàng mới
-  const customer = await Customer.create(payload.customer)
+  const checkExistCustomer = await Customer.findOne({
+    $or: [
+      { phone: payload.customer.phone },
+      { email: payload.customer.email }
+    ]
+  });
+
+
+  let customerId
+  if (!checkExistCustomer) {
+    //Đi tạo tạo khách hàng mới
+    const customer = await Customer.create(payload.customer)
+    customerId = customer._id
+  } else {
+    customerId = checkExistCustomer._id
+  }
   //Sau đó tạo đơn
   const payload_order = {
-    customer: customer._id,
+    customer: customerId,
     payment_type: payload.payment_type,
-    street: customer.street,
-    city: customer.city,
-    state: customer.state,
-    order_note: payload.order_note,
+    street: payload.customer.street,
+    city: payload.customer.city,
+    state: payload.customer.state,
+    order_note: payload.customer.order_note,
     order_items: payload.order_items
   }
   const order = await Order.create(payload_order)
@@ -190,6 +204,7 @@ const createRecordOrder = async (payload: any, customerLogined: any) => {
   if (order) {
     console.log('Tao don thanh cong', payload.customer.email);
     // Tạo nội dung email
+  
     const mailOptions = {
       from: 'maitanhung2@gmail.com',
       to: payload.customer.email, //email khach hang

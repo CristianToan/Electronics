@@ -22,6 +22,11 @@ const productSchema = new Schema({
     max: 70,
     default: 0
   },
+  price_end: {
+    type: Number,
+    min: 0,
+    default: 0
+  },
   category: {
     type: Schema.Types.ObjectId, //_id
     ref: 'Category',

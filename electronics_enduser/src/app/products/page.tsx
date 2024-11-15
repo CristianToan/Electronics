@@ -4,10 +4,12 @@ import ProductFiltersSide from "@/components/ProductFiltersSide";
 import ProductItem from "@/components/ProductItem";
 import ProductSort from "@/components/ProductSort";
 import { SETTINGS } from "@/constants/settings";
-import { Metadata, NextPage } from "next";
-import { TProduct } from "@/types/modes";
+import { Metadata } from "next";
+import { TFilterPrice, TProduct } from "@/types/modes";
 import PaginationComponent from "@/components/PaginationComponent";
-
+import { dataPrices } from "@/constants/seed";
+import { Suspense } from "react";
+import ProductLoading from "@/components/ProductLoading";
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 export const metadata: Metadata = {
   title: "Sản phẩm - Electronics",
@@ -18,13 +20,53 @@ export default async function ProductPage(props: {
   searchParams: SearchParams;
 }) {
   const searchParams = await props.searchParams;
-  const page  = searchParams.page || 1;
-  const limit = 12
-
+  const page = searchParams.page || 1;
+  const priceRange = searchParams.p || "";
+  const limit = 12;
+  const brand = searchParams.brands || "";
+  const category = searchParams.categories || "";
+  const sort = searchParams.sort || "";
+  const order = searchParams.order || "";
   let fetchProducts;
   let pagination;
+  let url = `${SETTINGS.URL_API}/v1/products?page=${page}&limit=${limit}`;
+  if (sort) {
+    url += `&sort=${sort}`;
+  }
+  if (order) {
+    url += `&order=${order}`;
+  }
+  if (brand) {
+    url += `&brands=${brand}`;
+  }
+  if (category) {
+    url += `&categories=${category}`;
+  }
+  if (priceRange.includes("tren")) {
+    const priceFilter = dataPrices.find(
+      (p: TFilterPrice) => p.href === priceRange
+    );
+    if (priceFilter) {
+      url += `&min_price=${priceFilter.min}`;
+    }
+  } else if (priceRange.includes("duoi")) {
+    const priceFilter = dataPrices.find(
+      (p: TFilterPrice) => p.href === priceRange
+    );
+    if (priceFilter) {
+      url += `&max_price=${priceFilter.max}`;
+    }
+  } else {
+    const priceFilter = dataPrices.find(
+      
+      (p: TFilterPrice) => p.href === priceRange
+    );
+    if (priceFilter) {
+      url += `&price=${priceFilter.min}-${priceFilter.max}`;
+    }
+  }
   try {
-    const dataProduct = await fetch(`${SETTINGS.URL_API}/v1/products?page=${page}&limit=${limit}`, {
+    const dataProduct = await fetch(`${url}`, {
       next: { revalidate: 60 },
     });
     fetchProducts = await dataProduct.json();
@@ -32,9 +74,8 @@ export default async function ProductPage(props: {
   } catch (error) {
     console.error("Error fetching product:", error);
   }
-
   return (
-    <>
+    <Suspense fallback={<ProductLoading />}>
       <div className="body-content bg-page">
         <div className="container">
           <div className="wrap-product">
@@ -84,42 +125,6 @@ export default async function ProductPage(props: {
         <div className="clearfix" />
       </div>
       <div className="clearfix"></div>
-    </>
+    </Suspense>
   );
 }
-// Fetch dữ liệu từ server dựa vào trang hiện tại
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const page = parseInt((context.query.page as string) || "1", 10);
-
-//   try {
-//     const res = await fetch(
-//       `${SETTINGS.URL_API}/v1/products?page=${page}&limit=${ITEMS_PER_PAGE}`,
-//       {
-//         next: { revalidate: 60 },
-//       }
-//     );
-
-//     if (!res.ok) {
-//       throw new Error("Failed to fetch products");
-//     }
-
-//     const data = await res.json();
-
-//     return {
-//       props: {
-//         products: data.data.products_list,
-//         totalProducts: data.data.total_products, // Đảm bảo API trả về tổng số sản phẩm
-//         currentPage: page,
-//       },
-//     };
-//   } catch (error) {
-//     console.error("Error fetching product:", error);
-//     return {
-//       props: {
-//         products: [],
-//         totalProducts: 0,
-//         currentPage: page,
-//       },
-//     };
-//   }
-// };
