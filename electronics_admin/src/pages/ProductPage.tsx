@@ -56,7 +56,16 @@ const ProductPage = () => {
 
   const keyword_str = params.get("keyword");
   const keyword = keyword_str ? keyword_str : null;
-
+  useEffect(() => {
+    if (
+      page === 1 &&
+      !params.has("msg") &&
+      !params.has("keyword") &&
+      !params.has("category") &&
+      !params.has("brand")
+    )
+      navigate("/product");
+  }, [page, navigate, params]);
   const fetchProduct = async () => {
     const limit = 10;
     let url = `${SETTINGS.URL_API}/v1/products?`;
@@ -81,8 +90,6 @@ const ProductPage = () => {
     queryKey: ["products", page, category_id, brand_id, keyword],
     queryFn: fetchProduct,
   });
-  // console.log(getAllProduct.data?.products_list);
-
   const onFinishSearch = (values: {
     keyword?: string;
     category?: string;
@@ -142,7 +149,9 @@ const ProductPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axiosClient.get(`${SETTINGS.URL_API}/v1/categories?page=1&limit=200`);
+        const res = await axiosClient.get(
+          `${SETTINGS.URL_API}/v1/categories?page=1&limit=200`
+        );
         // console.log("Dữ liệu danh mục:", res.data);
         setCategories(res.data.data.categories_list || []);
       } catch (error) {
@@ -153,7 +162,9 @@ const ProductPage = () => {
 
     const fetchBrands = async () => {
       try {
-        const res = await axiosClient.get(`${SETTINGS.URL_API}/v1/brands?page=1&limit=200`);
+        const res = await axiosClient.get(
+          `${SETTINGS.URL_API}/v1/brands?page=1&limit=200`
+        );
         // console.log("Dữ liệu thương hiệu:", res.data);
         setBrands(res.data.data.brands_list || []);
       } catch (error) {
@@ -188,10 +199,10 @@ const ProductPage = () => {
   return (
     <>
       <Helmet>
-        <meta charSet='utf-8' />
+        <meta charSet="utf-8" />
         <title>Electronics - Sản phẩm </title>
-        <link rel='canonical' href={window.location.href} />
-        <meta name='description' content='Sản phẩm' />
+        <link rel="canonical" href={window.location.href} />
+        <meta name="description" content="Sản phẩm" />
       </Helmet>
       <main className="h-full overflow-y-auto">
         <div className="container px-6 mx-auto grid">
@@ -407,6 +418,7 @@ const ProductPage = () => {
                         className="inline-flex items-center"
                         current={currentPage}
                         onChange={(page) => {
+                          setCurrentPage(page);
                           navigate(`/product?page=${page}`);
                         }}
                         total={
