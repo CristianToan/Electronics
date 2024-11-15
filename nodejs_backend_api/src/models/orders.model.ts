@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { orderStatus, paymentType } from '../constants/order.constant';
-import mongooseLeanVirtuals  from 'mongoose-lean-virtuals';
+import mongooseLeanVirtuals from 'mongoose-lean-virtuals';
 import { IOrder, TOrderItems, OrderModelType } from '../types/modes';
 
 const orderItemsSchema = new Schema<TOrderItems>({
@@ -8,6 +8,14 @@ const orderItemsSchema = new Schema<TOrderItems>({
     type: Schema.Types.ObjectId,
     ref: "Product",
     require: true
+  },
+  product_name: {
+    type: String,
+    require: false
+  },
+  thumbnail: {
+    type: String,
+    require: false,
   },
   quantity: {
     type: Number,
@@ -20,7 +28,11 @@ const orderItemsSchema = new Schema<TOrderItems>({
   discount: {
     type: Number,
     min: 0
-  }
+  },
+  price_end: {
+    type: Number,
+    min: 0
+  },
 })
 
 const ordersSchema = new Schema<IOrder, OrderModelType>({
@@ -46,7 +58,7 @@ const ordersSchema = new Schema<IOrder, OrderModelType>({
      * 3 = Rejected; 
      * 4 = Completed
      */
-    enum:[1,2,3,4],
+    enum: [1, 2, 3, 4],
     default: 1, // mặc định khi tạo đơn mới
   },
   payment_type: {
@@ -59,7 +71,7 @@ const ordersSchema = new Schema<IOrder, OrderModelType>({
      * 3 = ATM; 
      * 4 = Cash
      */
-    enum:[1,2,3,4],
+    enum: [1, 2, 3, 4],
     default: 4, // mặc định khi tạo đơn mới
   },
   order_date: {
@@ -106,17 +118,17 @@ const ordersSchema = new Schema<IOrder, OrderModelType>({
    Soft delete 
    Khi xóa sp thì đi update isDelete = true
    */
-   isDelete: {
+  isDelete: {
     type: Boolean,
     require: false,
     default: false
   },
 },
-{
-  timestamps: true, //Tạo tự động thêm 2 trường createAt, updateAt
-  //collection: 'category', //Tên collection Cố định theo tên bạn đặt
-  
-}
+  {
+    timestamps: true, //Tạo tự động thêm 2 trường createAt, updateAt
+    //collection: 'category', //Tên collection Cố định theo tên bạn đặt
+
+  }
 );
 
 

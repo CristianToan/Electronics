@@ -113,7 +113,11 @@ productSchema.pre('save',  function (next) {
   if(product.product_name && product.slug == undefined){
     product.slug = buildSlug(product.product_name)
   } 
-
+  if(product.discount && product.discount > 0){
+    product.price_end = product.price - (product.price * product.discount / 100)
+  }else{
+    product.price_end = product.price
+  }
   next();
 });
 //Export một Model

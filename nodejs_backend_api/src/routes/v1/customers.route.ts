@@ -2,6 +2,10 @@ import express from "express";
 import customerController from "../../controllers/customers.controller";
 const router = express.Router();
 
+//POST v1/auth/login
+router.post('/login',  customerController.login)
+
+router.post('/refresh-token',  customerController.refreshToken)
 //1. Get All Customer
 router.get('', customerController.findAllCustomer)
 
