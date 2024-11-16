@@ -5,11 +5,11 @@ import { Autoplay, Navigation } from "swiper/modules";
 import ProductBanner from "../ProductBanner";
 import ProductItem from "../ProductItem";
 import { SETTINGS } from "@/constants/settings";
-import { TProducts, TProductsCat } from "@/types/modes";
+import { TProduct, TCategory } from "@/types/modes";
 import {} from "@/types/modes";
 import Skeleton from "react-loading-skeleton";
-const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
-  const [products, setProducts] = useState<TProducts[] | []>([]);
+const ProductBox = ({ dataCategory }: { dataCategory: TCategory }) => {
+  const [products, setProducts] = useState<TProduct[] | []>([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
@@ -50,7 +50,7 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
             <Swiper
               className='product-slider my-4'
               modules={[Navigation, Autoplay]}
-              spaceBetween={3}
+              spaceBetween={0}
               slidesPerView={4}
               loop={false}
               autoplay={{
@@ -87,7 +87,7 @@ const ProductBox = ({ dataCategory }: { dataCategory: TProductsCat }) => {
                 ? products?.map((item) => {
                     return (
                       <SwiperSlide key={`product_box_${item._id}`}>
-                        <ProductItem data={item} />
+                        <ProductItem product={item} />
                       </SwiperSlide>
                     );
                   })

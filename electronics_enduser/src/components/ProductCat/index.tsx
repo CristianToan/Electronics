@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from "react";
 import ProductBox from "../ProductBox";
 import { SETTINGS } from "@/constants/settings";
-import { TProductsCat } from "@/types/modes";
+import { TCategory } from "@/types/modes";
 
 const ProductCat = () => {
-  const [productsCat, setProductsCat] = useState<TProductsCat[] | []>([]);
+  const [productsCat, setProductsCat] = useState<TCategory[] | []>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {

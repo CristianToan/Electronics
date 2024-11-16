@@ -6,18 +6,18 @@ import Link from "next/link";
 import { formatToVND } from "@/helpers/numbersToCurrency";
 
 const ProductItem = ({ product }: { product: TProduct }) => {
-  let arr_specifi: any = [];
+  let arr_specifi: string[] = [];
   if (product?.specifications) {
     arr_specifi = product.specifications.split("\n");
   }
 
   return (
-    <div className="card item mb-4">
+    <div className='card item mb-4 '>
       <Link
         href={product ? `/products/${product.slug}` : "#"}
-        className="product-item"
+        className='product-item'
       >
-        <div className="card-img-top">
+        <div className='card-img-top'>
           {product && product.thumbnail ? (
             <Image
               src={`${SETTINGS.URL_IMAGE}/${product.thumbnail}`}
@@ -28,9 +28,9 @@ const ProductItem = ({ product }: { product: TProduct }) => {
             />
           ) : null}
         </div>
-        <div className="card-body">
-          <p className="card-title product-name">{product?.product_name}</p>
-          <ul className="list-inline product-attributes">
+        <div className='card-body h-[200px] flex flex-col'>
+          <p className='card-title product-name'>{product?.product_name}</p>
+          <ul className='list-inline product-attributes '>
             {arr_specifi.slice(0, 3).map((spec: string, index: number) => (
               <li key={index}>
                 {spec.split(":").length == 2
@@ -39,30 +39,30 @@ const ProductItem = ({ product }: { product: TProduct }) => {
               </li>
             ))}
           </ul>
-          <div className="card-text product-price">
+          <div className='card-text product-price mt-max grow flex items-end'>
             {product && product.price ? (
               product.discount ? (
-                <>
-                  <div>
-                    {formatToVND(product.price * (1 - product.discount / 100))}
+                <div className='flex flex-col'>
+                  <div style={{ textDecoration: "line-through" }}>
+                    {" "}
+                    {formatToVND(product.price)}
                   </div>
-                  <div>
-                    <span
-                      className="text-muted "
-                      style={{ textDecoration: "line-through" }}
-                    >
-                      {formatToVND(product.price)}
+                  <div className=''>
+                    <span className='text-red-600'>
+                      {formatToVND(
+                        product.price * (1 - product.discount / 100)
+                      )}
                     </span>
                     <span style={{ paddingLeft: "5px" }}>
                       {typeof product?.discount === "number" &&
                         product.discount > 0 && (
-                          <span className="product-specialtype-box">
+                          <span className='product-specialtype-box'>
                             {product.discount}%
                           </span>
                         )}
                     </span>
                   </div>
-                </>
+                </div>
               ) : (
                 <span>{formatToVND(product.price)}</span>
               )
