@@ -1,7 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { axiosClient } from "../lib/axiosClient";
 import { SETTINGS } from "../constants/settings";
-
 import {
   Button,
   Checkbox,
@@ -168,8 +167,6 @@ const ProductAdd = () => {
       }
     }
   };
-
-  // const [editorData, setEditorData] = useState("");
 
   return (
     <>
@@ -383,6 +380,7 @@ const ProductAdd = () => {
                           padding: 0,
                         }}
                       />
+                      
                     </Form.Item>
                   </label>
                 </div>

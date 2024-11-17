@@ -66,7 +66,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
             <div className="product-detail-content-border"></div>
 
             <div className="row">
-              <ProductDetail />
+              <ProductDetail product = {product.data} />
               <ProductSpecifications />
             </div>
           </div>
