@@ -3,160 +3,171 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { SETTINGS } from "../constants/settings"
 import { axiosClient } from "../lib/axiosClient"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button, Form, Input, message, Pagination, Spin } from "antd"
 import { LoadingOutlined } from '@ant-design/icons';
 import { FaLock } from "react-icons/fa";
-import useAuth from "../hooks/useAuth"
+import useAuth from "../hooks/useAuth";
 
-interface TStaff{
-	_id: string;
-	avatar?: string;
-	first_name: string;
-	last_name: string;
-	fullname: string;
-	phone: string;
-	email: string;
-	password: string;
-	active?: boolean,
-	role?: number;
+interface TStaff {
+  _id: string;
+  avatar?: string;
+  first_name: string;
+  last_name: string;
+  fullname: string;
+  phone: string;
+  email: string;
+  password: string;
+  active?: boolean;
+  role?: number;
 }
-interface TFilter{
-	keyword: string;
-	email: string;
-	phone: string;
+interface TFilter {
+  keyword: string;
+  email: string;
+  phone: string;
 }
 
 const StaffsPage = () => {
-	const navigate = useNavigate()
-	const [params] = useSearchParams()
-	const {user} = useAuth()
+  const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const { user } = useAuth();
 
-	const [formSearch] = Form.useForm();
-	const [messageApi, contextHolder] = message.useMessage();
-	const page_str = params.get("page");
-	const page = page_str ? parseInt(page_str) : 1;
-	const limit = 10;
-	const keyword = params.get('keyword')
-	const name = keyword ? keyword : null
-	const email_staff = params.get('email')
-	const email = email_staff ? email_staff : null
-	const phone_staff = params.get('phone')
-	const phone = phone_staff ? phone_staff : null
-	const msg = params.get("msg")
+  const [formSearch] = Form.useForm();
+  const [messageApi, contextHolder] = message.useMessage();
+  const page_str = params.get("page");
+  const page = page_str ? parseInt(page_str) : 1;
+  const limit = 10;
+  const keyword = params.get("keyword");
+  const name = keyword ? keyword : null;
+  const email_staff = params.get("email");
+  const email = email_staff ? email_staff : null;
+  const phone_staff = params.get("phone");
+  const phone = phone_staff ? phone_staff : null;
+  const msg = params.get("msg");
 
-    
+  const hasShownMessageRef = useRef(false);
+  useEffect(() => {
+    if (msg && msg !== null && !hasShownMessageRef.current) {
+      messageApi.open({
+        type: "success",
+        content: "Thêm thành viên thành công!",
+      });
+      hasShownMessageRef.current = true;
+    }
+  }, [msg, messageApi]);
 
-	const hasShownMessageRef = useRef(false);
+  useEffect(() => {
+    if (
+      page === 1 &&
+      !params.has("msg") &&
+      !params.has("keyword") &&
+      !params.has("phone") &&
+      !params.has("email")
+    )
+      navigate("/staffs");
+  }, [page, navigate, params]);
+
+  const fetchStaffs = async () => {
+    let url = `${SETTINGS.URL_API}/v1/staffs?`;
+    if (name) {
+      url += `keyword=${name}&`;
+    }
+    if (email) {
+      url += `email=${email}&`;
+    }
+    if (phone) {
+      url += `phone=${phone}&`;
+    }
+    url += `page=${page}&limit=${limit}`;
+    const response = await axiosClient.get(url);
+    return response.data.data;
+  };
+  const getAllStaffs = useQuery({
+    queryKey: ["staffs", page, name, email, phone],
+    queryFn: fetchStaffs,
+  });
+
+  const queryClient = useQueryClient();
+  const fetchDeleleStaff = async (id: string) => {
+    const url = `${SETTINGS.URL_API}/v1/staffs/${id}`;
+    const res = await axiosClient.delete(url);
+    return res.data.data;
+  };
+  const deleteStaff = useMutation({
+    mutationFn: fetchDeleleStaff,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["staffs", page, name, email, phone],
+      });
+
+      messageApi.open({
+        type: "success",
+        content: "Xóa thành viên thành công!",
+      });
+    },
+    onError: () => {
+      messageApi.open({
+        type: "error",
+        content: "Có lỗi trong quá trình xóa!",
+      });
+    },
+  });
+
+  const handleDelete = (itemId: string) => {
+    const confirmed = window.confirm("Bạn có chắc chắn muốn xóa không?");
+    if (confirmed) {
+      deleteStaff.mutate(itemId);
+    }
+  };
+
+  const onFinishSearch = async (values: TFilter) => {
+    const { keyword, email, phone } = values;
+
+    const queryString = [
+      keyword ? `keyword=${keyword.trim()}` : "",
+      email ? `email=${email.trim()}` : "",
+      phone ? `phone=${phone.trim()}` : "",
+    ]
+      .filter(Boolean)
+      .join("&");
+
+    navigate(`/staffs${queryString ? `?${queryString}` : ""}`);
+  };
+  const onFinishFailedSearch = async (errorInfo: unknown) => {
+    console.log("ErrorInfo", errorInfo);
+  };
+
+ 	useEffect(() => {
+		if (user?.role != 1) {
+		navigate("/");
+		}
+	}, [navigate, user]);
+
+	const [currentPage, setCurrentPage] = useState(page);
 	useEffect(() => {
-		if (msg && msg !== null && !hasShownMessageRef.current) {
-			messageApi.open({
-				type: "success",
-				content: "Thêm thành viên thành công!",
-			});
-			hasShownMessageRef.current = true;
-		}
-	}, [msg,messageApi]);
-
-
-	useEffect(() => {
-        if (page === 1 && !params.has("msg") && !params.has("keyword") && !params.has("phone") && !params.has("email")) navigate("/staffs");
-    }, [page, navigate, params]);
-	
-
-	const fetchStaffs = async() =>{
-		let url = `${SETTINGS.URL_API}/v1/staffs?`
-		if(name){
-			url += `keyword=${name}&`
-		}
-		if(email){
-			url += `email=${email}&`
-		}
-		if(phone){
-			url += `phone=${phone}&`
-		}
-		url += `page=${page}&limit=${limit}`
-		const response = await axiosClient.get(url)
-		return response.data.data
-	}
-	const getAllStaffs = useQuery({
-		queryKey: ['staffs',page, name,email, phone],
-		queryFn: fetchStaffs
-	})
-
-	const queryClient = useQueryClient();
-	const fetchDeleleStaff =  async (id: string) => {
-		const url = `${SETTINGS.URL_API}/v1/staffs/${id}`
-		const res = await axiosClient.delete(url)
-		return res.data.data
-	}
-	const deleteStaff = useMutation({
-		mutationFn: fetchDeleleStaff,
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: ['staffs',page, name,email, phone],
-			});
-	  
-			messageApi.open({
-			  type: "success",
-			  content: "Xóa thành viên thành công!",
-			});
-		},
-		onError: () => {
-			messageApi.open({
-			  type: "error",
-			  content: "Có lỗi trong quá trình xóa!",
-			});
-		},
-	})
-
-	const handleDelete = (itemId: string) => {
-        const confirmed = window.confirm("Bạn có chắc chắn muốn xóa không?");
-        if (confirmed) {
-            deleteStaff.mutate(itemId);
-        }
-    };
-
-	const onFinishSearch = async (values:TFilter) => {
-        const { keyword, email, phone } = values;
-
-		const queryString = [
-			keyword ? `keyword=${keyword.trim()}` : '',
-			email ? `email=${email.trim()}` : '',
-			phone ? `phone=${phone.trim()}` : ''
-		]
-		.filter(Boolean)
-		.join('&');
-
-		navigate(`/staffs${queryString ? `?${queryString}` : ''}`);
-	};
-    const onFinishFailedSearch = async (errorInfo:unknown) => {
-        console.log("ErrorInfo", errorInfo);
-    };
-
-	useEffect(() => {
-        if(user?.role != 1){
-            navigate('/')
-        }
-    }, [navigate, user])
+		setCurrentPage(page)
+	  }, [page, params]);
 	
   	return (
     <>
-		<Helmet>
-			<meta charSet="utf-8" />
-			<title>Electronics - Nhân viên </title>
-			<link rel="canonical" href={window.location.href} />
-			<meta name="description" content="Nhân viên" />
-		</Helmet>
-		{contextHolder}
-		<main className="h-full overflow-y-auto">
-			<div className="container px-6 mx-auto grid">
-				<h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-					Nhân viên
-				</h2>
-				<Link to="/staff/add" className="w-[120px] my-3 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-					Thêm mới <span className="ml-2">+</span>
-				</Link>
+      <Helmet>
+        <meta charSet='utf-8' />
+        <title>Electronics - Nhân viên </title>
+        <link rel='canonical' href={window.location.href} />
+        <meta name='description' content='Nhân viên' />
+      </Helmet>
+      {contextHolder}
+      <main className='h-full overflow-y-auto'>
+        <div className='container px-6 mx-auto grid'>
+          <h2 className='my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200'>
+            Nhân viên
+          </h2>
+          <Link
+            to='/staff/add'
+            className='w-[120px] my-3 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple'
+          >
+            Thêm mới <span className='ml-2'>+</span>
+          </Link>
 
 				{
 					getAllStaffs.isLoading ? (
@@ -296,8 +307,9 @@ const StaffsPage = () => {
 										{getAllStaffs?.data?.pagination.totalRecords > getAllStaffs?.data?.pagination.limit && (
 											<Pagination
 												className="inline-flex items-center"
-												defaultCurrent={1}
+												current={currentPage}
 												onChange={(page) => {
+													setCurrentPage(page);
 													navigate(`/staffs?page=${page}`);
 												}}
 												total={getAllStaffs?.data?.pagination.totalRecords || 0}
@@ -316,7 +328,7 @@ const StaffsPage = () => {
 			</div>
 		</main>
     </>
-  )
-}
+  );
+};
 
-export default StaffsPage
+export default StaffsPage;
