@@ -20,6 +20,8 @@ import { useNavigate } from "react-router-dom";
 import { buildSlug } from "../helpers/buildSlug";
 import axios from "axios";
 import { useState } from "react";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 interface TCategory {
   _id?: string;
   category_name: string;
@@ -51,6 +53,8 @@ const ProductAdd = () => {
   const [form] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [editorData, setEditorData] = useState("");
+
 
   /* ============= THEM MOI ================ */
   const fetchCreateProduct = async (payload: TProducts) => {
@@ -85,7 +89,7 @@ const ProductAdd = () => {
     } else {
       const resulUpload = await handleUpload(fileList[0]);
       if (resulUpload !== null) {
-        const info_product = { ...values, thumbnail: resulUpload };
+        const info_product = { ...values, thumbnail: resulUpload ,  description: editorData};
         // Gọi api để thêm sản phẩm
         createMutationProduct.mutate(info_product);
       }
@@ -372,7 +376,7 @@ const ProductAdd = () => {
                       className="pl-3 block w-full mt-1 text-sm dark:text-gray-300 dark:bg-gray-700 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
                       name="description"
                     >
-                      <Input.TextArea
+                      {/* <Input.TextArea
                         rows={5}
                         className="pl-3 block w-full mt-1 text-sm dark:text-gray-300 dark:bg-gray-700 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
                         style={{
@@ -380,6 +384,45 @@ const ProductAdd = () => {
                           outline: "none",
                           boxShadow: "none",
                           padding: 0,
+                        }}
+                      /> */}
+                      <CKEditor
+                        editor={ClassicEditor}
+                        data={editorData} 
+                        onChange={(_, editor) => {
+                          const data = editor.getData();
+                          setEditorData(data);
+                        }}
+                        config={{
+                          toolbar: [
+                            "heading",
+                            "|",
+                            "bold",
+                            "italic",
+                            "link",
+                            "bulletedList",
+                            "numberedList",
+                            "blockQuote",
+                            "|",
+                            "insertTable",
+                            "tableColumn",
+                            "tableRow",
+                            "mergeTableCells",
+                            "|",
+                            "undo",
+                            "redo",
+                            "|",
+                          ],
+                          image: {
+                            toolbar: [
+                              "imageTextAlternative",
+                              "imageStyle:full",
+                              "imageStyle:side",
+                            ],
+                          },
+
+                          initialData:
+                            "<p>Nội dung khởi đầu của bạn ở đây.</p>",
                         }}
                       />
                     </Form.Item>

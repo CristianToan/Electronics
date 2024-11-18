@@ -19,7 +19,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
-
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 interface TCategory {
   _id?: string;
   category_name: string;
@@ -40,10 +41,6 @@ interface TProducts {
   stock: number;
   slug: string;
   order: number;
-  isBest: boolean;
-  isRecentlyAdded: boolean;
-  isShowHome: boolean;
-  isDelete: boolean;
   specifications: string;
 }
 const ProductEdit = () => {
@@ -65,6 +62,13 @@ const ProductEdit = () => {
     queryFn: () => fetchUpdateProduct(id as string),
     enabled: !!id,
   });
+
+  const [editorData, setEditorData] = useState("");
+  useEffect(() => {
+    if (getProductById.data) {
+      setEditorData(getProductById.data.description || "");
+    }
+  }, [getProductById.data]);
   useEffect(() => {
     if (getProductById.data) {
       formUpdate.setFieldsValue({
@@ -98,12 +102,12 @@ const ProductEdit = () => {
   const onFinish = async (values: TProducts) => {
     if (fileList.length === 0) {
       // Nếu không có file nào được chọn, vẫn có thể cập nhật sản phẩm
-      const info_product = { id: id!, ...values }; // Không cần thêm thumbnail
+      const info_product = { id: id!, ...values, description: editorData }; // Không cần thêm thumbnail
       updateMutationProduct.mutate(info_product);
     } else {
       const resulUpload = await handleUpload(fileList[0]);
       if (resulUpload !== null) {
-        const info_product = { id: id!, ...values, thumbnail: resulUpload };
+        const info_product = { id: id!, ...values, thumbnail: resulUpload , description: editorData};
         // Gọi API để cập nhật sản phẩm
         updateMutationProduct.mutate(info_product);
       }
@@ -176,7 +180,7 @@ const ProductEdit = () => {
   };
   /* ============= GET CATEGORIES, BRANDS ================ */
   const fetchCategories = async () => {
-    const url = `${SETTINGS.URL_API}/v1/categories?page=1&limit=200`;
+    const url = `${SETTINGS.URL_API}/v1/categories`;
     const res = await axiosClient.get(url);
     return res.data.data;
   };
@@ -187,7 +191,7 @@ const ProductEdit = () => {
   //console.log(queryCategories.data?.categories_list);
   // Get brands
   const fetchBrands = async () => {
-    const url = `${SETTINGS.URL_API}/v1/brands?page=1&limit=200`;
+    const url = `${SETTINGS.URL_API}/v1/brands`;
     const res = await axiosClient.get(url);
     return res.data.data;
   };
@@ -271,7 +275,7 @@ const ProductEdit = () => {
                     <div className="form-group w-1/2 pl-2">
                       <label className="block mt-4 text-sm">
                         <span className="text-gray-700 dark:text-gray-400">
-                          Discount
+                          Khuyến mãi
                         </span>
                         <Form.Item name="discount">
                           <Input
@@ -400,10 +404,10 @@ const ProductEdit = () => {
                       Chi tiết sản phẩm
                     </span>
                     <Form.Item
-                      className="pl-3 block w-full mt-1 text-sm dark:text-gray-300 dark:bg-gray-700 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                      className="block w-full mt-1 text-smform-input"
                       name="description"
                     >
-                      <Input.TextArea
+                      {/* <Input.TextArea
                         rows={5}
                         className="pl-3 block w-full mt-1 text-sm dark:text-gray-300 dark:bg-gray-700 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
                         style={{
@@ -411,6 +415,45 @@ const ProductEdit = () => {
                           outline: "none",
                           boxShadow: "none",
                           padding: 0,
+                        }}
+                      /> */}
+                      <CKEditor
+                        editor={ClassicEditor}
+                        data={editorData}
+                        onChange={(_, editor) => {
+                          const data = editor.getData();
+                          setEditorData(data);
+                        }}
+                        config={{
+                          toolbar: [
+                            "heading",
+                            "|",
+                            "bold",
+                            "italic",
+                            "link",
+                            "bulletedList",
+                            "numberedList",
+                            "blockQuote",
+                            "|",
+                            "insertTable",
+                            "tableColumn",
+                            "tableRow",
+                            "mergeTableCells",
+                            "|",
+                            "undo",
+                            "redo",
+                            "|",
+                          ],
+                          image: {
+                            toolbar: [
+                              "imageTextAlternative",
+                              "imageStyle:full",
+                              "imageStyle:side",
+                            ],
+                          },
+
+                          initialData:
+                            "<p>Nội dung khởi đầu của bạn ở đây.</p>",
                         }}
                       />
                     </Form.Item>
