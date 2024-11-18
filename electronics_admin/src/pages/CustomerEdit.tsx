@@ -4,13 +4,12 @@ import {
   Input,
   message,
   Radio,
-  Select,
   Upload,
   UploadFile,
   UploadProps,
 } from "antd";
 import { Helmet } from "react-helmet-async";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { SETTINGS } from "../constants/settings";
 import { axiosClient } from "../lib/axiosClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -33,9 +32,7 @@ interface TCustomer {
   zip_code: string;
   active?: boolean;
 }
-// const { Option } = Select;
 const CustomerEdit = () => {
-  // const navigate = useNavigate();
   const [formUpdate] = Form.useForm();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { id } = useParams();

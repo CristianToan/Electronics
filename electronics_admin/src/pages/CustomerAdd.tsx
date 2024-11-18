@@ -4,7 +4,6 @@ import {
   Input,
   message,
   Radio,
-  Select,
   Upload,
   UploadFile,
   UploadProps,
@@ -17,7 +16,6 @@ import { UploadOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// import useAuth from "../hooks/useAuth";
 interface TCustomer {
   _id: string;
   avatar?: string;
@@ -33,15 +31,8 @@ interface TCustomer {
   zip_code: string;
   active?: boolean;
 }
-const { Option } = Select;
 const CustomerAdd = () => {
   const navigate = useNavigate();
-  //   const { user } = useAuth();
-  //   useEffect(() => {
-  //     if (user?.role !== 1) {
-  //       navigate("/");
-  //     }
-  //   }, [navigate, user]);
 
   const [formCreate] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
