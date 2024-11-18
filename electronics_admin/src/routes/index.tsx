@@ -2,6 +2,9 @@ import BrandEdit from "../pages/BrandEdit";
 import BrandPage from "../pages/BrandPage";
 import CategoriesPage from "../pages/CategoriesPage";
 import CategoryEdit from "../pages/CategoryEdit";
+import CustomerAdd from "../pages/CustomerAdd";
+import CustomerEdit from "../pages/CustomerEdit";
+import CustomersPage from "../pages/CustomersPage";
 import Dashboard from "../pages/Dashboard";
 import NoPage from "../pages/NoPage";
 import PostAdd from "../pages/PostAdd";
@@ -28,6 +31,10 @@ const routesPage = [
   { path: "/staffs", element: <StaffsPage /> },
   { path: "/staff/add", element: <StaffAdd /> },
   { path: "/staff/:id", element: <StaffEdit /> },
+  { path: "/customers", element: <CustomersPage /> },
+  { path: "/customer/add", element: <CustomerAdd /> },
+  { path: "/customers/:id", element: <CustomerEdit /> },
+
   { path: "/post", element: <PostPage /> },
   { path: "/post/add", element: <PostAdd /> },
   { path: "/post/:id", element: <PostEdit /> },
