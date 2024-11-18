@@ -2,25 +2,50 @@
 import React, { useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 interface PaginationComponentProps {
   totalPages: number;
 }
-export default function PaginationComponent({ totalPages }: PaginationComponentProps) {
+export default function PaginationComponent({
+  totalPages,
+}: PaginationComponentProps) {
   const [page, setPage] = React.useState(1);
+  const searchParams = useSearchParams();
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
   const router = useRouter();
+  // const { query } = router;
+  // console.log("query", query);
+
+  // useEffect(() => {
+  //   // Kiểm tra và loại bỏ `page=1` khi trang tải lần đầu
+  //   console.log("searchParams",searchParams.toString())
+  //   if(!searchParams.toString() || searchParams.toString() === ''){
+  //     router.push(`/`);
+  //   }
+
+  // }, [searchParams,router]);
+
   useEffect(() => {
-    page == 1
-      ? router.push(`/products`)
-      : router.push(`/products?page=${page}`);
-  }, [page]);
+    const currentParams = new URLSearchParams(window.location.search);
+    if (page === 1) {
+      currentParams.delete("page");
+    } else {
+      currentParams.set("page", page.toString());
+    }
+
+    router.push(`/products?${currentParams.toString()}`);
+  }, [page, searchParams, router]);
 
   return (
-    <Stack spacing={2} alignItems="center">
-      <Pagination count={totalPages} page={page} onChange={handleChange} color="primary" />
+    <Stack spacing={2} alignItems='center'>
+      <Pagination
+        count={totalPages}
+        page={page}
+        onChange={handleChange}
+        color='primary'
+      />
     </Stack>
   );
 }

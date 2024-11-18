@@ -43,7 +43,9 @@ const ProductItem = ({ product }: { product: TProduct }) => {
             {product && product.price ? (
               product.discount ? (
                 <div className='flex flex-col'>
-                  <div style={{ textDecoration: "line-through" }}>
+                  <div
+                    style={{ textDecoration: "line-through", color: "black" }}
+                  >
                     {" "}
                     {formatToVND(product.price)}
                   </div>

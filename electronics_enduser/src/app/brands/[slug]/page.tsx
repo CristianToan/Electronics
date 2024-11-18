@@ -1,30 +1,73 @@
-import Breadcrumb from "@/components/Breadcrumb";
 import ProductFilters from "@/components/ProductFilters";
 import ProductFiltersSide from "@/components/ProductFiltersSide";
 import ProductItem from "@/components/ProductItem";
 import ProductSort from "@/components/ProductSort";
 import { SETTINGS } from "@/constants/setting";
-import { TProduct } from "@/types/modes";
+import { TFilterPrice, TProduct } from "@/types/modes";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { dataPrices } from "@/constants/seed";
+import PaginationComponent from "@/components/PaginationComponent";
+import Breadcrumb from "@/components/Breadcrumb";
 
-async function fetchBrandData(slug: string, searchParams: URLSearchParams) {
-  try {
-    const url = new URL(`${SETTINGS.URL_API}/v1/products/brand/${slug}`);
+type SearchParams = { [key: string]: string | string[] | undefined };
+export async function fetchBrandData(
+  params: { slug: string },
+  searchParams: SearchParams
+) {
+  const resolvedSearchParams = searchParams;
+  const page = resolvedSearchParams.page || 1;
+  const priceRange = resolvedSearchParams.p || "";
+  const limit = 12;
+  const brand = resolvedSearchParams.brands || "";
+  const category = resolvedSearchParams.categories || "";
+  const sort = resolvedSearchParams.sort || "";
+  const order = resolvedSearchParams.order || "";
 
-    // Add search parameters to the URL
-    searchParams.forEach((value, key) => {
-      url.searchParams.append(key, value);
-    });
-
-    const res = await fetch(url.toString(), { next: { revalidate: 60 } });
-    if (!res.ok) {
-      throw new Error("Failed to fetch brand data");
+  let url = `${SETTINGS.URL_API}/v1/products?page=${page}&limit=${limit}`;
+  if (sort) {
+    url += `&sort=${sort}`;
+  }
+  if (order) {
+    url += `&order=${order}`;
+  }
+  if (brand) {
+    url += `&brands=${brand}`;
+  }
+  if (category) {
+    url += `&categories=${category}`;
+  }
+  if (priceRange.includes("tren")) {
+    const priceFilter = dataPrices.find(
+      (p: TFilterPrice) => p.href === priceRange
+    );
+    if (priceFilter) {
+      url += `&min_price=${priceFilter.min}`;
     }
-    return res.json();
+  } else if (priceRange.includes("duoi")) {
+    const priceFilter = dataPrices.find(
+      (p: TFilterPrice) => p.href === priceRange
+    );
+    if (priceFilter) {
+      url += `&max_price=${priceFilter.max}`;
+    }
+  } else {
+    const priceFilter = dataPrices.find(
+      (p: TFilterPrice) => p.href === priceRange
+    );
+    if (priceFilter) {
+      url += `&price=${priceFilter.min}-${priceFilter.max}`;
+    }
+  }
+
+  try {
+    const dataProduct = await fetch(`${url}`, {
+      next: { revalidate: 60 },
+    });
+    return await dataProduct.json();
   } catch (error) {
-    console.error("Error fetching brands:", error);
-    return null;
+    console.error("Error fetching product:", error);
+    throw error;
   }
 }
 
@@ -34,38 +77,23 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   const slug = params.slug;
-  const brand = await fetchBrandData(slug, new URLSearchParams());
+  const brand = await fetchBrandData({ slug }, {});
   if (brand?.statusCode === 400) notFound();
 
   return {
     title: `${brand?.data?.brand_name} - Sản phẩm`,
-    description: `Sản phẩm đến từ  ${brand?.data?.brand_name}`,
+    description: `Sản phẩm đến từ ${brand?.data?.brand_name}`,
   };
 }
 
-export default async function Page({
-  params,
-  searchParams,
-}: {
+export default async function Page(props: {
   params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: SearchParams;
 }) {
-  const slug = params.slug;
-
-  // Construct URLSearchParams from searchParams object
-  const urlSearchParams = new URLSearchParams();
-  Object.entries(searchParams).forEach(([key, value]) => {
-    if (Array.isArray(value)) {
-      value.forEach((v) => urlSearchParams.append(key, v));
-    } else if (value) {
-      urlSearchParams.append(key, value);
-    }
-  });
-
-  const brand = await fetchBrandData(slug, urlSearchParams);
-  if (!brand) notFound();
-
-  const brandName = brand.data?.brand_name;
+  const { params, searchParams } = props;
+  const data = await fetchBrandData(params, searchParams);
+  const pagination = data.data.pagination;
+  const brandName = data.data?.brand_name;
 
   return (
     <>
@@ -75,7 +103,6 @@ export default async function Page({
             <Breadcrumb pageName={brandName} />
 
             <ProductFilters />
-
             <div className='clearfix pt-3' />
             <div className='row'>
               <div className='col-12 col-md-9'>
@@ -83,7 +110,7 @@ export default async function Page({
                 <div className='row'>
                   <div id='getproducts' className='col-12 col-md-12'>
                     <div className='row product-list product-list-bycate'>
-                      {brand.data.products_list?.map(
+                      {data.data.products_list?.map(
                         (item: TProduct, index: number) => (
                           <div key={index} className='col-6 col-md-3 col-lg-3'>
                             <ProductItem product={item} />
@@ -98,6 +125,7 @@ export default async function Page({
                         <span>Xem thêm 544 Tivi</span>
                       </a>
                     </div>
+                    <PaginationComponent totalPages={pagination.totalPages} />
                   </div>
                 </div>
               </div>
