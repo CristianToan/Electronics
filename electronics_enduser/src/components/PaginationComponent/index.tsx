@@ -1,8 +1,9 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import {useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 interface PaginationComponentProps {
   totalPages: number;
 }
@@ -15,6 +16,7 @@ export default function PaginationComponent({
     setPage(value);
   };
   const router = useRouter();
+  const pathname = usePathname();
   // const { query } = router;
   // console.log("query", query);
 
@@ -35,8 +37,9 @@ export default function PaginationComponent({
       currentParams.set("page", page.toString());
     }
 
-    router.push(`/products?${currentParams.toString()}`);
-  }, [page, searchParams, router]);
+    router.push(`${pathname}?${currentParams.toString()}`);
+  }, [page, searchParams, router, pathname]);
+ 
 
   return (
     <Stack spacing={2} alignItems="center">
