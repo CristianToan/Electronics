@@ -48,6 +48,19 @@ const deleteCustomer = async (req: Request, res: Response, next: NextFunction) =
     const customer = await customersService.deleteCustomer(id)
     sendJsonSuccess(res, "success")(customer)
 }
+
+const profile = async (req: Request, res: Response, next: NextFunction)=>{
+    try {
+      const {_id} = res.locals.customer;
+      console.log(`req.customer`,res.locals.customer);
+  
+      const result = await customersService.getProfile(_id)
+      sendJsonSuccess(res)(result);
+  
+    } catch (error) {
+      next(error)
+    }
+  }
 const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, password } = req.body;
@@ -80,5 +93,6 @@ export default {
     updateCustomer,
     deleteCustomer,
     login,
+    profile,
     refreshToken
 }

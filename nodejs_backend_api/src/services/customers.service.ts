@@ -81,6 +81,19 @@ const deleteCustomer = async (id: string) => {
     await customer.deleteOne({ _id: customer._id });
     return customer
 }
+//  getProfile customer
+const getProfile = async(id: ObjectId)=>{
+    const customer = await Customer.
+    findOne({
+      _id: id
+    }).
+    select('-password -__v');
+    
+    if(!customer){
+      throw createError(400, 'Customer Not Found')
+    }
+    return customer
+  }
 // login customer
 const login = async (email: string, password: string) => {
     //b1. Check xem tồn tại customer có email này không
@@ -174,5 +187,6 @@ export default {
     updateCustomer,
     deleteCustomer,
     login,
-    getTokens
+    getTokens,
+    getProfile
 }
