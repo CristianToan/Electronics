@@ -37,7 +37,7 @@ export async function generateMetadata({
   if (brand?.statusCode === 400) notFound();
 
   return {
-    title: `${brand?.data?.brand_name} - Sản phẩm`,
+    title: `${brand?.data?.products_list[0]?.brand?.brand_name} - Sản phẩm`,
     description: `Sản phẩm đến từ ${brand?.data?.brand_name}`,
   };
 }
@@ -83,6 +83,8 @@ export default async function Page(props: {
     if (priceFilter) {
       url += `&max_price=${priceFilter.max}`;
     }
+  } else if (priceRange.includes("tu-5-7-trieu")) {
+    url += `&price=5000000-7000000`;
   } else {
     const priceFilter = dataPrices.find(
       (p: TFilterPrice) => p.href === priceRange
@@ -123,7 +125,10 @@ export default async function Page(props: {
                         )
                       )}
                     </div>
-                    <PaginationComponent totalPages={pagination.totalPages} />
+                    <PaginationComponent
+                      totalPages={pagination.totalPages}
+                      slug={slug}
+                    />
                   </div>
                 </div>
               </div>

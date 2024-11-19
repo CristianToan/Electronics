@@ -55,7 +55,10 @@ const ProductItem = ({ product }: { product: TProduct }) => {
                         product.price * (1 - product.discount / 100)
                       )}
                     </span>
-                    <span style={{ paddingLeft: "5px" }}>
+                    <span
+                      style={{ paddingLeft: "5px" }}
+                      className='text-red-600'
+                    >
                       {typeof product?.discount === "number" &&
                         product.discount > 0 && (
                           <span className='product-specialtype-box'>
