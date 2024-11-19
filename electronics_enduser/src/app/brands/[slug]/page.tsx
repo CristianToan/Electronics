@@ -9,22 +9,54 @@ import { notFound } from "next/navigation";
 import { dataPrices } from "@/constants/seed";
 import PaginationComponent from "@/components/PaginationComponent";
 import Breadcrumb from "@/components/Breadcrumb";
+import Loading from "./Loading";
+import { Suspense } from "react";
 
 type SearchParams = { [key: string]: string | string[] | undefined };
-export async function fetchBrandData(
-  params: { slug: string },
-  searchParams: SearchParams
-) {
+export async function fetchBrandData(slug: string) {
+  const url = `${SETTINGS.URL_API}/v1/products/${slug}`;
+
+  try {
+    const dataProduct = await fetch(`${url}`, {
+      next: { revalidate: 60 },
+    });
+    return await dataProduct.json();
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    throw error;
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const slug = params.slug;
+  const brand = await fetchBrandData(slug);
+  if (brand?.statusCode === 400) notFound();
+
+  return {
+    title: `${brand?.data?.brand_name} - Sản phẩm`,
+    description: `Sản phẩm đến từ ${brand?.data?.brand_name}`,
+  };
+}
+
+export default async function Page(props: {
+  params: { slug: string };
+  searchParams: SearchParams;
+}) {
+  const { params, searchParams } = props;
+  const slug = params.slug;
   const resolvedSearchParams = searchParams;
-  const page = resolvedSearchParams.page || 1;
+  const page = Number(resolvedSearchParams.page) || 1;
   const priceRange = resolvedSearchParams.p || "";
   const limit = 12;
   const brand = resolvedSearchParams.brands || "";
   const category = resolvedSearchParams.categories || "";
   const sort = resolvedSearchParams.sort || "";
   const order = resolvedSearchParams.order || "";
-
-  let url = `${SETTINGS.URL_API}/v1/products?page=${page}&limit=${limit}`;
+  let url = `${SETTINGS.URL_API}/v1/products/brand/${slug}?page=${page}&limit=${limit}`;
   if (sort) {
     url += `&sort=${sort}`;
   }
@@ -59,42 +91,10 @@ export async function fetchBrandData(
       url += `&price=${priceFilter.min}-${priceFilter.max}`;
     }
   }
-
-  try {
-    const dataProduct = await fetch(`${url}`, {
-      next: { revalidate: 60 },
-    });
-    return await dataProduct.json();
-  } catch (error) {
-    console.error("Error fetching product:", error);
-    throw error;
-  }
-}
-
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
-  const slug = params.slug;
-  const brand = await fetchBrandData({ slug }, {});
-  if (brand?.statusCode === 400) notFound();
-
-  return {
-    title: `${brand?.data?.brand_name} - Sản phẩm`,
-    description: `Sản phẩm đến từ ${brand?.data?.brand_name}`,
-  };
-}
-
-export default async function Page(props: {
-  params: { slug: string };
-  searchParams: SearchParams;
-}) {
-  const { params, searchParams } = props;
-  const data = await fetchBrandData(params, searchParams);
-  const pagination = data.data.pagination;
-  const brandName = data.data?.brand_name;
-
+  const data = await fetch(url);
+  const products = await data.json();
+  const pagination = products.data.pagination;
+  const brandName = products.data?.brand_name;
   return (
     <>
       <div className='body-content bg-page'>
@@ -110,20 +110,18 @@ export default async function Page(props: {
                 <div className='row'>
                   <div id='getproducts' className='col-12 col-md-12'>
                     <div className='row product-list product-list-bycate'>
-                      {data.data.products_list?.map(
+                      {products.data.products_list?.map(
                         (item: TProduct, index: number) => (
-                          <div key={index} className='col-6 col-md-3 col-lg-3'>
-                            <ProductItem product={item} />
-                          </div>
+                          <Suspense key={index} fallback={<Loading />}>
+                            <div
+                              key={index}
+                              className='col-6 col-md-3 col-lg-3'
+                            >
+                              <ProductItem product={item} />
+                            </div>
+                          </Suspense>
                         )
                       )}
-                      <a
-                        className='row seemoreproducts'
-                        href=''
-                        title='Xem thêm 544 Tivi'
-                      >
-                        <span>Xem thêm 544 Tivi</span>
-                      </a>
                     </div>
                     <PaginationComponent totalPages={pagination.totalPages} />
                   </div>
