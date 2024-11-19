@@ -14,7 +14,7 @@ import { Suspense } from "react";
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 export async function fetchBrandData(slug: string) {
-  const url = `${SETTINGS.URL_API}/v1/products/${slug}`;
+  const url = `${SETTINGS.URL_API}/v1/products/brand/${slug}`;
 
   try {
     const dataProduct = await fetch(`${url}`, {
