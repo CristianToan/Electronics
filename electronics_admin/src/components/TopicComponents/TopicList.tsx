@@ -25,6 +25,12 @@ const TopicList = () => {
   const keyword_str = params.get("keyword");
   const keyword = keyword_str ? keyword_str : null;
 
+  useEffect(() => {
+    if (page === 1 && !params.has("msg") && !params.has("keyword")) {
+      navigate("/topic");
+    }
+  }, [page, navigate, params]);
+
   const fetchTopic = async () => {
     const limit = 10;
     let url = `${SETTINGS.URL_API}/v1/topics?`;
@@ -225,7 +231,6 @@ const TopicList = () => {
                 </tbody>
               </table>
             </div>
-
             <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
               <span className="flex col-span-9 mt-2 sm:mt-auto sm:justify-end">
                 <nav aria-label="Table navigation">
@@ -235,6 +240,7 @@ const TopicList = () => {
                       className="inline-flex items-center"
                       current={currentPage}
                       onChange={(page) => {
+                        setCurrentPage(page);
                         navigate(`/topic?page=${page}`);
                       }}
                       total={getAllTopic?.data?.pagination.totalRecords || 0}

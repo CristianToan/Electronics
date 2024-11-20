@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SETTINGS } from "../../constants/settings";
 import { axiosClient } from "../../lib/axiosClient";
 import {
@@ -36,11 +36,17 @@ const TopicAdd = () => {
     return res.data;
   };
 
+  const queryClient = useQueryClient();
+
   const createMutationTopic = useMutation({
     mutationFn: fetchCreateTopic,
     onSuccess: () => {
       form.resetFields();
+      form.setFieldsValue({ file: undefined });
       navigate(`/topic?msg=success`);
+      queryClient.invalidateQueries({
+        queryKey: ["topics"], // Đây là key của query mà bạn muốn invalidate
+      });
     },
     onError: (error) => {
       console.log("Lỗi khi thêm danh mục bài viết:", error);
@@ -171,6 +177,7 @@ const TopicAdd = () => {
           </div>
           <div className="mt-2">
             <Form.Item
+              name="file"
               label={
                 <span className="block mt-4 mb-3 text-sm text-gray-700 dark:text-gray-400">
                   Ảnh sản phẩm

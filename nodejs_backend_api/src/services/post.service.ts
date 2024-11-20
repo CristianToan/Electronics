@@ -17,8 +17,8 @@ const findAll = async (query: any) => {
       post_name: new RegExp(query.keyword, "i"),
     };
   }
-  if (query.topic_name && query.topic_name != "") {
-    objectFilters = { ...objectFilters, topic_name: query.topic_name };
+  if (query.post_name && query.post_name != "") {
+    objectFilters = { ...objectFilters, post_name: query.post_name };
   }
 
   /* Sắp xếp */
@@ -28,8 +28,6 @@ const findAll = async (query: any) => {
   objSort = { ...objSort, [sortBy]: orderBy }; // Thêm phần tử sắp xếp động vào object {}
 
   const offset = (page - 1) * limit;
-
-  console.log("Post S", offset, limit);
 
   //Đếm tổng số record hiện có của collection Product
   const totalRecords = await Post.countDocuments(objectFilters);
