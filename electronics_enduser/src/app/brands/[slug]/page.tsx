@@ -98,7 +98,7 @@ export default async function Page(props: {
   const pagination = products.data.pagination;
   const brandName = products.data?.brand_name;
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <div className='body-content bg-page'>
         <div className='container'>
           <div className='wrap-product'>
@@ -114,14 +114,9 @@ export default async function Page(props: {
                     <div className='row product-list product-list-bycate'>
                       {products.data.products_list?.map(
                         (item: TProduct, index: number) => (
-                          <Suspense key={index} fallback={<Loading />}>
-                            <div
-                              key={index}
-                              className='col-6 col-md-3 col-lg-3'
-                            >
-                              <ProductItem product={item} />
-                            </div>
-                          </Suspense>
+                          <div key={index} className='col-6 col-md-3 col-lg-3'>
+                            <ProductItem product={item} />
+                          </div>
                         )
                       )}
                     </div>
@@ -150,6 +145,6 @@ export default async function Page(props: {
         <div className='clearfix' />
       </div>
       <div className='clearfix'></div>
-    </>
+    </Suspense>
   );
 }
