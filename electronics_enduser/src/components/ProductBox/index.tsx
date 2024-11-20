@@ -53,6 +53,7 @@ const ProductBox = ({ dataCategory }: { dataCategory: TCategory }) => {
               spaceBetween={0}
               slidesPerView={4}
               loop={false}
+              navigation
               autoplay={{
                 delay: 3000,
                 disableOnInteraction: false,

@@ -9,8 +9,6 @@ import { notFound } from "next/navigation";
 import { dataPrices } from "@/constants/seed";
 import PaginationComponent from "@/components/PaginationComponent";
 import Breadcrumb from "@/components/Breadcrumb";
-import Loading from "./Loading";
-import { Suspense } from "react";
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 export async function fetchBrandData(slug: string) {
@@ -96,9 +94,9 @@ export default async function Page(props: {
   const data = await fetch(url);
   const products = await data.json();
   const pagination = products.data.pagination;
-  const brandName = products.data?.brand_name;
+  const brandName = products.data?.products_list[0]?.brand?.brand_name;
   return (
-    <Suspense fallback={<Loading />}>
+    <>
       <div className='body-content bg-page'>
         <div className='container'>
           <div className='wrap-product'>
@@ -120,10 +118,9 @@ export default async function Page(props: {
                         )
                       )}
                     </div>
-                    <PaginationComponent
-                      totalPages={pagination.totalPages}
-                      slug={slug}
-                    />
+                    {pagination.totalPages > 1 ? (
+                      <PaginationComponent totalPages={pagination.totalPages} />
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -145,6 +142,6 @@ export default async function Page(props: {
         <div className='clearfix' />
       </div>
       <div className='clearfix'></div>
-    </Suspense>
+    </>
   );
 }

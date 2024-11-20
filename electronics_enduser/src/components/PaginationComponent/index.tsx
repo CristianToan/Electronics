@@ -2,23 +2,21 @@
 import React, { useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 interface PaginationComponentProps {
   totalPages: number;
-  slug?: string;
 }
-
 export default function PaginationComponent({
   totalPages,
-  slug,
 }: PaginationComponentProps) {
   const [page, setPage] = React.useState(1);
   const searchParams = useSearchParams();
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-  if (slug) slug = `/${slug}`;
   const router = useRouter();
+  const pathname = usePathname();
   // const { query } = router;
   // console.log("query", query);
 
@@ -39,8 +37,8 @@ export default function PaginationComponent({
       currentParams.set("page", page.toString());
     }
 
-    router.push(`/products${slug}?${currentParams.toString()}`);
-  }, [page, searchParams, router]);
+    router.push(`${pathname}?${currentParams.toString()}`);
+  }, [page, searchParams, router, pathname]);
 
   return (
     <Stack spacing={2} alignItems='center'>

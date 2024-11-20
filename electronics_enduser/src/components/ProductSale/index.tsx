@@ -5,11 +5,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 import ProductItem from "../ProductItem";
 import { SETTINGS } from "@/constants/settings";
-import { TProducts } from "@/types/modes";
+import { TProduct } from "@/types/modes";
 import Skeleton from "react-loading-skeleton";
 
 const ProductSale = () => {
-  const [products, setProducts] = useState<TProducts[] | []>([]);
+  const [products, setProducts] = useState<TProduct[] | []>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -101,6 +101,7 @@ const ProductSale = () => {
             spaceBetween={3}
             slidesPerView={4}
             loop={false}
+            navigation
             autoplay={{
               delay: 3000,
               disableOnInteraction: false,
@@ -132,10 +133,10 @@ const ProductSale = () => {
                   </SwiperSlide>
                 ))
               : products && products.length > 0
-              ? products.map((item: TProducts, index: number) => {
+              ? products.map((item: TProduct, index: number) => {
                   return (
                     <SwiperSlide key={`product_sale_${index}`}>
-                      <ProductItem data={item} />
+                      <ProductItem product={item} />
                     </SwiperSlide>
                   );
                 })
