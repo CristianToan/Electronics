@@ -83,8 +83,6 @@ export default async function Page(props: {
     if (priceFilter) {
       url += `&max_price=${priceFilter.max}`;
     }
-  } else if (priceRange.includes("tu-5-7-trieu")) {
-    url += `&price=5000000-7000000`;
   } else {
     const priceFilter = dataPrices.find(
       (p: TFilterPrice) => p.href === priceRange
