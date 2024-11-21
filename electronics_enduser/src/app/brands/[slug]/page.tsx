@@ -9,6 +9,8 @@ import { notFound } from "next/navigation";
 import { dataPrices } from "@/constants/seed";
 import PaginationComponent from "@/components/PaginationComponent";
 import Breadcrumb from "@/components/Breadcrumb";
+import { Suspense } from "react";
+import ProductLoading from "@/components/ProductLoading";
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 export async function fetchBrandData(slug: string) {
@@ -97,51 +99,58 @@ export default async function Page(props: {
   const brandName = products.data?.products_list[0]?.brand?.brand_name;
   return (
     <>
-      <div className='body-content bg-page'>
-        <div className='container'>
-          <div className='wrap-product'>
-            <Breadcrumb pageName={brandName} />
+      <Suspense fallback={<ProductLoading />}>
+        <div className='body-content bg-page'>
+          <div className='container'>
+            <div className='wrap-product'>
+              <Breadcrumb pageName={brandName} />
 
-            <ProductFilters />
-            <div className='clearfix pt-3' />
-            <div className='row'>
-              <div className='col-12 col-md-9'>
-                <ProductSort />
-                <div className='row'>
-                  <div id='getproducts' className='col-12 col-md-12'>
-                    <div className='row product-list product-list-bycate'>
-                      {products.data.products_list?.map(
-                        (item: TProduct, index: number) => (
-                          <div key={index} className='col-6 col-md-3 col-lg-3'>
-                            <ProductItem product={item} />
-                          </div>
-                        )
-                      )}
+              <ProductFilters />
+              <div className='clearfix pt-3' />
+              <div className='row'>
+                <div className='col-12 col-md-9'>
+                  <ProductSort />
+                  <div className='row'>
+                    <div id='getproducts' className='col-12 col-md-12'>
+                      <div className='row product-list product-list-bycate'>
+                        {products.data.products_list?.map(
+                          (item: TProduct, index: number) => (
+                            <div
+                              key={index}
+                              className='col-6 col-md-3 col-lg-3'
+                            >
+                              <ProductItem product={item} />
+                            </div>
+                          )
+                        )}
+                      </div>
+                      {pagination.totalPages > 1 ? (
+                        <PaginationComponent
+                          totalPages={pagination.totalPages}
+                        />
+                      ) : null}
                     </div>
-                    {pagination.totalPages > 1 ? (
-                      <PaginationComponent totalPages={pagination.totalPages} />
-                    ) : null}
                   </div>
                 </div>
+                <div className='col-0 col-md-3'>
+                  <ProductFiltersSide />
+                </div>
               </div>
-              <div className='col-0 col-md-3'>
-                <ProductFiltersSide />
+              <div className='clearfix pt-3' />
+              <div className='row'>
+                <div className='category-viewed col-12 col-md-12' />
               </div>
+              <div className='clearfix pt-3' />
+              <div className='row'>
+                <div className='product-viewed col-12 col-md-12' />
+              </div>
+              <div className='clearfix pt-3' />
             </div>
-            <div className='clearfix pt-3' />
-            <div className='row'>
-              <div className='category-viewed col-12 col-md-12' />
-            </div>
-            <div className='clearfix pt-3' />
-            <div className='row'>
-              <div className='product-viewed col-12 col-md-12' />
-            </div>
-            <div className='clearfix pt-3' />
           </div>
+          <div className='clearfix' />
         </div>
-        <div className='clearfix' />
-      </div>
-      <div className='clearfix'></div>
+        <div className='clearfix'></div>
+      </Suspense>
     </>
   );
 }
