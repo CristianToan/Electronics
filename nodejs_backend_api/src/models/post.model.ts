@@ -1,7 +1,7 @@
-import mongoose, { model } from "mongoose";
+import { model, Schema } from "mongoose";
 import { buildSlug } from "../helpers/buildSlug";
 
-const postSchema = new mongoose.Schema(
+const postSchema = new Schema(
   {
     post_name: {
       type: String,
@@ -16,23 +16,27 @@ const postSchema = new mongoose.Schema(
       type: String,
       require: false,
     },
-    topic: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Topic",
-      },
-    ],
+    topic: {
+      type: Schema.Types.ObjectId,
+      ref: "Topic",
+      required: true,
+    },
+
     isShowHome: {
       type: Boolean,
       default: false,
     },
-    comments: [
-      {
-        user: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" },
-        comment: { type: String, required: true },
-        createdAt: { type: Date, default: Date.now },
-      },
-    ],
+    isDelete: {
+      type: Boolean,
+      default: false,
+    },
+
+    comments: {
+      user: { type: Schema.Types.ObjectId, ref: "Customer" },
+      comment: { type: String, required: false },
+      createdAt: { type: Date, default: Date.now },
+    },
+
     slug: {
       type: String,
       require: false,

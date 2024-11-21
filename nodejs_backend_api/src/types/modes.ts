@@ -150,6 +150,7 @@ export interface IPost {
   thumbnail: string;
   category: string;
   isShowHome: string;
+  topic: string;
   comments: TComment;
   slug: string;
   post_description: string;

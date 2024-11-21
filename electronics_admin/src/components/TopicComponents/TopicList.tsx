@@ -74,20 +74,20 @@ const TopicList = () => {
       });
       messageApi.open({
         type: "success",
-        content: "Xóa danh mục bài viết thành công",
+        content: "Xóa chủ đề bài viết thành công",
       });
     },
     onError: (error) => {
-      console.error("Lỗi khi xóa danh mục bài viết :", error);
+      console.error("Lỗi khi xóa chủ đề bài viết :", error);
       messageApi.open({
         type: "error",
-        content: "Xóa danh mục bài viết  thất bại",
+        content: "Xóa chủ đề bài viết  thất bại",
       });
     },
   });
   const handleDeleteTopic = (id: string) => {
     if (
-      window.confirm("Bạn có chắc chắn muốn xóa danh mục bài viết  này không?")
+      window.confirm("Bạn có chắc chắn muốn xóa chủ đề bài viết  này không?")
     ) {
       deleteMutationTopic.mutate(id);
     }
@@ -131,7 +131,7 @@ const TopicList = () => {
                 autoComplete="off">
                 <div className="grid grid-cols-10 md:grid-cols-4 gap-[15px]">
                   <Form.Item name="keyword">
-                    <Input placeholder="Nhập tên danh mục bài viết..." />
+                    <Input placeholder="Nhập tên chủ đề bài viết..." />
                   </Form.Item>
                   <Button
                     className="w-[120px] my-3 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
@@ -145,7 +145,7 @@ const TopicList = () => {
                 <thead>
                   <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                     <th className="px-4 py-3">Ảnh</th>
-                    <th className="px-4 py-3">Danh mục</th>
+                    <th className="px-4 py-3">Chủ đề</th>
                     <th className="px-4 py-3">Mô tả</th>
                     <th className="px-4 py-3">Đường dẫn</th>
                     <th className="px-4 py-3">Hành động</th>

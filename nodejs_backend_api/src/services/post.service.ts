@@ -1,4 +1,3 @@
-import { ObjectId } from "mongoose";
 import Post from "../models/post.model";
 import createError from "http-errors";
 
@@ -11,14 +10,16 @@ const findAll = async (query: any) => {
   /* Lọc theo từng điều kiện */
 
   let objectFilters: any = {};
+  // Lọc theo chủ đề bài viết
+  if (query.topic && query.topic != "") {
+    objectFilters = { ...objectFilters, topic: query.topic };
+  }
+
   if (query.keyword && query.keyword != "") {
     objectFilters = {
       ...objectFilters,
       post_name: new RegExp(query.keyword, "i"),
     };
-  }
-  if (query.post_name && query.post_name != "") {
-    objectFilters = { ...objectFilters, post_name: query.post_name };
   }
 
   /* Sắp xếp */
@@ -37,15 +38,18 @@ const findAll = async (query: any) => {
     ...objectFilters,
   })
     .select("-__v -id")
+    .populate("topic", "topic_name")
     .sort(objSort)
     .skip(offset)
-    .limit(limit);
+    .limit(limit)
+    .lean({ virtuals: true });
   return {
     posts_list: posts,
     sorts: objSort,
-    filters: {
-      post_name: query.keyword || null,
-    },
+    filters: objectFilters,
+    // {
+    //   post_name: query.keyword || null,
+    // },
     pagination: {
       page,
       limit,
@@ -56,11 +60,13 @@ const findAll = async (query: any) => {
 };
 
 const findById = async (id: string) => {
-  const post = await Post.findById(id, "-__v -id"); // có thể liệt kê select vào tham số thứ 2 của hàm
+  const post = await Post.findById(id, "-__v -id").populate(
+    "topic",
+    "topic_name"
+  );
 
-  //Check sự tồn tại
   if (!post) {
-    throw createError(400, "Product not found");
+    throw createError(400, "Post not found");
   }
   return post;
 };
@@ -83,7 +89,7 @@ const createDocument = async (body: any) => {
     post_name: body.post_name,
     content: body.content,
     thumbnail: body.thumbnail,
-    category: body.category,
+    topic: body.topic,
     isShowHome: body.isShowHome,
     comments: body.comments,
     slug: body.slug,

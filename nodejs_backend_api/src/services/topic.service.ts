@@ -21,7 +21,7 @@ const findAll = async (query: any) => {
   }
 
   let objSort: any = {};
-  const sortBy = query.sort || "createdAt";
+  const sortBy = query.sort || "updateAt";
   const orderBy = query.order && query.order == "ASC" ? 1 : -1;
   objSort = { ...objSort, [sortBy]: orderBy };
 
@@ -36,7 +36,7 @@ const findAll = async (query: any) => {
     .skip(offset)
     .limit(limit);
   return {
-    topic_list: topics,
+    topics_list: topics,
     sort: objSort,
     filters: {
       topic_name: query.keyword || null,

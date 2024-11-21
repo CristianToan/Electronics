@@ -29,6 +29,7 @@ const TopicAdd = () => {
   const [form] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+
   /* ============= THEM MOI ================ */
   const fetchCreateTopic = async (payload: TTopic) => {
     const url = `${SETTINGS.URL_API}/v1/topics`;
@@ -41,7 +42,6 @@ const TopicAdd = () => {
   const createMutationTopic = useMutation({
     mutationFn: fetchCreateTopic,
     onSuccess: () => {
-      form.resetFields();
       form.setFieldsValue({ file: undefined });
       navigate(`/topic?msg=success`);
       queryClient.invalidateQueries({
@@ -49,7 +49,7 @@ const TopicAdd = () => {
       });
     },
     onError: (error) => {
-      console.log("Lỗi khi thêm danh mục bài viết:", error);
+      console.log("Lỗi khi thêm chủ đề bài viết:", error);
       messageApi.open({
         type: "error",
         content: `Thêm mới lỗi`,
@@ -131,9 +131,9 @@ const TopicAdd = () => {
       {contextHolder}
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Electronics - Thêm mới danh mục bài viết</title>
+        <title>Electronics - Thêm mới chủ đề bài viết</title>
         <link rel="canonical" href={window.location.href} />
-        <meta name="description" content="Thêm mới danh mục bài viết" />
+        <meta name="description" content="Thêm mới chủ đề bài viết" />
       </Helmet>
       <div className="col-span-12 md:col-span-5">
         <h3 className="mb-3  text-gray-700 dark:text-gray-200">Thêm mới</h3>
@@ -141,14 +141,14 @@ const TopicAdd = () => {
           <div className="form-group">
             <label className="block mt-4 text-sm">
               <span className="text-gray-700 dark:text-gray-400">
-                Tên danh mục bài viết
+                Tên chủ đề bài viết
               </span>
               <Form.Item
                 name="topic_name"
                 rules={[
                   {
                     required: true,
-                    message: "Vui lòng nhập tên danh mục bài viết",
+                    message: "Vui lòng nhập tên chủ đề bài viết",
                   },
                 ]}>
                 <Input className="pl-3 block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input" />

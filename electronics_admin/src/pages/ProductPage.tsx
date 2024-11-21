@@ -213,10 +213,10 @@ const ProductPage = () => {
   return (
     <>
       <Helmet>
-        <meta charSet='utf-8' />
+        <meta charSet="utf-8" />
         <title>Electronics - Sản phẩm </title>
-        <link rel='canonical' href={window.location.href} />
-        <meta name='description' content='Sản phẩm' />
+        <link rel="canonical" href={window.location.href} />
+        <meta name="description" content="Sản phẩm" />
       </Helmet>
       <main className="h-full overflow-y-auto">
         <div className="container px-6 mx-auto grid">
@@ -225,8 +225,7 @@ const ProductPage = () => {
           </h2>
           <Link
             to="/product/add"
-            className="w-[120px] my-3 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-          >
+            className="w-[120px] my-3 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
             Thêm mới <span className="ml-2">+</span>
           </Link>
           <Form
@@ -235,8 +234,7 @@ const ProductPage = () => {
             onFinish={onFinishSearch}
             autoComplete="off"
             layout="vertical"
-            className="frm-search"
-          >
+            className="frm-search">
             <div className="grid gid-cols-12 md:grid-cols-4 gap-[15px]">
               <Form.Item name="keyword">
                 <Input placeholder="Nhập tên sản phẩm" />
@@ -245,8 +243,7 @@ const ProductPage = () => {
                 <Select
                   className="w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                   placeholder="Chọn danh mục"
-                  allowClear
-                >
+                  allowClear>
                   {categories.length > 0 ? (
                     categories.map((category: TCategory) => (
                       <Option key={category._id} value={category._id}>
@@ -262,8 +259,7 @@ const ProductPage = () => {
                 <Select
                   className="w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                   placeholder="Chọn thương hiệu"
-                  allowClear
-                >
+                  allowClear>
                   {brands.length > 0 ? (
                     brands.map((brand: TBrand) => (
                       <Option key={brand._id} value={brand._id}>
@@ -279,8 +275,7 @@ const ProductPage = () => {
                 <Button
                   className="w-[120px] my-3 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
                   type="primary"
-                  htmlType="submit"
-                >
+                  htmlType="submit">
                   Lọc
                 </Button>
               </Form.Item>
@@ -315,8 +310,7 @@ const ProductPage = () => {
                           return (
                             <tr
                               key={i}
-                              className="text-gray-700 dark:text-gray-400"
-                            >
+                              className="text-gray-700 dark:text-gray-400">
                               <td className="px-4 py-3">
                                 <div className="flex items-center text-sm">
                                   <div className="relative hidden w-8 h-8  mr-3 rounded-full md:block">
@@ -330,8 +324,7 @@ const ProductPage = () => {
                                     </div>
                                     <div
                                       className="absolute inset-0 rounded-full shadow-inner"
-                                      aria-hidden="true"
-                                    ></div>
+                                      aria-hidden="true"></div>
                                   </div>
                                   <div></div>
                                 </div>
@@ -372,14 +365,12 @@ const ProductPage = () => {
                                       navigate(`/product/${product._id}`)
                                     }
                                     className="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
-                                    aria-label="Edit"
-                                  >
+                                    aria-label="Edit">
                                     <svg
                                       className="w-5 h-5"
                                       aria-hidden="true"
                                       fill="currentColor"
-                                      viewBox="0 0 20 20"
-                                    >
+                                      viewBox="0 0 20 20">
                                       <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
                                     </svg>
                                   </button>
@@ -388,19 +379,16 @@ const ProductPage = () => {
                                       handleDeleteProduct(product._id!)
                                     }
                                     className="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
-                                    aria-label="Delete"
-                                  >
+                                    aria-label="Delete">
                                     <svg
                                       className="w-5 h-5"
                                       aria-hidden="true"
                                       fill="currentColor"
-                                      viewBox="0 0 20 20"
-                                    >
+                                      viewBox="0 0 20 20">
                                       <path
                                         fillRule="evenodd"
                                         d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                        clipRule="evenodd"
-                                      ></path>
+                                        clipRule="evenodd"></path>
                                     </svg>
                                   </button>
                                 </div>
