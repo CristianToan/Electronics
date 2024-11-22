@@ -1,5 +1,6 @@
 import express from "express";
 import orderController from "../../controllers/orders.controllers";
+// import { checkCustomerToken } from "../../middlewares/customer.middleware";
 const router = express.Router();
 
 //1. Get All orders

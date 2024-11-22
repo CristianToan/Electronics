@@ -1,3 +1,5 @@
+"use client"
+import useCheckPageDefault from '@/helpers/checkPageDeffault'
 import React from "react";
 import { TProduct } from "@/types/modes";
 import { SETTINGS } from "@/constants/setting";
@@ -6,6 +8,8 @@ import Link from "next/link";
 import { formatToVND } from "@/helpers/numbersToCurrency";
 
 const ProductItem = ({ product }: { product: TProduct }) => {
+    
+    useCheckPageDefault('products')
   let arr_specifi: string[] = [];
   if (product?.specifications) {
     arr_specifi = product.specifications.split("\n");

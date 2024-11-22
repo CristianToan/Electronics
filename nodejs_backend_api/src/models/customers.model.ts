@@ -42,7 +42,7 @@ const customerSchema = new Schema<TCustomer>({
     },
     zip_code: {
         type: String,
-        maxlength: 5
+        maxlength: 10
     },
     password: {
         type: String,

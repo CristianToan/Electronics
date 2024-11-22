@@ -127,3 +127,11 @@
 :where(.css-dev-only-do-not-override-ccdg5a).ant-form-item .ant-form-item-explain-error {
     margin-top: 5px;
 }
+
+.editor-wrapper {
+    height: 500px; /* Điều chỉnh chiều cao ở đây */
+    border: 1px solid #ccc; /* Tùy chọn, để dễ nhìn */
+}
+.ck.ck-editor__main>.ck-editor__editable{
+    min-height: 500px;
+}

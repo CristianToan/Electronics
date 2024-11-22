@@ -2,6 +2,16 @@ import { Response, Request, NextFunction } from 'express';
 import { sendJsonSuccess } from '../helpers/responseHandler';
 import productsService from '../services/products.service';
 
+// Lấy sản phẩm theo slug
+const findProductBySlug = async(req:Request ,res: Response,next: NextFunction) =>{
+  try {
+    const {slug } = req.params
+    const product = await productsService.findProductBySlug(slug)
+    sendJsonSuccess(res)(product)
+  } catch (error) {
+    next(error)
+  }
+}
 
 // Lấy sản phẩm theo thương hiệu
 const getAllByBrandSlug = async(req:Request ,res: Response,next: NextFunction) =>{
@@ -79,6 +89,7 @@ const deleteById = async (req: Request, res: Response, next: NextFunction)=>{
   
 }
 export default {
+  findProductBySlug,
   getAllByBrandSlug,
   getAllByCategorySlug,
   findAllProduct,

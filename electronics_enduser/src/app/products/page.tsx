@@ -5,6 +5,9 @@ import ProductItem from "@/components/ProductItem";
 import ProductSort from "@/components/ProductSort";
 import { SETTINGS } from "@/constants/settings";
 import { Metadata, NextPage } from "next";
+// import { redirect } from 'next/navigation';
+
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 import { TProduct } from "@/types/modes";
 import PaginationComponent from "@/components/PaginationComponent";
 

@@ -21,7 +21,7 @@ const ProductFiltersSide = () => {
     const [ isPageBrands, setIsPageBrands ] = useState(false)
     const [ isPageCategories, setIsPageCategories] = useState(false)
 
-    const { brands, fetchBrands, isLoading, error} = useBrands()
+    const { brands, fetchBrands, isLoading} = useBrands()
     const {categories, fetchCategories, ...isStatus } =  useCategories();
 
     useEffect(() => {
@@ -121,6 +121,10 @@ const ProductFiltersSide = () => {
         if (currentParams.has('order')) {
             queries.push(`order=${currentParams.get('order')}`);
         }
+
+        if (currentParams.has('page')) {
+            queries.push(`page=${currentParams.get('page')}`);
+        }
     
         // Chuyển hướng nếu có tham số mới
         if (queries.length > 0) {
@@ -156,7 +160,6 @@ const ProductFiltersSide = () => {
                         >
                             <div className="card-body">
                                 <ul className="list-unstyled">
-                                    {error && <li className="alert alert-danger m-0 w-100"> Error: {error}</li>}
                                     {   
                                         isLoading ? Array.from({ length: 10 }).map((_, index) => (
                                             <li key = {`filter_sd_br_${index}`}>
@@ -219,7 +222,6 @@ const ProductFiltersSide = () => {
                         >
                             <div className="card-body">
                                 <ul className="list-unstyled">
-                                    {isStatus.error && <li className="alert alert-danger m-0 w-100"> Error: {isStatus.error}</li>}
                                     {
                                         isStatus.isLoading ? Array.from({ length: 10 }).map((_, index) => (
                                             <li key = {`filter_sd_br_${index}`}>

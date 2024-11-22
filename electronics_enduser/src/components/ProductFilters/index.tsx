@@ -130,6 +130,10 @@ const ProductFilters = () => {
         if (currentParams.has('order')) {
             queries.push(`order=${currentParams.get('order')}`);
         }
+
+        if (currentParams.has('page')) {
+            queries.push(`page=${currentParams.get('page')}`);
+        }
     
         // Chuyển hướng nếu có tham số mới
         if (queries.length > 0) {

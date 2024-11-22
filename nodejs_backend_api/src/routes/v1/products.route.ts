@@ -5,7 +5,7 @@ import { authenticateToken } from "../../middlewares/auth.middleware";
 const router = express.Router();
 
 //========== API PUBLIC ======//
-
+router.get("/slug/:slug", productsController.findProductBySlug);
 router.get("/brand/:slug", productsController.getAllByBrandSlug);
 router.get("/category/:slug", productsController.getAllByCategorySlug);
 /**

@@ -134,27 +134,31 @@ Logic tạo đơn hàng
 4. Mặc định để thông tin staff là null, vì chưa có ai duyệt đơn
 */
 const createRecordOrder = async (payload: any, customerLogined: any) => {
+  console.log("🚀 ~ createRecordOrder ~ customerLogined:", customerLogined)
   console.log('payload order', payload);
   //TH 2. Khách đã login
   if (customerLogined && customerLogined._id) {
+
     const payload_order = {
       customer: customerLogined._id,
       payment_type: payload.payment_type,
       street: payload.customer.street,
       city: payload.customer.city,
       state: payload.customer.state,
-      order_note: payload.order_note,
+      order_note: payload.customer.order_note,
       order_items: payload.order_items
 
     }
+    
+    console.log("🚀 ~ createRecordOrder ~ payload_order:", payload_order)
     const order = await Order.create(payload_order)
 
     if (order) {
-      console.log('Tao don thanh cong', payload.customer.email);
+      console.log('Tao don thanh cong', customerLogined.email);
       // Tạo nội dung email
       const mailOptions = {
         from: 'maitanhung2@gmail.com',
-        to: payload.customer.email, //email khach hang
+        to: customerLogined.email, //email khach hang
         subject: 'Xac nhan dat hang 2',
         text: 'Hello world! 2'
       };
@@ -170,22 +174,41 @@ const createRecordOrder = async (payload: any, customerLogined: any) => {
     return order;
   }
   //TH 1. Khách hàng chưa tồn tại tại trong hệ thống
-  if (!payload.customer) {
-    throw createError(400, 'Thông tin khách hàng không hợp lệ')
+
+  // if (!payload.customer) {
+  //   throw createError(400, 'Thông tin khách hàng không hợp lệ')
+  // }
+
+  const checkExistCustomer = await Customer.findOne({
+    $or: [
+      { phone: payload.customer.phone},
+      { email: payload.customer.email }
+    ]
+  });
+
+
+  let customerId
+  if (!checkExistCustomer) {
+    //Đi tạo tạo khách hàng mới
+    const customer = await Customer.create(payload.customer)
+    customerId = customer._id
+  }else{
+    customerId = checkExistCustomer._id
   }
-  //Đi tạo tạo khách hàng mới
-  const customer = await Customer.create(payload.customer)
+  
   //Sau đó tạo đơn
   const payload_order = {
-    customer: customer._id,
+    customer: customerId,
     payment_type: payload.payment_type,
-    street: customer.street,
-    city: customer.city,
-    state: customer.state,
-    order_note: payload.order_note,
+    street: payload.customer.street,
+    city: payload.customer.city,
+    state: payload.customer.state,
+    order_note: payload.customer.order_note,
     order_items: payload.order_items
   }
+  console.log("🚀 ~ createRecordOrder ~ payload_order:", payload_order)
   const order = await Order.create(payload_order)
+  console.log("🚀 ~ createRecordOrder ~ order:", order)
 
   if (order) {
     console.log('Tao don thanh cong', payload.customer.email);

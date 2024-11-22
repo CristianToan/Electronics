@@ -19,7 +19,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
-
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 interface TCategory {
   _id?: string;
   category_name: string;
@@ -46,7 +47,10 @@ interface TProducts {
   isDelete: boolean;
   specifications: string;
 }
+
+
 const ProductEdit = () => {
+  
   const navigate = useNavigate();
   const [formUpdate] = Form.useForm();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -55,6 +59,8 @@ const ProductEdit = () => {
 
   /* ============= Update Sản phẩm================ */
   // const queryClient = useQueryClient();
+
+  
   const fetchUpdateProduct = async (id: string) => {
     const url = `${SETTINGS.URL_API}/v1/products/${id}`;
     const res = await axiosClient.get(url);
@@ -65,6 +71,13 @@ const ProductEdit = () => {
     queryFn: () => fetchUpdateProduct(id as string),
     enabled: !!id,
   });
+ 
+  const [editorData, setEditorData] = useState("");
+  useEffect(() => {
+    if (getProductById.data) {
+      setEditorData(getProductById.data.description || "");
+    }
+  }, [getProductById.data]);
   useEffect(() => {
     if (getProductById.data) {
       formUpdate.setFieldsValue({
@@ -98,8 +111,9 @@ const ProductEdit = () => {
   const onFinish = async (values: TProducts) => {
     if (fileList.length === 0) {
       // Nếu không có file nào được chọn, vẫn có thể cập nhật sản phẩm
-      const info_product = { id: id!, ...values }; // Không cần thêm thumbnail
+      const info_product = { id: id!,...values, description: editorData }; // Không cần thêm thumbnail
       updateMutationProduct.mutate(info_product);
+      console.log("🚀 ~ onFinish ~ info_product:", info_product)
     } else {
       const resulUpload = await handleUpload(fileList[0]);
       if (resulUpload !== null) {
@@ -211,6 +225,7 @@ const ProductEdit = () => {
           <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
             Chỉnh sửa sản phẩm
           </h2>
+          
           <div className="grid grid-cols-12 md:grid-cols-12 gap-[15px]">
             <div className="col-span-12">
               <Form
@@ -220,6 +235,7 @@ const ProductEdit = () => {
                 layout="vertical"
                 autoComplete="off"
               >
+               
                 <div className="flex">
                   <div className="form-group w-1/2 pr-2">
                     <label className="block mt-4 text-sm">
@@ -400,10 +416,10 @@ const ProductEdit = () => {
                       Chi tiết sản phẩm
                     </span>
                     <Form.Item
-                      className="pl-3 block w-full mt-1 text-sm dark:text-gray-300 dark:bg-gray-700 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
+                      className="block w-full mt-1 text-smform-input"
                       name="description"
                     >
-                      <Input.TextArea
+                      {/* <Input.TextArea
                         rows={5}
                         className="pl-3 block w-full mt-1 text-sm dark:text-gray-300 dark:bg-gray-700 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
                         style={{
@@ -412,7 +428,35 @@ const ProductEdit = () => {
                           boxShadow: "none",
                           padding: 0,
                         }}
-                      />
+                      /> */}
+                      <CKEditor
+                        editor={ClassicEditor}
+                        data={editorData}
+                        onChange={(_, editor) => {
+                            const data = editor.getData();
+                            setEditorData(data);
+                        }}
+                        
+                        config={{
+                            
+                            toolbar: [
+                                'heading', '|',
+                                'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
+                                'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells', '|',
+                                'undo', 'redo', '|',
+                            ],
+                            image: {
+                                toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side'],
+                            },
+                            
+                            initialData: '<p>Nội dung khởi đầu của bạn ở đây.</p>' ,
+                            
+                        }}
+                        
+                        
+                        
+                    />
+                    {/* <div id="editor"></div> */}
                     </Form.Item>
                   </label>
                 </div>

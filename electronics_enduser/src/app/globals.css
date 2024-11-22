@@ -13,8 +13,18 @@
 @import "@/styles/m_report.css";
 @import "@/styles/p_home.css";
 @import "@/styles/p_product.css";
+@import "@/styles/p_order.css";
 
 /*Default Row Col*/
+input, select, textarea{
+  max-width: 100%;
+}
+.form-group.row{
+  margin:  0 -15px;
+}
+.form-group.row .col-6{
+  padding: 0 15px;
+}
 .container-df {
   padding-left: 0 !important;
   padding-right: 0 !important;
@@ -104,6 +114,30 @@ body #wpwidget img.chat-button--img {
 .brand-slider__item a img{
   height: 80px;
   object-fit: contain;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Ẩn trên Chrome và Safari */
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Ẩn trên Firefox */
+}
+.Toastify__toast .Toastify__progress-bar--success{
+  background-color: #007ae3;
+}
+.Toastify__toast.Toastify__toast--success svg{
+  fill: #007ae3
+}
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+.frm-login input{
+  max-width: 280px;
 }
 @media (min-width: 992px) {
   .navbar-expand-lg .navbar-collapse {

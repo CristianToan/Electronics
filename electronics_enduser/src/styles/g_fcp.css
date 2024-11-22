@@ -525,12 +525,16 @@
   }
   
   .cart-badge span.badge {
-    display: none;
-    top: -5px;
-    right: -4px;
+    display: block;
+    top: -8px;
+    right: -6px;
     position: absolute;
     background: white;
     color: #000;
+    border-radius: 100%;
+    width: 25px;
+    height: 25px;
+    line-height: 2px;
   }
   
   /*navbar
