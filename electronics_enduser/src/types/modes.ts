@@ -57,3 +57,10 @@ export interface TCart {
     calculateTotalAmount : () => void;
     clearCart: () => void;
 }
+export type TCustomer = {
+    _id: string;
+    street: string;
+    city: string;
+    state: string;
+    zip_code: string;
+}

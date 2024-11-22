@@ -12,6 +12,7 @@
     "@hookform/resolvers": "^3.9.1",
     "bootstrap": "4.6.2",
     "next": "14.2.15",
+    "next-auth": "^4.24.10",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.2",
@@ -22,6 +23,7 @@
     "zustand": "^5.0.0"
   },
   "devDependencies": {
+    "@types/next-auth": "^3.15.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

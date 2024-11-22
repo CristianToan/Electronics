@@ -1,7 +1,10 @@
 import Customer from '../models/customers.model'
 import createError from 'http-errors'
 import { TCustomer } from '../types/modes'
-
+import { globalConfig } from '../constants/configs';
+import bcrypt from "bcrypt";
+import jwt from 'jsonwebtoken'
+import { ObjectId } from 'mongoose';
 const findAllCustomer = async (query: any) => {
     let objSort: any = {};
     const sortBy = query.sort || 'createdAt'; // Mặc dịnh sắp xếp thep ngày giảm dần
@@ -71,10 +74,112 @@ const deleteCustomer = async (id: string) => {
     await customer.deleteOne({ _id: customer._id });
     return customer
 }
+//  getProfile customer
+const getProfile = async(id: ObjectId)=>{
+    const customer = await Customer.
+    findOne({
+      _id: id
+    }).
+    select('-password -__v');
+    
+    if(!customer){
+      throw createError(400, 'Customer Not Found')
+    }
+    return customer
+  }
+// login customer
+const login = async (email: string, password: string) => {
+    //b1. Check xem tồn tại customer có email này không
+    const customer = await Customer.findOne({
+        email: email
+    });
+
+    if (!customer) {
+        throw createError(400, "Invalid email or password")
+    }
+    //b2. Nếu tồn tại thì đi so sánh mật khẩu xem khớp ko
+    const passwordHash = customer.password;
+    const isValid = await bcrypt.compareSync(password, passwordHash); // true
+    if (!isValid) {
+        //Đừng thông báo: Sai mật mật khẩu. Hãy thông báo chung chung
+        throw createError(400, "Invalid email or password")
+    }
+    console.log('<<=== 🚀 Login thành công ===>>');
+    //3. Tạo token
+    const access_token = jwt.sign(
+        {
+            _id: customer?._id,
+            email: customer.email
+        },
+        globalConfig.JWT_SECRET_KEY as string,
+        {
+            expiresIn: '7days', //Xác định thời gian hết hạn của token
+            //algorithm: 'RS256' //thuật toán mã hóa
+        }
+    );
+
+    //Fresh Token hết hạn lâu hơn
+    const refresh_token = jwt.sign(
+        {
+            _id: customer?._id,
+            email: customer.email,
+            //role: customer.role,  //phân quyền
+        },
+        globalConfig.JWT_SECRET_KEY as string,
+        {
+            expiresIn: '30days', //Xác định thời gian hết hạn của token
+            //algorithm: 'RS256' //thuật toán mã hóa
+        }
+
+    );
+    return {
+        access_token,
+        refresh_token,
+    };
+}
+
+
+/**
+ * hàm để sinh ra 1 cặp tokken
+ * @param customer 
+ * @returns 
+ */
+const getTokens = async (customer: { _id: ObjectId, email: string }) => {
+    const access_token = jwt.sign(
+        {
+            _id: customer._id,
+            email: customer.email
+        },
+        globalConfig.JWT_SECRET_KEY as string,
+        {
+            expiresIn: '7days', //Xác định thời gian hết hạn của token
+            //algorithm: 'RS256' //thuật toán mã hóa
+        }
+    );
+
+    //Fresh Token hết hạn lâu hơn
+    const refresh_token = jwt.sign(
+        {
+            _id: customer?._id,
+            email: customer.email,
+            //role: staff.role,  //phân quyền
+        },
+        globalConfig.JWT_SECRET_KEY as string,
+        {
+            expiresIn: '30days', //Xác định thời gian hết hạn của token
+            //algorithm: 'RS256' //thuật toán mã hóa
+        }
+    )
+    return { access_token, refresh_token }
+}
+
 export default {
     findAllCustomer,
     findCustomerById,
     createRecord,
     updateCustomer,
-    deleteCustomer
+    deleteCustomer,
+    login,
+    getProfile,
+    getTokens
 }

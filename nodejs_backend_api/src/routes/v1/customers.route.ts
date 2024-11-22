@@ -1,7 +1,12 @@
 import express from "express";
 import customerController from "../../controllers/customers.controller";
+import { checkCustomerToken } from "../../middlewares/customer.middleware";
 const router = express.Router();
 
+//POST v1/auth/login
+router.post('/login',  customerController.login)
+router.get('/profile', checkCustomerToken, customerController.profile )
+router.post('/refresh-token',  customerController.refreshToken)
 //1. Get All Customer
 router.get('', customerController.findAllCustomer)
 

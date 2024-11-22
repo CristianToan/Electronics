@@ -1,4 +1,5 @@
 'use client'
+import { signOut, useSession } from "next-auth/react";
 import { useCart } from '@/stores/useCart';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
@@ -9,10 +10,11 @@ const HeaderMain = () => {
     useEffect(() => {
         setIsClient(true);
     }, []);
-
-
+    const { data: session, status } = useSession();
+    const isLoggedIn = status === "authenticated";
     return (
         <div className="bgcolor-main">
+            
             <div className="container">
                 <div className="row header-body flex flex-content-spacebetween">
                     <div className="col-md-3 col-9">
@@ -57,30 +59,29 @@ const HeaderMain = () => {
                                 <div className="menuhead-news flex flex-content-right">
                                     <ul className="login">
                                         <li className="nav-item">
-                                            <a rel="nofollow" className="nav-link" href="/login"> Đăng nhập </a>
+                                            {
+                                                isLoggedIn ? (<a  className="nav-link">Chào, {session?.user?.first_name }</a>) :(<Link rel="nofollow" className="nav-link" href="/login"> Đăng nhập </Link>)
+                                            }
                                         </li>
-                                        <li className="nav-item">
-                                            <a rel="nofollow" className="nav-link" href="/register"> Đăng ký </a>
-                                        </li>
+                                        {
+                                            isLoggedIn ? (
+                                                <li className="nav-item">
+                                                    <a rel="nofollow" 
+                                                     onClick={(e) => {
+                                                        e.preventDefault();
+                                                        signOut({ callbackUrl: "/login" });
+                                                    }}
+                                                    className="nav-link" href="#"> Đăng xuất </a>
+                                                </li>
+                                            ) :(
+                                                <li className="nav-item">
+                                                    <a rel="nofollow" className="nav-link" href="/register"> Đăng ký </a>
+                                                </li>
+                                            )
+                                        }
+                                        
                                     </ul>
-                                    <ul className="list-unstyled">
-                                        <li className="v-menu-item">
-                                            <a
-                                                data-id="1111"
-                                                href="/thong-tin-chung/canh-bao-mao-danh-mediamart-lua-dao"
-                                                title="Cảnh báo LỪA ĐẢO"
-                                            >
-                                                <span> Cảnh báo LỪA ĐẢO </span>
-                                                <span className="menu-item-view menu-item-view-1111" style={{ display: 'none' }}></span>
-                                            </a>
-                                        </li>
-                                        <li className="v-menu-item">
-                                            <a data-id="481" href="/tu-van-tieu-dung" title="Tư vấn">
-                                                <span> Tư vấn </span>
-                                                <span className="menu-item-view menu-item-view-481" style={{ display: 'none' }}></span>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                    
                                 </div>
                             </div>
                         </div>
