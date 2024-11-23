@@ -2,6 +2,7 @@
 import { TProduct } from "@/types/modes";
 
 const ProductSpecifications = ({ product }: { product: TProduct }) => {
+  if (!product.specifications) return null;
   const productSpecifications = product.specifications.split("\n") || "";
   const arr_specify = productSpecifications.map((productSpecification) => {
     const [key, value] = productSpecification.split(":");
