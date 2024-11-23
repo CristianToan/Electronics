@@ -3,6 +3,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useCart } from '@/stores/useCart';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
+import { useRouter } from "next/navigation";
 
 const HeaderMain = () => {
     const { getTotalNumber } = useCart()
@@ -12,6 +13,17 @@ const HeaderMain = () => {
     }, []);
     const { data: session, status } = useSession();
     const isLoggedIn = status === "authenticated";
+
+    const router = useRouter();
+
+    const [searchKey, setSearchKey] = useState("");
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (searchKey.trim()) {
+          router.push(`/products?s=${encodeURIComponent(searchKey)}`);
+        }
+    };
+
     return (
         <div className="bgcolor-main">
             
@@ -75,7 +87,7 @@ const HeaderMain = () => {
                                                 </li>
                                             ) :(
                                                 <li className="nav-item">
-                                                    <a rel="nofollow" className="nav-link" href="/register"> Đăng ký </a>
+                                                    <a rel="nofollow" className="nav-link" href="/signup"> Đăng ký </a>
                                                 </li>
                                             )
                                         }
@@ -88,9 +100,15 @@ const HeaderMain = () => {
                         <div className="row">
                             <div className="col-1 col-md-0"></div>
                             <div className="col-11 col-md-12">
-                                <form className="form-inline" action="/tag">
+                                <form className="form-inline" onSubmit={handleSubmit}>
                                     <div className="form-group search-input">
-                                        <input name="key" className="form-control" placeholder="Bạn tìm gì..." />
+                                    <input
+                                    name="key"
+                                    className="form-control"
+                                    placeholder="Bạn tìm gì..."
+                                    value={searchKey}
+                                    onChange={(e) => setSearchKey(e.target.value)}
+                                    />
                                     </div>
                                     <button className="search-btn">
                                         <i className="fa fa-search" aria-hidden="true"></i>

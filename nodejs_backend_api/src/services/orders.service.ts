@@ -134,8 +134,6 @@ Logic tạo đơn hàng
 4. Mặc định để thông tin staff là null, vì chưa có ai duyệt đơn
 */
 const createRecordOrder = async (payload: any, customerLogined: any) => {
-  console.log("🚀 ~ createRecordOrder ~ customerLogined:", customerLogined)
-  console.log('payload order', payload);
   //TH 2. Khách đã login
   if (customerLogined && customerLogined._id) {
 
@@ -150,7 +148,6 @@ const createRecordOrder = async (payload: any, customerLogined: any) => {
 
     }
     
-    console.log("🚀 ~ createRecordOrder ~ payload_order:", payload_order)
     const order = await Order.create(payload_order)
 
     if (order) {

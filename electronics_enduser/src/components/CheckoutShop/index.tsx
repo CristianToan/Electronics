@@ -9,17 +9,13 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { TCustomer } from "@/types/modes";
 
-
-
 const CheckoutShop = () => {
   const router = useRouter()
   const {products, clearCart} = useCart()
   const { data: session, status } = useSession();
   const idCustomer = session?.user.id
-  console.log("🚀 ~ CheckoutShop ~ idCustomer:", idCustomer)
   const isLoggedIn = status === "authenticated";
   const [customer, setCustomer] = useState<TCustomer | null>(null)
-  console.log("🚀 ~ onSubmit ~ session?.user.access_token:", session?.user.access_token)
 
   useEffect( () => {
     if(isLoggedIn) {
@@ -64,8 +60,7 @@ const CheckoutShop = () => {
   });
   
   
-  
-    type FormData = yup.InferType<typeof schema>;
+  type FormData = yup.InferType<typeof schema>;
   
   const { register, handleSubmit, reset, setValue, formState: { errors },} = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -83,7 +78,6 @@ const CheckoutShop = () => {
   
   const [buttonText, setButtonText] = useState("Đặt hàng");
   const [isLoading, setIsLoading] = useState(false)
- 
 
   const onSubmit = async (data: FormData) => {
     if (isLoading) return; 
@@ -110,7 +104,7 @@ const CheckoutShop = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${session?.user.access_token}`,
+        ...(isLoggedIn ? { "Authorization": `Bearer ${session?.user.access_token}` } : {}),
       }, 
       body: JSON.stringify(payload)
     });
@@ -134,9 +128,7 @@ const CheckoutShop = () => {
   }
 
   return (
-    <div
-      className="row order-checkout"
-    >
+    <div className="row order-checkout">
       <form id="checkout-delivery-address" onSubmit={handleSubmit(onSubmit)}>
         
         <div className="col-12">

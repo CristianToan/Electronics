@@ -59,6 +59,7 @@ export interface TCart {
 }
 export type TCustomer = {
     _id: string;
+    email: string;
     street: string;
     city: string;
     state: string;

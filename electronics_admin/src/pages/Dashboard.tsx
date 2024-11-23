@@ -15,9 +15,13 @@ const Dashboard = () => {
           <h2 className='my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200'>
             Dashboard
           </h2>
+          <h3 className=" text-gray-700 dark:text-gray-200">
+            Chào mừng bạn đến với trang quản trị admin
+          </h3>
           <div className='grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4'>
+            
             {/* Card */}
-            <div className='flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800'>
+            {/* <div className='flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800'>
               <div className='p-3 mr-4 text-orange-500 bg-orange-100 rounded-full dark:text-orange-100 dark:bg-orange-500'>
                 <svg
                   className='w-5 h-5'
@@ -35,10 +39,10 @@ const Dashboard = () => {
                   6389
                 </p>
               </div>
-            </div>
+            </div> */}
 
             {/* Card */}
-            <div className='flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800'>
+            {/* <div className='flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800'>
               <div className='p-3 mr-4 text-green-500 bg-green-100 rounded-full dark:text-green-100 dark:bg-green-500'>
                 <svg
                   className='w-5 h-5'
@@ -60,10 +64,10 @@ const Dashboard = () => {
                   $ 46,760.89
                 </p>
               </div>
-            </div>
+            </div> */}
 
             {/* Card */}
-            <div className='flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800'>
+            {/* <div className='flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800'>
               <div className='p-3 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500'>
                 <svg
                   className='w-5 h-5'
@@ -81,10 +85,10 @@ const Dashboard = () => {
                   376
                 </p>
               </div>
-            </div>
+            </div> */}
 
             {/* Card */}
-            <div className='flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800'>
+            {/* <div className='flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800'>
               <div className='p-3 mr-4 text-teal-500 bg-teal-100 rounded-full dark:text-teal-100 dark:bg-teal-500'>
                 <svg
                   className='w-5 h-5'
@@ -106,9 +110,9 @@ const Dashboard = () => {
                   35
                 </p>
               </div>
-            </div>
+            </div> */}
           </div>
-          <div className='w-full overflow-hidden rounded-lg shadow-xs'>
+          {/* <div className='w-full overflow-hidden rounded-lg shadow-xs'>
             <div className='w-full overflow-x-auto'>
               <table className='w-full whitespace-no-wrap'>
                 <thead>
@@ -328,7 +332,7 @@ const Dashboard = () => {
                 </nav>
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       </main>
     </>

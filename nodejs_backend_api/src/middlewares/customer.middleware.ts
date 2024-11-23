@@ -23,8 +23,8 @@ export const checkCustomerToken = async (req: Request, res: Response, next: Next
     const token = authHeader && authHeader.split(' ')[1];
 
      //If token is not valid, respond with 401 (unauthorized)
-    if (!token) {
-      return next(createError(401, 'Unauthorized'));
+     if (!token) {
+      return next();
     }
     // Nếu mọi thứ ok rồi, có token hợp lệ
     try {

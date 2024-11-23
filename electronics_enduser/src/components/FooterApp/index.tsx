@@ -68,7 +68,7 @@ const FooterApp = () => {
               <li className="v-menu-item">
                 <a
                   data-id={5}
-                  href="mailto:hotro@mediamart.com.vn"
+                  href="#"
                   title="Liên hệ và góp ý"
                 >
                   <span> Liên hệ và góp ý </span>
@@ -255,7 +255,7 @@ const FooterApp = () => {
               <li className="v-menu-item">
                 <a
                   data-id={924}
-                  href="https://mediamart.vn/chinh-sach-chung/chinh-sach-doi-tra-hang"
+                  href="#"
                   title="Chính sách 30 ngày đổi mới"
                 >
                   
@@ -284,7 +284,7 @@ const FooterApp = () => {
                 <li className="v-menu-item">
                   <a
                     data-id={740}
-                    href="https://www.facebook.com/DienmayMediaMart"
+                    href="#"
                     title="MediaMart Facebook Fanpage"
                   >
                     
@@ -305,7 +305,7 @@ const FooterApp = () => {
                 <li className="v-menu-item">
                   <a
                     data-id={741}
-                    href="https://www.youtube.com/c/CongtyMediamart"
+                    href="#"
                     title="MediaMart Youtube Channel"
                   >
                     
@@ -326,7 +326,7 @@ const FooterApp = () => {
                 <li className="v-menu-item">
                   <a
                     data-id={908}
-                    href="https://zalo.me/349658598008800909?gidzl=u6tbAL7joZJdUkOfLVJEDU5zvIXAyy1d-NliBatomMIiVEX-7l7COVqivNmRzy1Y-7oxBJ65kHqhLEN8EW"
+                    href="#"
                     title="MediaMart Zalo OA"
                   >
                     
@@ -347,7 +347,7 @@ const FooterApp = () => {
                 <li className="v-menu-item">
                   <a
                     data-id={742}
-                    href="https://www.tiktok.com/@mediamart.official"
+                    href="#"
                     title="MediaMart Tiktok Channel"
                   >
                     

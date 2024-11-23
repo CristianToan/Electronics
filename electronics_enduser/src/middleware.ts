@@ -5,11 +5,11 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('next-auth.session-token')?.value;
 
 
-  if (token && request.nextUrl.pathname === '/login') {
+  if (token && ['/login', '/signup'].includes(request.nextUrl.pathname)) {
     return NextResponse.redirect(new URL('/', request.url));
   }
   return NextResponse.next();
 }
 export const config = {
-  matcher: '/login', 
+  matcher: ['/login', '/signup'],
 }; 

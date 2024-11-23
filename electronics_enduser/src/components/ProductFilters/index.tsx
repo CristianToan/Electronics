@@ -131,6 +131,10 @@ const ProductFilters = () => {
             queries.push(`order=${currentParams.get('order')}`);
         }
 
+        if (currentParams.has('s')) {
+            queries.push(`s=${currentParams.get('s')}`);
+        }
+
         if (currentParams.has('page')) {
             queries.push(`page=${currentParams.get('page')}`);
         }

@@ -115,7 +115,7 @@ const LoginForm = () => {
           </div>
         </div>
         <p>
-          <Link href="/register">Đăng ký người dùng mới</Link>
+          <Link href="/signup">Đăng ký người dùng mới</Link>
         </p>
       </form>
     </div>
