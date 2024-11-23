@@ -37,37 +37,37 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: { slug: string } }) {
   const slug = params.slug;
   const product = await fetchProductData(slug);
-  
+
   const product_name = product.data?.product_name;
   return (
     <>
-      <div className="body-content bg-page">
-        <div className="container">
-          <div className="wrap-product">
+      <div className='body-content bg-page'>
+        <div className='container'>
+          <div className='wrap-product'>
             <Breadcrumb pageName={product_name} />
-            <div className="clearfix"></div>
-            <div className="row">
-              <div className="col-12">
-                <div className="pdetail-name">
+            <div className='clearfix'></div>
+            <div className='row'>
+              <div className='col-12'>
+                <div className='pdetail-name'>
                   <h1> {product_name} </h1>
-                  <div className="pdetail-social" />
+                  <div className='pdetail-social' />
                 </div>
               </div>
             </div>
-            <div className="clearfix"></div>
-            <div className="product-detail">
-              <div className="row">
-                <ProductGalleries />
-                <ProductDesc product = {product.data} />
+            <div className='clearfix'></div>
+            <div className='product-detail'>
+              <div className='row'>
+                <ProductGalleries imageUrl={product.data?.thumbnail} />
+                <ProductDesc product={product.data} />
               </div>
             </div>
 
-            <div className="clearfix"></div>
-            <div className="product-detail-content-border"></div>
+            <div className='clearfix'></div>
+            <div className='product-detail-content-border'></div>
 
-            <div className="row">
-              <ProductDetail product = {product.data} />
-              <ProductSpecifications />
+            <div className='row'>
+              <ProductDetail product={product.data} />
+              <ProductSpecifications product={product.data} />
             </div>
           </div>
         </div>

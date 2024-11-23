@@ -8,11 +8,10 @@ const router = express.Router();
 router.get("", brandsController.allBrands);
 
 router.get("/slug/:slug", brandsController.findBrandBySlug);
-
-router.use(authenticateToken);
-
 // 2.Find Brand By Id
 router.get("/:id", brandsController.findBrandById);
+
+router.use(authenticateToken);
 
 // 3.Create Brand
 

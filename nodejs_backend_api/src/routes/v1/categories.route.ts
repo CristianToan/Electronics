@@ -7,10 +7,9 @@ const router = express.Router();
 router.get("/slug/:slug", categoriesController.findCategoryBySlug);
 //1. Get All Categories
 router.get("", categoriesController.findAllCategory);
-router.use(authenticateToken);
-
 // 2.Find Category By Id
 router.get("/:id", categoriesController.findCategoryById);
+router.use(authenticateToken);
 
 // 3.Create Category
 router.post("", categoriesController.createCategory);
