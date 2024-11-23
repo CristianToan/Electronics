@@ -52,7 +52,6 @@ const CustomerEdit = () => {
     if (getCustomerById.data) {
       formUpdate.setFieldsValue({
         ...getCustomerById.data,
-        role: String(getCustomerById.data.role),
       });
     }
   }, [getCustomerById.data, formUpdate]);

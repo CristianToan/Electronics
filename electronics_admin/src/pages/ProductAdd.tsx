@@ -58,7 +58,7 @@ const ProductAdd = () => {
 
   /* ============= THEM MOI ================ */
   const fetchCreateProduct = async (payload: TProducts) => {
-    const url = `${SETTINGS.URL_API}/v1/products`;
+    const url = `${SETTINGS.URL_API}/v1/products/`;
     const res = await axiosClient.post(url, payload);
     return res.data;
   };

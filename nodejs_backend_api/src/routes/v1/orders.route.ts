@@ -1,5 +1,7 @@
 import express from "express";
 import orderController from "../../controllers/orders.controllers";
+import { checkCustomerToken } from "../../middlewares/customer.middleware";
+
 const router = express.Router();
 
 //1. Get All orders
@@ -9,7 +11,7 @@ router.get('', orderController.findAll)
 router.get('/:id', orderController.findById)
 
 // // 3.Create orders
-router.post('', orderController.createRecord)
+router.post('', checkCustomerToken, orderController.createRecord)
 
 // // // 4.update orders by id
 router.put('/:id', orderController.updateById)

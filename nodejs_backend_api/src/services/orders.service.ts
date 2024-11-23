@@ -70,7 +70,7 @@ const findAllOrder = async (query: any) => {
     .select('-__v -id')
     .populate({
       path: 'customer',
-      select: '-password',  // Loại bỏ trường password
+      select: 'first_name phone',  // Loại bỏ trường password
       /**
        * Với match, nếu ko khớp thì customer là null
        */
@@ -158,7 +158,7 @@ const createRecordOrder = async (payload: any, customerLogined: any) => {
       // Tạo nội dung email
       const mailOptions = {
         from: 'maitanhung2@gmail.com',
-        to: payload.customer.email, //email khach hang
+        to: customerLogined.email, //email khach hang
         subject: 'Xac nhan dat hang',
         html: `
         <h1>Xác nhận đặt hàng</h1>
@@ -212,9 +212,9 @@ const createRecordOrder = async (payload: any, customerLogined: any) => {
     return order;
   }
   //TH 1. Khách hàng chưa tồn tại tại trong hệ thống
-  if (!payload.customer) {
-    throw createError(400, 'Thông tin khách hàng không hợp lệ')
-  }
+  // if (!payload.customer) {
+  //   throw createError(400, 'Thông tin khách hàng không hợp lệ')
+  // }
   const checkExistCustomer = await Customer.findOne({
     $or: [
       { phone: payload.customer.phone },

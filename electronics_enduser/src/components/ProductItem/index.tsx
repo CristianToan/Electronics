@@ -13,20 +13,15 @@ const ProductItem = ({ product }: { product: TProduct }) => {
 
   return (
     <div className="card item mb-4">
-      <Link
-        href={product ? `/products/${product.slug}` : "#"}
-        className="product-item"
-      >
+      <Link href={`/products/${product?.slug}`} className="product-item">
         <div className="card-img-top">
-          {product && product.thumbnail ? (
-            <Image
-              src={`${SETTINGS.URL_IMAGE}/${product.thumbnail}`}
-              alt={product.product_name}
-              width={300}
-              height={300}
-              priority
-            />
-          ) : null}
+          <Image
+            src={`${SETTINGS.URL_IMAGE}/${product?.thumbnail}`}
+            alt={product?.product_name}
+            width={300}
+            height={300}
+            priority
+          />
         </div>
         <div className="card-body">
           <p className="card-title product-name">{product?.product_name}</p>

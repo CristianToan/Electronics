@@ -7,6 +7,8 @@ import CustomerEdit from "../pages/CustomerEdit";
 import CustomersPage from "../pages/CustomersPage";
 import Dashboard from "../pages/Dashboard";
 import NoPage from "../pages/NoPage";
+import OrderEdit from "../pages/OrderEdit";
+import OrderPage from "../pages/OrderPage";
 import PostAdd from "../pages/PostAdd";
 import PostEdit from "../pages/PostEdit";
 import PostPage from "../pages/PostPage";
@@ -34,6 +36,9 @@ const routesPage = [
   { path: "/customers", element: <CustomersPage /> },
   { path: "/customer/add", element: <CustomerAdd /> },
   { path: "/customers/:id", element: <CustomerEdit /> },
+  { path: "/order", element: <OrderPage/>},
+  { path: "/order/:id", element: <OrderEdit/>},
+
 
   { path: "/post", element: <PostPage /> },
   { path: "/post/add", element: <PostAdd /> },
@@ -90,7 +95,7 @@ const menuItems = [
   },
   {
     title: "Đơn hàng",
-    link: "/orders",
+    link: "/order",
     svg: (
       <svg
         className="w-6 h-6"

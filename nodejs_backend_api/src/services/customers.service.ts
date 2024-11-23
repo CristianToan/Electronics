@@ -104,6 +104,9 @@ const login = async (email: string, password: string) => {
     if (!customer) {
         throw createError(400, "Invalid email or password")
     }
+    if (!customer.active) {
+        throw createError(400, "Invalid email or password");
+    }
     //b2. Nếu tồn tại thì đi so sánh mật khẩu xem khớp ko
     const passwordHash = customer.password;
     const isValid = await bcrypt.compareSync(password, passwordHash); // true

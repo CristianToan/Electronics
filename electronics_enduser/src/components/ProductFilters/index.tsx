@@ -127,6 +127,9 @@ const ProductFilters = () => {
     if (currentParams.has("sort")) {
       queries.push(`sort=${currentParams.get("sort")}`);
     }
+    if (currentParams.has('s')) {
+      queries.push(`s=${currentParams.get('s')}`);
+  }
     if (currentParams.has("order")) {
       queries.push(`order=${currentParams.get("order")}`);
     }

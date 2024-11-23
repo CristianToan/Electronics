@@ -27,6 +27,7 @@ export default async function ProductPage(props: {
   const category = searchParams.categories || "";
   const sort = searchParams.sort || "";
   const order = searchParams.order || "";
+  const search = searchParams.s || "";
   let fetchProducts;
   let pagination;
   let url = `${SETTINGS.URL_API}/v1/products?page=${page}&limit=${limit}`;
@@ -35,6 +36,9 @@ export default async function ProductPage(props: {
   }
   if (order) {
     url += `&order=${order}`;
+  }
+  if (search) {
+    url += `&keyword=${search}`;
   }
   if (brand) {
     url += `&brands=${brand}`;
@@ -58,7 +62,6 @@ export default async function ProductPage(props: {
     }
   } else {
     const priceFilter = dataPrices.find(
-      
       (p: TFilterPrice) => p.href === priceRange
     );
     if (priceFilter) {
@@ -103,7 +106,9 @@ export default async function ProductPage(props: {
                           }
                         )}
                     </div>
-                    <PaginationComponent totalPages={pagination.totalPages} />
+                    {pagination.totalRecords >= 12 && (
+                      <PaginationComponent totalPages={pagination.totalPages} />
+                    )}
                   </div>
                 </div>
               </div>
