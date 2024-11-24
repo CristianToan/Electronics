@@ -290,34 +290,6 @@ const OrderEdit = () => {
                           ]}
                         />
                       ) : (
-<<<<<<< HEAD
-                        // Thành viên: Chỉ hiển thị tên của chính họ, không thể chỉnh sửa
-                        getOrderById.data?.staff === null ? (
-                          <Select
-                            className="w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none"
-                            
-                            value={user?._id} // Hiển thị giá trị là ID của user đang đăng nhập
-                            options={[
-                              {
-                                value: user?._id, // Giá trị của user hiện tại
-                                label: user?.fullname, // Hiển thị tên đầy đủ của user
-                              },
-                            ]}
-                          />
-                        ) : (
-                          <Select
-                            className="w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none"
-                            disabled
-                            //value={user?._id} // Hiển thị giá trị là ID của user đang đăng nhập
-                            options={getAllStaffs.data?.staffs_list.map(
-                              (staff: TStaff) => ({
-                                value: staff._id,
-                                label: staff.fullname,
-                              })
-                            )}
-                          />
-                        )
-=======
                         <Select
                           className="w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none"
                           disabled
@@ -329,7 +301,6 @@ const OrderEdit = () => {
                             })
                           )}
                         />
->>>>>>> Hung_code
                       )}
                     </Form.Item>
                   </div>

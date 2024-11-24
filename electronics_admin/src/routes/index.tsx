@@ -9,17 +9,17 @@ import Dashboard from "../pages/Dashboard";
 import NoPage from "../pages/NoPage";
 import OrderEdit from "../pages/OrderEdit";
 import OrderPage from "../pages/OrderPage";
-import PostAdd from "../pages/PostAdd";
-import PostEdit from "../pages/PostEdit";
-import PostPage from "../pages/PostPage";
+// import PostAdd from "../pages/PostAdd";
+// import PostEdit from "../pages/PostEdit";
+// import PostPage from "../pages/PostPage";
 import ProductAdd from "../pages/ProductAdd";
 import ProductEdit from "../pages/ProductEdit";
 import ProductPage from "../pages/ProductPage";
 import StaffAdd from "../pages/StaffAdd";
 import StaffEdit from "../pages/StaffEdit";
 import StaffsPage from "../pages/StaffsPage";
-import TopicEdit from "../pages/TopicEdit";
-import TopicPage from "../pages/TopicPage";
+// import TopicEdit from "../pages/TopicEdit";
+// import TopicPage from "../pages/TopicPage";
 
 const routesPage = [
   { path: "/", element: <Dashboard />, exact: true },
@@ -40,11 +40,11 @@ const routesPage = [
   { path: "/order/:id", element: <OrderEdit/>},
 
 
-  { path: "/post", element: <PostPage /> },
-  { path: "/post/add", element: <PostAdd /> },
-  { path: "/post/:id", element: <PostEdit /> },
-  { path: "/topic", element: <TopicPage /> },
-  { path: "/topic/:id", element: <TopicEdit /> },
+  // { path: "/post", element: <PostPage /> },
+  // { path: "/post/add", element: <PostAdd /> },
+  // { path: "/post/:id", element: <PostEdit /> },
+  // { path: "/topic", element: <TopicPage /> },
+  // { path: "/topic/:id", element: <TopicEdit /> },
 
   { path: "*", element: <NoPage /> },
 ];
@@ -146,30 +146,30 @@ const menuItems = [
       </svg>
     ),
   },
-  {
-    title: "Bài viết",
-    link: "/post",
-    svg: (
-      <svg
-        className="w-5 h-5"
-        aria-hidden="true"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path d="M2 12l10 10L22 12V4H12L2 12z"></path>
-        <circle cx="12" cy="8" r="1.5"></circle>
-      </svg>
-    ),
-    submenu: [
-      { title: "Tất cả bài viết", link: "/post" },
-      { title: "Thêm mới", link: "/post/add" },
-      { title: "Danh mục bài viết", link: "/topic" },
-    ],
-  },
+  // {
+  //   title: "Bài viết",
+  //   link: "/post",
+  //   svg: (
+  //     <svg
+  //       className="w-5 h-5"
+  //       aria-hidden="true"
+  //       fill="none"
+  //       strokeLinecap="round"
+  //       strokeLinejoin="round"
+  //       strokeWidth="2"
+  //       viewBox="0 0 24 24"
+  //       stroke="currentColor"
+  //     >
+  //       <path d="M2 12l10 10L22 12V4H12L2 12z"></path>
+  //       <circle cx="12" cy="8" r="1.5"></circle>
+  //     </svg>
+  //   ),
+  //   submenu: [
+  //     { title: "Tất cả bài viết", link: "/post" },
+  //     { title: "Thêm mới", link: "/post/add" },
+  //     { title: "Danh mục bài viết", link: "/topic" },
+  //   ],
+  // },
   {
     title: "Thành viên",
     link: "/staffs",
