@@ -11,6 +11,7 @@ const ProductDesc = ({ product }: { product: TProduct }) => {
   const [quantity, setQuantity] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(false);
   const [brand, setBrand] = useState<TBrand | null>();
+  console.log("🚀 ~ ProductDesc ~ brand:", brand)
   const [category, setCategory] = useState<TCategory | null>();
   // const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -33,7 +34,7 @@ const ProductDesc = ({ product }: { product: TProduct }) => {
           throw new Error(`HTTP error! status: ${response2.status}`);
         const result2 = await response2.json();
         setCategory(result2.data); // Update the state with the fetched data
-        console.log(category);
+        // console.log(category);
       } catch (error) {
         console.error("Error fetching product:", error);
         return null;
