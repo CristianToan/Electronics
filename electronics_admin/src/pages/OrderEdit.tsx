@@ -65,7 +65,7 @@ const OrderEdit = () => {
   });
 
   const fetchStaffs = async () => {
-    let url = `${SETTINGS.URL_API}/v1/staffs?`;
+    const url = `${SETTINGS.URL_API}/v1/staffs?`;
 
     const response = await axiosClient.get(url);
     return response.data.data;
@@ -121,7 +121,7 @@ const OrderEdit = () => {
   };
   const total = getOrderById.data?.order_items?.reduce(
     (sum: number, item: { price_end: number; quantity: number }) => {
-      return sum + item.price_end * item.quantity;
+      return Math.round(sum + item.price_end * item.quantity);
     },
     0
   );
@@ -194,7 +194,7 @@ const OrderEdit = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {getOrderById.data?.order_items?.map((item: any) => (
+                    {getOrderById.data?.order_items?.map((item: TOrder['order_items'][0]) => (
                       <tr
                         key={item._id}
                         className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
@@ -203,7 +203,7 @@ const OrderEdit = () => {
                           {item.product_name}
                         </th>
                         <th className="px-4 py-3 border-2 border-solid text-center">
-                          {item.price_end}
+                          {item.price_end.toLocaleString("vi-VN")} VNĐ
                         </th>
                         <th className="px-4 py-3 border-2 border-solid text-center">
                           {item.quantity}
@@ -277,37 +277,32 @@ const OrderEdit = () => {
                             })
                           )}
                         />
+                      ) : // Thành viên: Chỉ hiển thị tên của chính họ, không thể chỉnh sửa
+                      getOrderById.data?.staff === null ? (
+                        <Select
+                          className="w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none"
+                          value={user?._id} // Hiển thị giá trị là ID của user đang đăng nhập
+                          options={[
+                            {
+                              value: user?._id, // Giá trị của user hiện tại
+                              label: user?.fullname, // Hiển thị tên đầy đủ của user
+                            },
+                          ]}
+                        />
                       ) : (
-                        // Thành viên: Chỉ hiển thị tên của chính họ, không thể chỉnh sửa
-                        getOrderById.data?.orders_list?.staff == null ? (
-                          <Select
-                            className="w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none"
-                            
-                            value={user?._id} // Hiển thị giá trị là ID của user đang đăng nhập
-                            options={[
-                              {
-                                value: user?._id, // Giá trị của user hiện tại
-                                label: user?.fullname, // Hiển thị tên đầy đủ của user
-                              },
-                            ]}
-                          />
-                        ) : (
-                          <Select
-                            className="w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none"
-                            disabled
-                            //value={user?._id} // Hiển thị giá trị là ID của user đang đăng nhập
-                            options={getAllStaffs.data?.staffs_list.map(
-                              (staff: TStaff) => ({
-                                value: staff._id,
-                                label: staff.fullname,
-                              })
-                            )}
-                          />
-                        )
+                        <Select
+                          className="w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none"
+                          disabled
+                          //value={user?._id} // Hiển thị giá trị là ID của user đang đăng nhập
+                          options={getAllStaffs.data?.staffs_list.map(
+                            (staff: TStaff) => ({
+                              value: staff._id,
+                              label: staff.fullname,
+                            })
+                          )}
+                        />
                       )}
                     </Form.Item>
-                    
-                    
                   </div>
                   <div className="form-group w-full sm:w-1/3 ">
                     <Form.Item className="px-3">
