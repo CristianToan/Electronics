@@ -1,14 +1,14 @@
-import React from 'react'
-import ProductSale from '../ProductSale'
-import ProductCat from '../ProductCat'
+import React from "react";
+import ProductSale from "../ProductSale";
+import ProductCat from "../ProductCat";
 
 const ProductBlock = () => {
   return (
     <>
-        <ProductSale />
-        <ProductCat />
+      <ProductSale />
+      <ProductCat />
     </>
-  )
-}
+  );
+};
 
-export default ProductBlock
+export default ProductBlock;

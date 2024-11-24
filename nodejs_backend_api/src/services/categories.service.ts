@@ -22,6 +22,7 @@ const findAllCategory = async (query: any) => {
   const limit_str = query.limit;
   const page = page_str ? parseInt(page_str as string) : 1;
   const limit = limit_str ? parseInt(limit_str as string) : 10;
+ // const all = query.all
 
   const totalRecords = await Category.countDocuments(objectFilters);
   const offset = (page - 1) * limit;

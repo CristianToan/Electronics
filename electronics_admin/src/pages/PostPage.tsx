@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
-const ProductPage = () => {
+const PostPage = () => {
   return (
     <>
       <Helmet>
@@ -433,4 +433,4 @@ const ProductPage = () => {
   );
 };
 
-export default ProductPage;
+export default PostPage;

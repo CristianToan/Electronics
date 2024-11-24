@@ -688,7 +688,7 @@
     border: 1px solid #f3f3f3;
     margin: 0 !important;
     float: left;
-    height: 480px;
+    height: 100%;
     overflow: hidden;
 }
 
