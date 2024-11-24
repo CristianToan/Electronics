@@ -40,12 +40,21 @@ const HeaderMenu = () => {
     // Mảng phụ thuộc rỗng có nghĩa là hàm này chỉ chạy một lần khi component được mount
     fetchCategories();
   }, []);
-  useEffect(() => {
-    if (pathname === "/") {
-      setIsNavbarVisible(true);
-    } else {
-      setIsNavbarVisible(false);
-    }
+     useEffect(() => {
+    const handleResize = () => {
+      if (pathname === '/' && window.innerWidth >= 992) {
+        setIsNavbarVisible(true);
+      } else {
+        setIsNavbarVisible(false);
+      }
+      setIsShowCat(false);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [pathname]);
   return (
     <div className='bgheader-menu'>
