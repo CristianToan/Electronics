@@ -164,19 +164,6 @@ const ProductDesc = ({ product }: { product: TProduct }) => {
             pauseOnHover
             theme='light'
           />
-          <div className='pdetail-promotion'>
-            <p className='pdetail-promotion-title'>
-              <i className='fa fa-gift' aria-hidden='true' />
-              Khuyến mại
-            </p>
-            <div className='pdetail-promotion-body'>
-              <ul>
-                <li>Tặng Ấm siêu tốc Coex CK-5120 trị giá đến 279.000đ</li>
-                <li>Tặng Gói hỗ trợ lắp đặt trị giá 200,000đ</li>
-              </ul>
-              <div className='clearfix' />
-            </div>
-          </div>
         </div>
       </div>
     </div>
