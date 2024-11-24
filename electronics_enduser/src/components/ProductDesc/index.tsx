@@ -34,7 +34,6 @@ const ProductDesc = ({ product }: { product: TProduct }) => {
           throw new Error(`HTTP error! status: ${response2.status}`);
         const result2 = await response2.json();
         setCategory(result2.data); // Update the state with the fetched data
-        // console.log(category);
       } catch (error) {
         console.error("Error fetching product:", error);
         return null;
@@ -44,7 +43,7 @@ const ProductDesc = ({ product }: { product: TProduct }) => {
     };
 
     fetchData(); // Call the function
-  }, [brand, category, product.brand, product.category]); // Empty dependency array ensures the effect runs only once
+  }, []); // Empty dependency array ensures the effect runs only once
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     const numberValue = Number(value);
