@@ -95,7 +95,8 @@ const findAllOrder = async (query: any) => {
   // Lọc ra các orders mà có customer không null (có kết quả phù hợp)
   const ordersWithConditions = orders.filter(order => order.customer);
 
-  const totalRecords = ordersWithConditions.length;
+  // const totalRecords = ordersWithConditions.length;
+  const totalRecords = await Order.countDocuments(objectOrderFilters);
 
   return {
     orders_list: ordersWithConditions,

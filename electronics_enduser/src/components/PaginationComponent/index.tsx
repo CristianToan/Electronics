@@ -10,7 +10,7 @@ interface PaginationComponentProps {
 export default function PaginationComponent({
   totalPages,
 }: PaginationComponentProps) {
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = useState(1);
   const searchParams = useSearchParams();
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
