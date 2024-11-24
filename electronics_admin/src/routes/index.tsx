@@ -2,8 +2,13 @@ import BrandEdit from "../pages/BrandEdit";
 import BrandPage from "../pages/BrandPage";
 import CategoriesPage from "../pages/CategoriesPage";
 import CategoryEdit from "../pages/CategoryEdit";
+import CustomerAdd from "../pages/CustomerAdd";
+import CustomerEdit from "../pages/CustomerEdit";
+import CustomersPage from "../pages/CustomersPage";
 import Dashboard from "../pages/Dashboard";
 import NoPage from "../pages/NoPage";
+import OrderEdit from "../pages/OrderEdit";
+import OrderPage from "../pages/OrderPage";
 import PostAdd from "../pages/PostAdd";
 import PostEdit from "../pages/PostEdit";
 import PostPage from "../pages/PostPage";
@@ -28,6 +33,13 @@ const routesPage = [
   { path: "/staffs", element: <StaffsPage /> },
   { path: "/staff/add", element: <StaffAdd /> },
   { path: "/staff/:id", element: <StaffEdit /> },
+  { path: "/customers", element: <CustomersPage /> },
+  { path: "/customer/add", element: <CustomerAdd /> },
+  { path: "/customers/:id", element: <CustomerEdit /> },
+  { path: "/order", element: <OrderPage/>},
+  { path: "/order/:id", element: <OrderEdit/>},
+
+
   { path: "/post", element: <PostPage /> },
   { path: "/post/add", element: <PostAdd /> },
   { path: "/post/:id", element: <PostEdit /> },
@@ -83,7 +95,7 @@ const menuItems = [
   },
   {
     title: "Đơn hàng",
-    link: "/orders",
+    link: "/order",
     svg: (
       <svg
         className="w-6 h-6"

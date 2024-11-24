@@ -41,10 +41,6 @@ interface TProducts {
   stock: number;
   slug: string;
   order: number;
-  isBest: boolean;
-  isRecentlyAdded: boolean;
-  isShowHome: boolean;
-  isDelete: boolean;
   specifications: string;
 }
 
@@ -111,13 +107,13 @@ const ProductEdit = () => {
   const onFinish = async (values: TProducts) => {
     if (fileList.length === 0) {
       // Nếu không có file nào được chọn, vẫn có thể cập nhật sản phẩm
-      const info_product = { id: id!,...values, description: editorData }; // Không cần thêm thumbnail
+      const info_product = { id: id!, ...values, description: editorData }; // Không cần thêm thumbnail
       updateMutationProduct.mutate(info_product);
       console.log("🚀 ~ onFinish ~ info_product:", info_product)
     } else {
       const resulUpload = await handleUpload(fileList[0]);
       if (resulUpload !== null) {
-        const info_product = { id: id!, ...values, thumbnail: resulUpload };
+        const info_product = { id: id!, ...values, thumbnail: resulUpload , description: editorData};
         // Gọi API để cập nhật sản phẩm
         updateMutationProduct.mutate(info_product);
       }
@@ -190,7 +186,7 @@ const ProductEdit = () => {
   };
   /* ============= GET CATEGORIES, BRANDS ================ */
   const fetchCategories = async () => {
-    const url = `${SETTINGS.URL_API}/v1/categories?page=1&limit=200`;
+    const url = `${SETTINGS.URL_API}/v1/categories`;
     const res = await axiosClient.get(url);
     return res.data.data;
   };
@@ -201,7 +197,7 @@ const ProductEdit = () => {
   //console.log(queryCategories.data?.categories_list);
   // Get brands
   const fetchBrands = async () => {
-    const url = `${SETTINGS.URL_API}/v1/brands?page=1&limit=200`;
+    const url = `${SETTINGS.URL_API}/v1/brands`;
     const res = await axiosClient.get(url);
     return res.data.data;
   };
@@ -287,7 +283,7 @@ const ProductEdit = () => {
                     <div className="form-group w-1/2 pl-2">
                       <label className="block mt-4 text-sm">
                         <span className="text-gray-700 dark:text-gray-400">
-                          Discount
+                          Khuyến mãi
                         </span>
                         <Form.Item name="discount">
                           <Input

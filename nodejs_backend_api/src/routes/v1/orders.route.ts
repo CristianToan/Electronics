@@ -10,7 +10,7 @@ router.get('', orderController.findAll)
 router.get('/:id', orderController.findById)
 
 // // 3.Create orders
-router.post('', checkCustomerToken,orderController.createRecord)
+router.post('', checkCustomerToken, orderController.createRecord)
 
 // // // 4.update orders by id
 router.put('/:id', orderController.updateById)

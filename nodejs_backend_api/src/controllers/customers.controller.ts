@@ -60,7 +60,7 @@ const profile = async (req: Request, res: Response, next: NextFunction)=>{
     } catch (error) {
       next(error)
     }
-}
+  }
 const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, password } = req.body;

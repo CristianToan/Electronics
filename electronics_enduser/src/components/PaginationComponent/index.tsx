@@ -39,14 +39,15 @@ export default function PaginationComponent({
 
     router.push(`${pathname}?${currentParams.toString()}`);
   }, [page, searchParams, router, pathname]);
+ 
 
   return (
-    <Stack spacing={2} alignItems='center'>
+    <Stack spacing={2} alignItems="center">
       <Pagination
         count={totalPages}
         page={page}
         onChange={handleChange}
-        color='primary'
+        color="primary"
       />
     </Stack>
   );

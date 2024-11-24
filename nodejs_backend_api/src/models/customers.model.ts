@@ -6,6 +6,10 @@ import bcrypt from "bcrypt";
 const saltRounds = 10;
 // Khởi tạo schema
 const customerSchema = new Schema<TCustomer>({
+    avatar: {
+        type: String,
+        require: false,
+    },
     first_name: {
         type: String,
         maxLength: 50,
@@ -79,7 +83,7 @@ customerSchema.virtual('fullName').get(function () {
 
 customerSchema.pre('save', async function (next) {
     const customer = this;
-    if(customer.password){
+    if (customer.password) {
         const hash = bcrypt.hashSync(customer.password, saltRounds);
         customer.password = hash;
     }

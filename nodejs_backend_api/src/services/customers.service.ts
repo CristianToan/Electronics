@@ -16,7 +16,12 @@ const findAllCustomer = async (query: any) => {
     if (query.keyword && query.keyword != '') {
         objectFilters = { ...objectFilters, first_name: new RegExp(query.keyword, 'i') }
     }
-
+    if (query.email && query.email != '') {
+        objectFilters = { ...objectFilters, email: new RegExp(query.email, 'i') }
+    }
+    if (query.phone && query.phone != '') {
+        objectFilters = { ...objectFilters, phone: new RegExp(query.phone, 'i') }
+    }
     const page_str = query.page
     const limit_str = query.limit
     const page = page_str ? parseInt(page_str as string) : 1
@@ -29,7 +34,7 @@ const findAllCustomer = async (query: any) => {
         .find({
             ...objectFilters
         })
-        .select('-__v -id')
+        .select('-__v -id -password')
         .sort(objSort)
         .skip(offset)
         .limit(limit)
@@ -37,7 +42,9 @@ const findAllCustomer = async (query: any) => {
         customers_list: customers,
         sort: objSort,
         filters: {
-            first_name: query.keyword || null
+            first_name: query.keyword || null,
+            email: query.email || null,
+            phone: query.phone || null
         },
         pagination: {
             page,
@@ -49,7 +56,7 @@ const findAllCustomer = async (query: any) => {
 }
 const findCustomerById = async (id: string) => {
     //Đi tìm 1 cái khớp id
-    const customer = await Customer.findById(id)
+    const customer = await Customer.findById(id).select('-__v -id -password')
     /* Bắt lỗi khi ko tìm thấy thông tin */
     if (!customer) {
         throw createError(400, 'Customer Not Found')
@@ -96,6 +103,9 @@ const login = async (email: string, password: string) => {
 
     if (!customer) {
         throw createError(400, "Invalid email or password")
+    }
+    if (!customer.active) {
+        throw createError(400, "Invalid email or password");
     }
     //b2. Nếu tồn tại thì đi so sánh mật khẩu xem khớp ko
     const passwordHash = customer.password;
@@ -180,6 +190,6 @@ export default {
     updateCustomer,
     deleteCustomer,
     login,
-    getProfile,
-    getTokens
+    getTokens,
+    getProfile
 }

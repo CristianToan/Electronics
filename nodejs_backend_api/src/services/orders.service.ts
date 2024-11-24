@@ -3,6 +3,7 @@ import createError from 'http-errors'
 import { IOrder } from "../types/modes"
 import Customer from '../models/customers.model';
 import nodemailer from 'nodemailer';
+import { paymentType } from "../constants/order.constant";
 
 // Tạo transporter
 const transporter = nodemailer.createTransport({
@@ -69,7 +70,7 @@ const findAllOrder = async (query: any) => {
     .select('-__v -id')
     .populate({
       path: 'customer',
-      select: '-password',  // Loại bỏ trường password
+      select: 'first_name phone',  // Loại bỏ trường password
       /**
        * Với match, nếu ko khớp thì customer là null
        */
@@ -134,6 +135,10 @@ Logic tạo đơn hàng
 4. Mặc định để thông tin staff là null, vì chưa có ai duyệt đơn
 */
 const createRecordOrder = async (payload: any, customerLogined: any) => {
+  console.log('payload order', payload);
+  const total = payload.order_items.reduce((sum: number, item: { price_end: number; quantity: number }) => {
+    return sum + item.price_end * item.quantity;
+  }, 0);
   //TH 2. Khách đã login
   if (customerLogined && customerLogined._id) {
 
@@ -156,8 +161,46 @@ const createRecordOrder = async (payload: any, customerLogined: any) => {
       const mailOptions = {
         from: 'maitanhung2@gmail.com',
         to: customerLogined.email, //email khach hang
-        subject: 'Xac nhan dat hang 2',
-        text: 'Hello world! 2'
+        subject: 'Xac nhan dat hang',
+        html: `
+        <h1>Xác nhận đặt hàng</h1>
+        <p>Xin chào <strong>${payload.customer.first_name} ${payload.customer.last_name}</strong>,</p>
+        <p>Email: ${payload.customer.email}</p>
+        <p>Số điện thoại: ${payload.customer.phone}</p>
+        <p>Địa chỉ: ${payload.customer.street} , ${payload.customer.city} , ${payload.customer.state} </p>
+        
+        <p>Chúng tôi đã nhận được đơn hàng của bạn với thông tin sau:</p>
+        <p><strong>Phương thức thanh toán:</strong> ${paymentType[payload.payment_type]}</p>
+
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr>
+              <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Tên sản phẩm</th>
+              <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Giá</th>
+              <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Số lượng</th>
+              <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Thành tiền</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${payload.order_items.map((item: { product_name: string; price_end: number; quantity: number }) => `
+              <tr>
+                <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${item.product_name}</td>
+                <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${item.price_end.toLocaleString('vi-VN')} VNĐ</td>
+                <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${item.quantity}</td>
+                <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${(item.price_end * item.quantity).toLocaleString('vi-VN')} VNĐ</td>
+              </tr>
+            `).join('')}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Tổng số tiền:</strong></td>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>${total.toLocaleString('vi-VN')} VNĐ</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <p>Cảm ơn bạn đã mua hàng tại cửa hàng của chúng tôi!</p>
+      `,
       };
       // Gửi email
       transporter.sendMail(mailOptions, (error: Error | null, info: nodemailer.SentMessageInfo) => {
@@ -171,14 +214,12 @@ const createRecordOrder = async (payload: any, customerLogined: any) => {
     return order;
   }
   //TH 1. Khách hàng chưa tồn tại tại trong hệ thống
-
   // if (!payload.customer) {
   //   throw createError(400, 'Thông tin khách hàng không hợp lệ')
   // }
-
   const checkExistCustomer = await Customer.findOne({
     $or: [
-      { phone: payload.customer.phone},
+      { phone: payload.customer.phone },
       { email: payload.customer.email }
     ]
   });
@@ -189,10 +230,9 @@ const createRecordOrder = async (payload: any, customerLogined: any) => {
     //Đi tạo tạo khách hàng mới
     const customer = await Customer.create(payload.customer)
     customerId = customer._id
-  }else{
+  } else {
     customerId = checkExistCustomer._id
   }
-  
   //Sau đó tạo đơn
   const payload_order = {
     customer: customerId,
@@ -210,11 +250,49 @@ const createRecordOrder = async (payload: any, customerLogined: any) => {
   if (order) {
     console.log('Tao don thanh cong', payload.customer.email);
     // Tạo nội dung email
+    
     const mailOptions = {
       from: 'maitanhung2@gmail.com',
       to: payload.customer.email, //email khach hang
-      subject: 'Xac nhan dat hang 2',
-      text: 'Hello world! 2'
+      subject: 'Xac nhan dat hang',
+      html: `
+        <h1>Xác nhận đặt hàng</h1>
+        <p>Xin chào <strong>${payload.customer.first_name} ${payload.customer.last_name}</strong>,</p>
+        <p>Email: ${payload.customer.email}</p>
+        <p>Số điện thoại: ${payload.customer.phone}</p>
+        <p>Địa chỉ: ${payload.customer.street} , ${payload.customer.city} , ${payload.customer.state} </p>
+        
+        <p>Chúng tôi đã nhận được đơn hàng của bạn với thông tin sau:</p>
+        <p><strong>Phương thức thanh toán:</strong> ${paymentType[payload.payment_type]}</p>
+
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr>
+              <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Tên sản phẩm</th>
+              <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Giá</th>
+              <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Số lượng</th>
+              <th style="border: 1px solid #dddddd; text-align: left; padding: 8px;">Thành tiền</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${payload.order_items.map((item: { product_name: string; price_end: number; quantity: number }) => `
+              <tr>
+                <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${item.product_name}</td>
+                <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${item.price_end.toLocaleString('vi-VN')} VNĐ</td>
+                <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${item.quantity}</td>
+                <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${(item.price_end * item.quantity).toLocaleString('vi-VN')} VNĐ</td>
+              </tr>
+            `).join('')}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Tổng số tiền:</strong></td>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>${total.toLocaleString('vi-VN')} VNĐ</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+        <p>Cảm ơn bạn đã mua hàng tại cửa hàng của chúng tôi!</p>
+      `,
     };
     // Gửi email
     transporter.sendMail(mailOptions, (error: Error | null, info: nodemailer.SentMessageInfo) => {

@@ -16,22 +16,16 @@ const ProductItem = ({ product }: { product: TProduct }) => {
   }
 
   return (
-    <div className='card item mb-4 no-underline'>
-      <Link
-        href={product ? `/products/${product.slug}` : "#"}
-        className='product-item'
-        style={{ textDecoration: "none" }}
-      >
-        <div className='card-img-top'>
-          {product && product.thumbnail ? (
-            <Image
-              src={`${SETTINGS.URL_IMAGE}/${product.thumbnail}`}
-              alt={product.product_name}
-              width={300}
-              height={300}
-              priority
-            />
-          ) : null}
+    <div className="card item mb-4">
+      <Link href={`/products/${product?.slug}`} className="product-item">
+        <div className="card-img-top">
+          <Image
+            src={`${SETTINGS.URL_IMAGE}/${product?.thumbnail}`}
+            alt={product?.product_name}
+            width={300}
+            height={300}
+            priority
+          />
         </div>
         <div className='card-body h-[200px] flex flex-col'>
           <p className='card-title product-name'>
