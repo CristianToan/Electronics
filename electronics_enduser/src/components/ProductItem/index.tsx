@@ -20,6 +20,7 @@ const ProductItem = ({ product }: { product: TProduct }) => {
       <Link href={`/products/${product?.slug}`} className="product-item">
         <div className="card-img-top">
           <Image
+            className='w-100'
             src={`${SETTINGS.URL_IMAGE}/${product?.thumbnail}`}
             alt={product?.product_name}
             width={300}

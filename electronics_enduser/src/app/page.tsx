@@ -1,6 +1,6 @@
 import BannerHome from "@/components/BannerHome";
 import BrandHome from "@/components/BrandHome";
-import PostBlock from "@/components/PostBlock";
+// import PostBlock from "@/components/PostBlock";
 import ProductBlock from "@/components/ProductBlock";
 
 export default function Home() {
@@ -43,7 +43,7 @@ export default function Home() {
             </div> */}
             <BrandHome />
             <ProductBlock />
-            <PostBlock />
+            {/* <PostBlock /> */}
             
         
             
