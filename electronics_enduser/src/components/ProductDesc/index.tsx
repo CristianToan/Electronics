@@ -164,11 +164,6 @@ const ProductDesc = ({ product }: { product: TProduct }) => {
             pauseOnHover
             theme='light'
           />
-          <div className='pdetail-promotion'>
-            <div className='pdetail-promotion-body'>
-              <div className='clearfix' />
-            </div>
-          </div>
         </div>
       </div>
     </div>
