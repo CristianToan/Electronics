@@ -4,14 +4,13 @@ import ProductFiltersSide from "@/components/ProductFiltersSide";
 import ProductItem from "@/components/ProductItem";
 import ProductSort from "@/components/ProductSort";
 import { SETTINGS } from "@/constants/settings";
-import { Metadata, NextPage } from "next";
-// import { redirect } from 'next/navigation';
+import { Metadata, } from "next";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 import { TProduct } from "@/types/modes";
 import PaginationComponent from "@/components/PaginationComponent";
 
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
 export const metadata: Metadata = {
   title: "Sản phẩm - Electronics",
   description: "Sản phẩm siêu thị điện máy",
