@@ -96,34 +96,27 @@ const ProductSale = () => {
           </div>
 
           <Swiper
-            className='product-slider my-4'
+            className='product-slider product-list'
             modules={[Navigation, Autoplay]}
             spaceBetween={3}
-            slidesPerView={4}
-            loop={false}
-            navigation
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
+            slidesPerView={5}
+            loop = { true }
             breakpoints={{
-              1200: {
-                slidesPerView: 5,
-              },
-              1024: {
+                1200: {
+                    slidesPerView: 5,
+                    },
+                1024: {
                 slidesPerView: 4,
-              },
-              992: {
-                slidesPerView: 3,
-              },
-              768: {
-                slidesPerView: 2,
-              },
-              0: {
-                slidesPerView: 1,
-              },
+                },
+                768: {
+                    slidesPerView: 3,
+                },
+                0: {
+                    slidesPerView: 2,
+                },
             }}
-          >
+            navigation
+            >
             {isLoading
               ? Array.from({ length: 20 }).map((_, index) => (
                   <SwiperSlide key={`sl_product_${index}`}>

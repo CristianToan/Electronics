@@ -28,7 +28,7 @@ const ProductItem = ({ product }: { product: TProduct }) => {
             priority
           />
         </div>
-        <div className='card-body h-[200px] flex flex-col'>
+        <div className='card-body h-[150px] flex flex-col'>
           <p className='card-title product-name'>
             {product && product?.product_name && (
               <span>{product?.product_name}</span>

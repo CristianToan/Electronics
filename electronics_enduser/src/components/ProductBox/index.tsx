@@ -48,33 +48,26 @@ const ProductBox = ({ dataCategory }: { dataCategory: TCategory }) => {
             <ProductBanner />
 
             <Swiper
-              className='product-slider my-4'
-              modules={[Navigation, Autoplay]}
-              spaceBetween={0}
-              slidesPerView={4}
-              loop={false}
-              navigation
-              autoplay={{
-                delay: 3000,
-                disableOnInteraction: false,
-              }}
-              breakpoints={{
+            className='product-slider product-list'
+            modules={[Navigation, Autoplay]}
+            spaceBetween={3}
+            slidesPerView={5}
+            loop = { true }
+            breakpoints={{
                 1200: {
-                  slidesPerView: 5,
-                },
+                    slidesPerView: 5,
+                    },
                 1024: {
-                  slidesPerView: 4,
-                },
-                992: {
-                  slidesPerView: 3,
+                slidesPerView: 4,
                 },
                 768: {
-                  slidesPerView: 2,
+                    slidesPerView: 3,
                 },
                 0: {
-                  slidesPerView: 1,
+                    slidesPerView: 2,
                 },
-              }}
+            }}
+            navigation
             >
               {isLoading
                 ? Array.from({ length: 20 }).map((_, index) => (
