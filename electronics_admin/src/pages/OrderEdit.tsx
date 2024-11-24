@@ -279,7 +279,7 @@ const OrderEdit = () => {
                         />
                       ) : (
                         // Thành viên: Chỉ hiển thị tên của chính họ, không thể chỉnh sửa
-                        getOrderById.data?.orders_list?.staff == null ? (
+                        getOrderById.data?.staff === null ? (
                           <Select
                             className="w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-none"
                             
