@@ -33,7 +33,6 @@ const ProductDesc = ({ product }: { product: TProduct }) => {
           throw new Error(`HTTP error! status: ${response2.status}`);
         const result2 = await response2.json();
         setCategory(result2.data); // Update the state with the fetched data
-        console.log(category);
       } catch (error) {
         console.error("Error fetching product:", error);
         return null;
