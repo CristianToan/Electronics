@@ -7,19 +7,29 @@ import Link from 'next/link';
 const HeaderMenu = () => {
     const pathname = usePathname();
     const [isNavbarVisible, setIsNavbarVisible] = useState(false);
+    console.log("🚀 ~ HeaderMenu ~ isNavbarVisible:", isNavbarVisible)
     const [ isShowCat, setIsShowCat] = useState(false)
+    console.log("🚀 ~ HeaderMenu ~ isShowCat:", isShowCat)
     const toggleShowCat = () => {
         setIsShowCat(!isShowCat)
     }
 
     useEffect(() => {
-        if (pathname === '/') {
-          setIsNavbarVisible(true);
-        } else {
-          setIsNavbarVisible(false);
-        }
-        setIsShowCat(false);
-    }, [pathname]);
+        const handleResize = () => {
+          if (pathname === '/' && window.innerWidth >= 992) {
+            setIsNavbarVisible(true);
+          } else {
+            setIsNavbarVisible(false);
+          }
+          setIsShowCat(false);
+        };
+        handleResize();
+        window.addEventListener('resize', handleResize);
+    
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, [pathname]);
     
 
     return (
