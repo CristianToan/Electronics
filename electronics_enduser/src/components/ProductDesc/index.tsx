@@ -42,7 +42,7 @@ const ProductDesc = ({ product }: { product: TProduct }) => {
     };
 
     fetchData(); // Call the function
-  }, [brand, category, product.brand, product.category]); // Empty dependency array ensures the effect runs only once
+  }, []); // Empty dependency array ensures the effect runs only once
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     const numberValue = Number(value);
