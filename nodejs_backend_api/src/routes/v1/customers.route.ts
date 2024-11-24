@@ -5,12 +5,8 @@ const router = express.Router();
 
 //POST v1/auth/login
 router.post('/login',  customerController.login)
-<<<<<<< HEAD
-router.get('/profile', checkCustomerToken, customerController.profile )
-=======
 
 router.get('/profile', checkCustomerToken,  customerController.profile )
->>>>>>> Hung_code
 router.post('/refresh-token',  customerController.refreshToken)
 //1. Get All Customer
 router.get('', customerController.findAllCustomer)
