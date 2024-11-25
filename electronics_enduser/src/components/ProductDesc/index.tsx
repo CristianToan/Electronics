@@ -11,7 +11,6 @@ const ProductDesc = ({ product }: { product: TProduct }) => {
   const [quantity, setQuantity] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(false);
   const [brand, setBrand] = useState<TBrand | null>();
-  console.log("🚀 ~ ProductDesc ~ brand:", brand)
   const [category, setCategory] = useState<TCategory | null>();
   // const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -43,7 +42,7 @@ const ProductDesc = ({ product }: { product: TProduct }) => {
     };
 
     fetchData(); // Call the function
-  }, []); // Empty dependency array ensures the effect runs only once
+  }, [product.brand, product.category]); // Empty dependency array ensures the effect runs only once
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     const numberValue = Number(value);
